@@ -5,6 +5,7 @@ A pokemon-esque game built using OCaml for Cornell University's SP22 3110 course
 
 - Will Zhang
 - Yunci Sun
+- Maxwell Pang
 
 
 # MS0 

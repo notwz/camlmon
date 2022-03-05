@@ -17,6 +17,7 @@ val use_move : t -> string -> t
 has been targeted by an attack move from opponent pokemon  *)
 val damaged : t -> int -> t 
 
-(** [test_p_state] are for testing purposes   *)
-val test_p_state : t 
-val new_test_p_state : t
+(** [test_ps_0] are for testing purposes   *)
+val test_ps_0 : t
+val test_ps_1 : t
+val test_ps_damaged : t

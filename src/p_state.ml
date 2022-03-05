@@ -49,11 +49,14 @@ let new_test_moves : moves_left list =
   ]
 
   
-let test_p_state : t =  
+let test_ps_0 : t =  
   { hp = 12; moves = test_moves }
 
-let new_test_p_state : t = 
+let test_ps_1 : t = 
   { hp = 12; moves = new_test_moves }
 
-  
+let test_ps_damaged : t = 
+  { hp = 10; moves = test_moves }
+
+
 

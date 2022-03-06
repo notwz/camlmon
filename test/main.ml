@@ -30,7 +30,7 @@ let pp_bool bool =
 
 (** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt] to
     pretty-print each element of [lst]. *)
-let pp_list pp_elt lst =
+(* let pp_list pp_elt lst =
   let pp_elts lst =
     let rec loop n acc = function
       | [] -> acc
@@ -41,20 +41,10 @@ let pp_list pp_elt lst =
     in
     loop 0 "" lst
   in
-  "[" ^ pp_elts lst ^ "]"
+  "[" ^ pp_elts lst ^ "]" *)
 
 (* These tests demonstrate how to use [cmp_set_like_lists] and [pp_list]
    to get helpful output from OUnit. *)
-let cmp_demo =
-  [
-    ( "order is irrelevant" >:: fun _ ->
-      assert_equal ~cmp:cmp_set_like_lists ~printer:(pp_list pp_string)
-        [ "foo"; "bar" ] [ "bar"; "foo" ] )
-    (* Uncomment this test to see what happens when a test case fails.
-       "duplicates not allowed" >:: (fun _ -> assert_equal
-       ~cmp:cmp_set_like_lists ~printer:(pp_list pp_string) ["foo";
-       "foo"] ["foo"]); *);
-  ]
 
 (********************************************************************
    End helper functions.

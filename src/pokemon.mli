@@ -1,3 +1,3 @@
-(** Representation of the pokemon object *)
+(* * Representation of the pokemon object *)
 
 type t

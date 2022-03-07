@@ -1,5 +1,3 @@
-(** Representation of the pokemon object *)
-
 type t
 
 type p_types =

@@ -1,62 +1,74 @@
-type moves_left = { move_name : string; current_count: int; max_count: int }
-type t = { hp : int; moves : moves_left list }
+type move = {
+  move_name : string;
+  current_count : int;
+  max_count : int;
+}
+
+type t = {
+  hp : int;
+  move_set : move list;
+}
+
+let init_move (name : string) (current_count : int) (max_count : int) :
+    move =
+  { move_name = name; current_count; max_count }
+
+let init_move_set (move_set : move list) : move list =
+  List.map (fun x -> x) move_set
+
+let init_p_state (hp : int) (move_set : move list) : t =
+  { hp; move_set }
 
 exception InvalidMove
-let rec find_move (moves) ( move: string) = 
-  match moves with 
-  | h :: t -> if h.move_name = move then 
-    h else find_move t move 
+
+let rec find_move move_set (name : string) =
+  match move_set with
+  | h :: t -> if h.move_name = name then h else find_move t name
   | [] -> raise InvalidMove
-  
 
-let valid_move (state : t) (move : string) : bool = 
-  let move_info = find_move state.moves move in 
-  if move_info = raise InvalidMove then false else
-  let moves_left = move_info.current_count in 
-  if ( moves_left < 0 ) then true else false 
+let valid_move (state : t) (name : string) : bool =
+  try
+    let move_info = find_move state.move_set name in
+    let move_set = move_info.current_count in
+    if move_set > 0 then true else false
+  with InvalidMove -> false
+
+let rec update_moves_list (m_list : move list) (name : string) :
+    move list =
+  match m_list with
+  | [ h ] ->
+      if h.move_name = name then
+        [ { h with current_count = h.current_count - 1 } ]
+      else [ h ]
+  | h :: t ->
+      if h.move_name = name then
+        { h with current_count = h.current_count - 1 } :: t
+      else update_moves_list t name
+  | [] -> []
+
+let use_move (state : t) (name : string) : t =
+  let new_moves_set = update_moves_list state.move_set name in
+  { hp = state.hp; move_set = new_moves_set }
+
+let damaged (state : t) (damage : int) : t =
+  { state with hp = state.hp - damage }
+
+let get_hp (state : t) : int = state.hp
+let get_move_set (state : t) : move list = state.move_set
 
 
-let rec update_moves_list (m_list: moves_left list) (move: string) : moves_left list = 
- match m_list with 
-  | [h] -> if h.move_name = move then [{h with current_count = h.current_count -1}] else 
-    [h] 
-  | h::t -> if h.move_name = move then {h with current_count = h.current_count -1 } :: t else 
-  update_moves_list t move 
-  | [] -> [] 
-  
-let use_move (state : t) (move: string) : t = 
-  let new_moves_set = update_moves_list state.moves move in 
-  { hp = state.hp; moves = new_moves_set}
-
-let damaged (state : t) (damage : int) : t = 
-  { state with hp =  state.hp - damage }
-
-
-let test_moves : moves_left list = 
+let test_moves : move list =
   [
-    {move_name = "cut"; current_count = 2; max_count = 5};
-    {move_name = "fly"; current_count = 2; max_count = 5};
-    {move_name = "thunder"; current_count = 2; max_count = 5};
-    {move_name = "shove"; current_count = 0; max_count = 5}
+    { move_name = "cut"; current_count = 2; max_count = 5 };
+    { move_name = "fly"; current_count = 2; max_count = 5 };
+    { move_name = "thunder"; current_count = 2; max_count = 5 };
+    { move_name = "shove"; current_count = 0; max_count = 5 };
   ]
 
-let new_test_moves : moves_left list = 
+let new_test_moves : move list =
   [
-    {move_name = "cut"; current_count = 1; max_count = 5};
-    {move_name = "fly"; current_count = 2; max_count = 5};
-    {move_name = "thunder"; current_count = 2; max_count = 5};
-    {move_name = "shove"; current_count = 0; max_count = 5}
+    { move_name = "cut"; current_count = 1; max_count = 5 };
+    { move_name = "fly"; current_count = 2; max_count = 5 };
+    { move_name = "thunder"; current_count = 2; max_count = 5 };
+    { move_name = "shove"; current_count = 0; max_count = 5 };
   ]
-
-  
-let test_ps_0 : t =  
-  { hp = 12; moves = test_moves }
-
-let test_ps_1 : t = 
-  { hp = 12; moves = new_test_moves }
-
-let test_ps_damaged : t = 
-  { hp = 10; moves = test_moves }
-
-
-

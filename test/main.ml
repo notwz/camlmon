@@ -45,6 +45,19 @@ let pp_bool bool = if bool = true then "true" else "false"
    functions exposed in the [.mli] files. Do not expose your helper
    functions. See the handout for an explanation. *)
 
+(* Dummy pokemon states for testing *)
+let cut = init_move "cut" 5 5
+let cut1 = init_move "cut" 4 5
+let soar = init_move "soar" 5 5
+let strength = init_move "strength" 0 5
+let swim = init_move "swim" 1 5
+let move_set_0 = [ cut; soar; strength; swim ]
+let move_set_1 = [ cut1; soar; strength; swim ]
+let ps_0 = init_p_state 12 move_set_0
+let ps_1 = init_p_state 12 move_set_1
+let ps_damaged_0 = init_p_state 10 move_set_0
+let ps_damaged_1 = init_p_state 10 move_set_1
+
 let ps_valid_move_test (name : string) state move expected_output : test
     =
   name >:: fun _ ->
@@ -57,6 +70,20 @@ let ps_damaged_test (name : string) state damage expected_output : test
     =
   name >:: fun _ -> assert_equal expected_output (damaged state damage)
 
+let p_state_tests =
+  [
+    ps_valid_move_test "valid move on test state (cut) " ps_0 "cut" true;
+    ps_valid_move_test "valid move on test state (soar) " ps_0 "soar"
+      true;
+    ps_valid_move_test "valid move on test state (shove) " ps_0 "shove"
+      false;
+    ps_move_test "Using cut once" ps_0 "cut" ps_1;
+    ps_damaged_test "Pokemon received 2 dmg (ps0) : " ps_0 2
+      ps_damaged_0;
+    ps_damaged_test "Pokemon received 2 dmg (ps1) : " ps_1 2
+      ps_damaged_1;
+  ]
+
 let map_pp_test
     (name : string)
     (first_map : bool)
@@ -68,19 +95,9 @@ let map_pp_test
        (if first_map then init_map_a trainer else init_map_b trainer)
        (init_t_state trainer))
     ~printer:(fun x -> x)
-
-let p_state_tests =
-  [
-    ps_valid_move_test "valid move on test state" test_ps_0 "cut" true;
-    ps_valid_move_test "valid move on test state" test_ps_0 "soar" false;
-    ps_valid_move_test "valid move on test state" test_ps_0 "shove"
-      false;
-    ps_move_test "Using cut once" test_ps_0 "cut" test_ps_1;
-    ps_damaged_test "Pokemon received 2 dmg : " test_ps_0 2
-      test_ps_damaged;
-    ps_damaged_test "Pokemon received 2 dmg : " test_ps_1 2
-      test_ps_damaged;
-    map_pp_test "first map pretty printing" true
+    
+let map_tests = [
+  map_pp_test "first map pretty printing" true
       "~~~~~###^^^\n\
        ~~~~###^^^^\n\
        ~~~###^^^^^\n\
@@ -104,7 +121,7 @@ let p_state_tests =
        ##^^^###^^#\n\
        ^^^^^^^^^^^\n\
        ^^^^^^^^^^^";
-  ]
+]
 
-let suite = "test suite for camlmon" >::: List.flatten [ p_state_tests ]
-let _ = run_test_tt_main suite
+let suite =
+  "🐪 Test suite for camlmon : 🐪" >::: List.flatten [ p_state_tests; map_tests ]

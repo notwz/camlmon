@@ -1,6 +1,9 @@
 open OUnit2
 open Game
 open P_state
+open Trainer
+open T_state
+open Map
 
 (********************************************************************
    Here are some helper functions for your testing of set-like lists.
@@ -81,7 +84,44 @@ let p_state_tests =
       ps_damaged_1;
   ]
 
-let suite =
-  "🐪 Test suite for camlmon : 🐪" >::: List.flatten [ p_state_tests ]
+let map_pp_test
+    (name : string)
+    (first_map : bool)
+    (expected_output : string) =
+  name >:: fun _ ->
+  let trainer = init_trainer "Bob" 0 in
+  assert_equal expected_output
+    (pp_map
+       (if first_map then init_map_a trainer else init_map_b trainer)
+       (init_t_state trainer))
+    ~printer:(fun x -> x)
+    
+let map_tests = [
+  map_pp_test "first map pretty printing" true
+      "~~~~~###^^^\n\
+       ~~~~###^^^^\n\
+       ~~~###^^^^^\n\
+       ~~###^^^^^#\n\
+       ~#### ^^^##\n\
+       ###^ T ^###\n\
+       ##^^^ ####~\n\
+       #^^^^^###~~\n\
+       ^^^^^###~~~\n\
+       ^^^^###~~~~\n\
+       ^^^###~~~~~";
+    map_pp_test "second map pretty printing" false
+      "^^^^^^^^^^^\n\
+       ^^##^^^^^^^\n\
+       ########^^#\n\
+       ###########\n\
+       ~~~~~ ~~~~~\n\
+       ~~~~ T ~~~~\n\
+       ~~~~~ ~~~~~\n\
+       ###########\n\
+       ##^^^###^^#\n\
+       ^^^^^^^^^^^\n\
+       ^^^^^^^^^^^";
+]
 
-let _ = run_test_tt_main suite
+let suite =
+  "🐪 Test suite for camlmon : 🐪" >::: List.flatten [ p_state_tests; map_tests ]

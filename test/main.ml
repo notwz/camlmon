@@ -95,9 +95,10 @@ let map_pp_test
        (if first_map then init_map_a trainer else init_map_b trainer)
        (init_t_state trainer))
     ~printer:(fun x -> x)
-    
-let map_tests = [
-  map_pp_test "first map pretty printing" true
+
+let map_tests =
+  [
+    map_pp_test "first map pretty printing" true
       "~~~~~###^^^\n\
        ~~~~###^^^^\n\
        ~~~###^^^^^\n\
@@ -121,7 +122,10 @@ let map_tests = [
        ##^^^###^^#\n\
        ^^^^^^^^^^^\n\
        ^^^^^^^^^^^";
-]
+  ]
 
 let suite =
-  "🐪 Test suite for camlmon : 🐪" >::: List.flatten [ p_state_tests; map_tests ]
+  "🐪 Test suite for camlmon : 🐪"
+  >::: List.flatten [ p_state_tests; map_tests ]
+
+let _ = run_test_tt_main suite

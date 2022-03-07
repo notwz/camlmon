@@ -3,7 +3,12 @@
 type t
 
 val init_map_a : Trainer.t -> t
+(** [init_map_a trainer] creates an initial map A with trainer t in a
+    t_state. *)
+
 val init_map_b : Trainer.t -> t
+(** [init_map_a trainer] creates an initial map B with trainer t in a
+    t_state. *)
 
 val init_map : Trainer.t -> t
 (** [init_map trainer] creates an initial map with trainer t in a

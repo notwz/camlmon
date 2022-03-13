@@ -5,6 +5,8 @@ type t = {
   rocks : (int * int) list;
 }
 
+let path_blocks = [ (4, 5); (5, 4); (5, 5); (5, 6); (6, 5) ]
+
 let init_map_a t =
   {
     trainer_state = T_state.init_t_state t;
@@ -417,10 +419,11 @@ let rec modify_map
 
 let pp_map t trainer =
   let template = blank_map in
-  let template_bushes = modify_map template t.bushes "#" in
-  let template_puddles = modify_map template_bushes t.puddles "~" in
-  let template_rocks = modify_map template_puddles t.rocks "^" in
+  let template_paths = modify_map template path_blocks "🟫" in
+  let template_bushes = modify_map template_paths t.bushes "🟩" in
+  let template_puddles = modify_map template_bushes t.puddles "🌊" in
+  let template_rocks = modify_map template_puddles t.rocks "🗿" in
   let template_trainer =
-    modify_map template_rocks [ T_state.get_location trainer ] "T"
+    modify_map template_rocks [ T_state.get_location trainer ] "🐪"
   in
   List.fold_right (fun x acc -> x ^ acc) template_trainer ""

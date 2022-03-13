@@ -77,6 +77,8 @@ let p_state_tests =
       true;
     ps_valid_move_test "valid move on test state (shove) " ps_0 "shove"
       false;
+    ps_valid_move_test "valid move on test state (strength) " ps_0
+      "strength" false;
     ps_move_test "Using cut once" ps_0 "cut" ps_1;
     ps_damaged_test "Pokemon received 2 dmg (ps0) : " ps_0 2
       ps_damaged_0;

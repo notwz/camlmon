@@ -2,6 +2,7 @@
  (name game)
  (public_name Game)
  (libraries
+  Lib
   graphics
   camlimages
   camlimages.all_formats

@@ -56,7 +56,6 @@ let damaged (state : t) (damage : int) : t =
 let get_hp (state : t) : int = state.hp
 let get_move_set (state : t) : move list = state.move_set
 
-
 let test_moves : move list =
   [
     { move_name = "cut"; current_count = 2; max_count = 5 };

@@ -1,4 +1,11 @@
 (library
  (name game)
  (public_name Game)
- (libraries Lib))
+ (libraries
+  Lib
+  graphics
+  camlimages
+  camlimages.all_formats
+  camlimages.png
+  camlimages.graphics
+  camlimages.jpeg))

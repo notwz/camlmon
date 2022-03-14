@@ -1,9 +1,11 @@
 open OUnit2
 open Game
+open Lib
 open P_state
-open Trainer
-open T_state
 open Map
+open Pokemon
+open T_state
+open Trainer
 
 (********************************************************************
    Here are some helper functions for your testing of set-like lists.

@@ -9,7 +9,7 @@ let path_blocks = [ (4, 5); (5, 4); (5, 5); (5, 6); (6, 5) ]
 
 let init_map_a t =
   {
-    trainer_state = T_state.init_t_state t;
+    trainer_state = t;
     bushes =
       [
         (0, 5);
@@ -139,7 +139,7 @@ let init_map_a t =
 
 let init_map_b t =
   {
-    trainer_state = T_state.init_t_state t;
+    trainer_state = t;
     bushes =
       [
         (1, 2);

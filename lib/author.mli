@@ -5,8 +5,10 @@
    or use it for commercial purposes.
  ************************************************************)
 
-(** CS 3110 Spring 2022 Assignment A2 Adventure
+(** CS 3110 Spring 2022 Final Project Camlmon
 
+    @author Maxwell Pang (mp774)
+    @author William Zhang (wz282)
     @author Yunci Sun (ys463) *)
 
 (************************************************************

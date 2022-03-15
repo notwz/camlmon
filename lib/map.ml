@@ -9,7 +9,7 @@ let path_blocks = [ (4, 5); (5, 4); (5, 5); (5, 6); (6, 5) ]
 
 let init_map_a t =
   {
-    trainer_state = T_state.init_t_state t;
+    trainer_state = t;
     bushes =
       [
         (0, 5);
@@ -139,7 +139,7 @@ let init_map_a t =
 
 let init_map_b t =
   {
-    trainer_state = T_state.init_t_state t;
+    trainer_state = t;
     bushes =
       [
         (1, 2);
@@ -417,13 +417,27 @@ let rec modify_map
            map)
         tl s
 
-let pp_map t trainer =
+let pp_map t =
   let template = blank_map in
   let template_paths = modify_map template path_blocks "🟫" in
   let template_bushes = modify_map template_paths t.bushes "🟩" in
   let template_puddles = modify_map template_bushes t.puddles "🌊" in
   let template_rocks = modify_map template_puddles t.rocks "🗿" in
   let template_trainer =
-    modify_map template_rocks [ T_state.get_location trainer ] "🐪"
+    modify_map template_rocks
+      [ T_state.get_location t.trainer_state ]
+      "🐪"
   in
   List.fold_right (fun x acc -> x ^ acc) template_trainer ""
+
+let move_up t =
+  { t with trainer_state = T_state.move_up t.trainer_state }
+
+let move_down t =
+  { t with trainer_state = T_state.move_down t.trainer_state }
+
+let move_left t =
+  { t with trainer_state = T_state.move_left t.trainer_state }
+
+let move_right t =
+  { t with trainer_state = T_state.move_right t.trainer_state }

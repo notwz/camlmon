@@ -97,8 +97,7 @@ let map_pp_test
   let t_state = init_t_state trainer in
   assert_equal expected_output
     (pp_map
-       (if first_map then init_map_a t_state else init_map_b t_state)
-       (init_t_state trainer))
+       (if first_map then init_map_a t_state else init_map_b t_state))
     ~printer:(fun x -> x)
 
 let map_tests =

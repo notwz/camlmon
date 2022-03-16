@@ -1,0 +1,4 @@
+(library
+ (name pokedex)
+ (public_name Pokedex)
+ (libraries Lib))

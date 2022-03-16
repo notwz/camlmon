@@ -3,6 +3,7 @@
  (public_name Game)
  (libraries
   Lib
+  sdl2
   graphics
   camlimages
   camlimages.all_formats

@@ -12,18 +12,18 @@ let init_t_state t =
 
 let get_location t = (t.x_coord, t.y_coord)
 
-let move_up t =
+let move_left t =
   if t.y_coord < 10 then { t with y_coord = t.y_coord + 1 }
   else raise (OutOfBoundsMove (get_location t))
 
-let move_down t =
+let move_right t =
   if t.y_coord > 0 then { t with y_coord = t.y_coord - 1 }
   else raise (OutOfBoundsMove (get_location t))
 
-let move_left t =
+let move_up t =
   if t.x_coord > 0 then { t with x_coord = t.x_coord - 1 }
   else raise (OutOfBoundsMove (get_location t))
 
-let move_right t =
+let move_down t =
   if t.x_coord < 10 then { t with x_coord = t.x_coord + 1 }
   else raise (OutOfBoundsMove (get_location t))

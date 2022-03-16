@@ -2,6 +2,7 @@
  (name game)
  (public_name Game)
  (libraries
+  ANSITerminal
   Lib
   sdl2
   graphics

@@ -1,9 +1,20 @@
 (*open OCLib*)
 open Game
 open Sdl
+open Lib
+open Test
+open Printf
 
 let rec listen (input : string) =
-  print_endline ("your input was " ^ input)
+  print_endline ("You choose: " ^ input);
+  match input with
+  | "1" -> test_main ()
+  | "2" -> test_main ()
+  | "3" -> test_main ()
+  | _ -> (
+      print_endline "please put a valid input";
+      match read_line () with
+      | x -> listen x)
 
 let main () =
   ANSITerminal.print_string [ ANSITerminal.green ]

@@ -9,22 +9,54 @@ let rec take_turn map =
     Printf.printf "> "
   in
   match read_line () with
-  | "up" ->
-      let new_map = Map.move_up map in
-      let () = print_endline (Map.pp_map new_map) in
-      take_turn new_map
-  | "down" ->
-      let new_map = Map.move_down map in
-      let () = print_endline (Map.pp_map new_map) in
-      take_turn new_map
-  | "left" ->
-      let new_map = Map.move_right map in
-      let () = print_endline (Map.pp_map new_map) in
-      take_turn new_map
-  | "right" ->
-      let new_map = Map.move_left map in
-      let () = print_endline (Map.pp_map new_map) in
-      take_turn new_map
+  | "up" -> (
+      match Map.move_up map with
+      | exception OutOfBoundsMove pos ->
+          let () =
+            ANSITerminal.print_string
+              [ ANSITerminal.magenta ]
+              "Invalid movement, try again.\n"
+          in
+          take_turn map
+      | new_map ->
+          let () = print_endline (Map.pp_map new_map) in
+          take_turn new_map)
+  | "down" -> (
+      match Map.move_down map with
+      | exception OutOfBoundsMove pos ->
+          let () =
+            ANSITerminal.print_string
+              [ ANSITerminal.magenta ]
+              "Invalid movement, try again.\n"
+          in
+          take_turn map
+      | new_map ->
+          let () = print_endline (Map.pp_map new_map) in
+          take_turn new_map)
+  | "left" -> (
+      match Map.move_left map with
+      | exception OutOfBoundsMove pos ->
+          let () =
+            ANSITerminal.print_string
+              [ ANSITerminal.magenta ]
+              "Invalid movement, try again.\n"
+          in
+          take_turn map
+      | new_map ->
+          let () = print_endline (Map.pp_map new_map) in
+          take_turn new_map)
+  | "right" -> (
+      match Map.move_right map with
+      | exception OutOfBoundsMove pos ->
+          let () =
+            ANSITerminal.print_string
+              [ ANSITerminal.magenta ]
+              "Invalid movement, try again.\n"
+          in
+          take_turn map
+      | new_map ->
+          let () = print_endline (Map.pp_map new_map) in
+          take_turn new_map)
   | "q" ->
       let () =
         ANSITerminal.print_string

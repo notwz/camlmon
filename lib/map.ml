@@ -267,7 +267,12 @@ let init_map_b t =
       ];
   }
 
-let init_map t = if Random.int 2 = 0 then init_map_a t else init_map_b t
+let init_map t =
+  if
+    let () = Random.self_init () in
+    Random.int 2 = 0
+  then init_map_a t
+  else init_map_b t
 
 let blank_map =
   [

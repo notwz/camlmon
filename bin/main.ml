@@ -50,7 +50,7 @@ let main_menu_terminal (start : bool) =
     ANSITerminal.print_string [ ANSITerminal.cyan ]
       " >>> [ 3 ] battle users [not implemented] \n   \n";
     ANSITerminal.print_string [ ANSITerminal.blue ]
-      " Type in ' 1' '2' or '3'\n to choose option to play: \n";
+      " Type in '1' '2' or '3'\n to choose option to play: \n";
     printf "> ";
     match read_line () with
     | exception End_of_file -> ()
@@ -78,8 +78,7 @@ let rec listen_new_user (input : string) =
          💬 My task for\n\
         \        you is to explore the regions in this world  and log \
          their\n\
-        \        information \n\
-        \        into this device I created, the Camldex.";
+        \        information  into this device I created, the Camldex.";
       printf " \n press [enter] to continue ... ";
       clear 1;
       match read_line () with

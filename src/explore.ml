@@ -42,6 +42,7 @@ let explore_main name id =
   let trainer = Trainer.init_trainer name id in
   let trainer_state = T_state.init_t_state trainer in
   let map = Map.init_map trainer_state in
+  print_endline (Map.pp_map map);
   ANSITerminal.print_string [ ANSITerminal.blue ]
     " \n\
     \ Type 'up', 'down', 'left', 'right' to move around in the map. \

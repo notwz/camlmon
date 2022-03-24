@@ -118,4 +118,4 @@ let main () =
   | exception End_of_file -> ()
   | x -> listen_new_user x
 
-let () = main ()
+let () = Gui.menu_screen ()

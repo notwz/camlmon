@@ -5,6 +5,7 @@ open Printf
 open Gui
 open Test
 open Explore
+open Main_menu
 
 let clear = function
   | x -> Sys.command "clear" + x
@@ -118,4 +119,4 @@ let main () =
   | exception End_of_file -> ()
   | x -> listen_new_user x
 
-let () = main ()
+let () = main_menu ()

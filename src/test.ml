@@ -1,5 +1,4 @@
-open Sdlevent
-open Sdlinit
+
 open Graphics
 open Graphic_image
 open Camlimages

@@ -13,6 +13,9 @@ let init_state =
     ran_away = false;
   }
 
+let caught st = st.caught
+let ran_away st = st.ran_away
+
 let catch st =
   let () = Random.self_init () in
   let seed = Random.int 100 in

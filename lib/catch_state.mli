@@ -16,3 +16,11 @@ val bait : t -> t
 val rock : t -> t
 (** [rock t] returns the state that occurs after the user attempts to
     throw a rock on the pokemon in state [t]. *)
+
+val caught : t -> bool
+(** [caught t] returns whether or not the pokemon has been caught in
+    state [t]. *)
+
+val ran_away : t -> bool
+(** [ran_away t] returns whether or not the pokemon has ran away in
+    state [t]. *)

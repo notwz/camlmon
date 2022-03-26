@@ -70,8 +70,7 @@ let rec take_turn map =
         "\n Please put a valid command:";
       take_turn map
 
-let explore_main name id =
-  let trainer = Trainer.init_trainer name id in
+let explore_main trainer =
   let trainer_state = T_state.init_t_state trainer in
   let map = Map.init_map trainer_state in
   print_endline (Map.pp_map map);

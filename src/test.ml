@@ -7,11 +7,13 @@ open Images
 open Png
 open Printf
 open Explore
+open Lib
+open Trainer
 
 let rec listen_main_menu (input : string) =
   print_endline ("You chose: " ^ input);
   match input with
-  | "1" -> explore_main "Ash Ketchum" 1
+  | "1" -> explore_main (init_trainer "Ash Ketchum" 1)
   | "2" -> (
       ANSITerminal.print_string
         [ ANSITerminal.magenta ]

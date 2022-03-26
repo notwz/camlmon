@@ -1,6 +1,7 @@
 open Game
 open Sdl
 open Lib
+open Trainer
 open Printf
 open Gui
 open Test
@@ -12,7 +13,7 @@ let clear = function
 let rec listen (input : string) =
   print_endline ("You chose: " ^ input);
   match input with
-  | "1" -> explore_main "Ash Ketchum" 1
+  | "1" -> explore_main (init_trainer "Ash Ketchum" 1)
   | "2" -> (
       ANSITerminal.print_string
         [ ANSITerminal.magenta ]

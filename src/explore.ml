@@ -2,73 +2,94 @@ open Lib
 open Map
 open T_state
 open Trainer
+open Map_command
+open Encounter
 
 let rec take_turn map =
-  let () =
-    ANSITerminal.print_string [ ANSITerminal.cyan ] " \n Move: \n";
-    Printf.printf "> "
-  in
-  match read_line () with
-  | "up" -> (
-      match Map.move_up map with
-      | exception OutOfBoundsMove pos ->
-          let () =
-            ANSITerminal.print_string
-              [ ANSITerminal.magenta ]
-              "Invalid movement, try again.\n"
-          in
-          take_turn map
-      | new_map ->
-          let () = print_endline (Map.pp_map new_map) in
-          take_turn new_map)
-  | "down" -> (
-      match Map.move_down map with
-      | exception OutOfBoundsMove pos ->
-          let () =
-            ANSITerminal.print_string
-              [ ANSITerminal.magenta ]
-              "Invalid movement, try again.\n"
-          in
-          take_turn map
-      | new_map ->
-          let () = print_endline (Map.pp_map new_map) in
-          take_turn new_map)
-  | "left" -> (
-      match Map.move_left map with
-      | exception OutOfBoundsMove pos ->
-          let () =
-            ANSITerminal.print_string
-              [ ANSITerminal.magenta ]
-              "Invalid movement, try again.\n"
-          in
-          take_turn map
-      | new_map ->
-          let () = print_endline (Map.pp_map new_map) in
-          take_turn new_map)
-  | "right" -> (
-      match Map.move_right map with
-      | exception OutOfBoundsMove pos ->
-          let () =
-            ANSITerminal.print_string
-              [ ANSITerminal.magenta ]
-              "Invalid movement, try again.\n"
-          in
-          take_turn map
-      | new_map ->
-          let () = print_endline (Map.pp_map new_map) in
-          take_turn new_map)
-  | "q" ->
-      let () =
-        ANSITerminal.print_string
-          [ ANSITerminal.magenta ]
-          " \n Quitting ... \n"
-      in
-      ()
-  | _ ->
-      ANSITerminal.print_string
-        [ ANSITerminal.magenta ]
-        "\n Please put a valid command:";
-      take_turn map
+  let () = Random.self_init () in
+  if Random.int 3 < 1 then
+    let () =
+      encounter_main (map |> get_trainer_state |> get_trainer) 0
+    in
+    let () = print_endline (Map.pp_map map) in
+    take_turn map
+  else
+    let () =
+      ANSITerminal.print_string [ ANSITerminal.cyan ] " \n Move: \n";
+      Printf.printf "> "
+    in
+    match read_line () with
+    | command -> (
+        match parse command with
+        | exception Empty ->
+            let () =
+              ANSITerminal.print_string
+                [ ANSITerminal.magenta ]
+                "Make a non-empty move.\n"
+            in
+            take_turn map
+        | exception Malformed ->
+            let () =
+              ANSITerminal.print_string
+                [ ANSITerminal.magenta ]
+                "The valid commands are up, down, left, right and q\n"
+            in
+            take_turn map
+        | Up -> (
+            match Map.move_up map with
+            | exception OutOfBoundsMove pos ->
+                let () =
+                  ANSITerminal.print_string
+                    [ ANSITerminal.magenta ]
+                    "Invalid movement, try again.\n"
+                in
+                take_turn map
+            | new_map ->
+                let () = print_endline (Map.pp_map new_map) in
+                take_turn new_map)
+        | Down -> (
+            match Map.move_down map with
+            | exception OutOfBoundsMove pos ->
+                let () =
+                  ANSITerminal.print_string
+                    [ ANSITerminal.magenta ]
+                    "Invalid movement, try again.\n"
+                in
+                take_turn map
+            | new_map ->
+                let () = print_endline (Map.pp_map new_map) in
+                take_turn new_map)
+        | Left -> (
+            match Map.move_left map with
+            | exception OutOfBoundsMove pos ->
+                let () =
+                  ANSITerminal.print_string
+                    [ ANSITerminal.magenta ]
+                    "Invalid movement, try again.\n"
+                in
+                take_turn map
+            | new_map ->
+                let () = print_endline (Map.pp_map new_map) in
+                take_turn new_map)
+        | Right -> (
+            match Map.move_right map with
+            | exception OutOfBoundsMove pos ->
+                let () =
+                  ANSITerminal.print_string
+                    [ ANSITerminal.magenta ]
+                    "Invalid movement, try again.\n"
+                in
+                take_turn map
+            | new_map ->
+                let () = print_endline (Map.pp_map new_map) in
+                take_turn new_map)
+        | Quit ->
+            let () =
+              ANSITerminal.print_string
+                [ ANSITerminal.magenta ]
+                " \n Quitting ... \n"
+            in
+            ())
 
 let explore_main trainer =
   let trainer_state = T_state.init_t_state trainer in

@@ -1,7 +1,6 @@
 open Lib
 open Trainer
 open Catch_state
-open Explore
 
 let print_endline str =
   ANSITerminal.print_string [ ANSITerminal.cyan ] (str ^ "\n")
@@ -38,5 +37,4 @@ let encounter_main trainer terrain =
       (Trainer.get_name trainer
       ^ " has entered an encounter with magikarp!")
   in
-  let () = take_turn Catch_state.init_state in
-  explore_main trainer
+  take_turn Catch_state.init_state

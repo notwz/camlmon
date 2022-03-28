@@ -94,7 +94,12 @@ let rec paint_name state () =
     moveto (main_x + 50) (main_y + 50);
     draw_string "Press [ ; ] to confirm";
     let e = wait_next_event [ Key_pressed ] in
-    if e.key = ';' then ()
+    if e.key = ';' then (
+      Graphics.moveto 360 100;
+      set_color black;
+      Graphics.draw_string ("Ah, " ^ name ^ " has a nice ring to it.");
+      Unix.sleep 1;
+      ())
     else if e.key = ',' then
       let len = String.length name in
       let backspaced_name = String.sub name 0 (len - 1) in

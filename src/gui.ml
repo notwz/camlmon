@@ -60,7 +60,6 @@ let rec menu_screen () =
       Graphics.moveto 100 350;
       Graphics.draw_string
         "Feature not yet implemented. Sorry! Please choose again.";
-      Graphics.moveto 100 250;
       Graphics.draw_string "Press '1' to go back to main page";
       let rec press_1 key =
         match (wait_next_event [ Key_pressed ]).key with

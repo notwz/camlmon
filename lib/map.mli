@@ -37,3 +37,7 @@ val move_right : t -> t
 (** [move_right t] returns the state after the trainer is moved right
     one square. @raises [OutOfBoundsMove pos] with the current position
     if move places trainer out of bound. *)
+
+val get_trainer_state : t -> T_state.t
+(** [get_trainer_state t] returns the trainer state of the trainer
+    inside of map [t]. *)

@@ -446,3 +446,5 @@ let move_left t =
 
 let move_right t =
   { t with trainer_state = T_state.move_right t.trainer_state }
+
+let get_trainer_state t = t.trainer_state

@@ -27,3 +27,5 @@ let move_up t =
 let move_down t =
   if t.x_coord < 10 then { t with x_coord = t.x_coord + 1 }
   else raise (OutOfBoundsMove (get_location t))
+
+let get_trainer t = t.trainer

@@ -1,6 +1,9 @@
 type t
 (** The abstract type of values repesenting trainers. *)
 
+val get_name : t -> string
+(** [get_name t] returns the name of trainer [t]. *)
+
 val get_pokemon : t -> Pokemon.t list
 (** [get_pokemon t] returns a list of the pokemon that trainer [t] has
     in his party. *)

@@ -5,6 +5,10 @@ type t = {
   rocks : (int * int) list;
 }
 
+let get_t_state t = t.trainer_state
+let get_bush t = t.bushes
+let get_puddles t = t.puddles
+let get_rocks t = t.rocks
 let path_blocks = [ (4, 5); (5, 4); (5, 5); (5, 6); (6, 5) ]
 
 let init_map_a t =

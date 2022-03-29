@@ -34,7 +34,7 @@ let rec take_turn catch_state =
 let encounter_main trainer terrain =
   let () =
     print_endline
-      (Trainer.get_name trainer
+      (Trainer.get_trainer_name trainer
       ^ " has entered an encounter with magikarp!")
   in
   take_turn Catch_state.init_state

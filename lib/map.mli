@@ -14,6 +14,18 @@ val init_map : T_state.t -> t
 (** [init_map trainer] creates an initial map with trainer t in a
     t_state. *)
 
+val get_t_state : t -> T_state.t
+(** [get_t_state t ] returns the trainer state of map t*)
+
+val get_bush : t -> (int * int) list
+(** [get_t_state t ] returns the bushes coordinate of map t*)
+
+val get_puddles : t -> (int * int) list
+(** [get_t_state t ] returns the puddles coordinate of map t*)
+
+val get_rocks : t -> (int * int) list
+(** [get_t_state t ] returns the rocks coordinate of map t*)
+
 val pp_map : t -> string
 (** [pp_map t trainer] returns a string representation of the map with
     the trainer. *)

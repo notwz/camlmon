@@ -35,9 +35,7 @@ let new_game_dialogue =
     "But despite our closeness, we don't know everything about POKeMON.";
     "In fact, there are many, many secrets surrounding POKeMON.";
     "To unravel POKeMON mysteries, I've been undertaking research.";
-    "That's what I do. ";
-    "And you are? ";
-    "Are you a Boy or a Girl? ";
+    "That's what I do. But, enough about me.";
     "All right. What's your name?";
     "All right are you ready?";
     "Your very own adventure is about to unfold.";
@@ -77,6 +75,8 @@ let charmander = "public/menu_images/charmander.png"
 let pikachu = "public/menu_images/pikachu.png"
 let professor = "public/menu_images/professor.png"
 let arena = "public/menu_images/arena.png"
+let loading_screen = "public/menu_images/loading_screen.png"
+let start_screen = "public/menu_images/start_screen.png"
 let panel_color = rgb 151 199 218
 let panel_border_1 = rgb 27 34 64
 let panel_border_2 = rgb 165 119 26
@@ -151,7 +151,7 @@ let paint_catch () =
   set_color black;
   fill_rect dialogue_x dialogue_y dialogue_width y_res;
   set_color bg_1;
-  draw_img arena (340, (y_res / 2) - 150) ()
+  draw_img loading_screen (340, (y_res / 2) - 150) ()
 
 let paint_battle () =
   let title = "Main Menu" in
@@ -235,7 +235,7 @@ let rec display_catch_dialogue dialogues state =
     let text = List.nth dialogues i in
     paint_dialogue text state Catch ()
   done;
-  safari 360 0 ()
+  safari state 340 0 ()
 
 let rec display_arena_dialogue dialogues state =
   let len = List.length dialogues in
@@ -253,7 +253,7 @@ let rec display_battle_dialogue dialogues state =
   done;
   ()
 
-let rec select_buttons (select_y : int) () =
+let rec select_buttons state (select_y : int) () =
   let title = "Main Menu" in
   let title_x = item_x_d (fst (text_size title)) in
   let catch = "[ 1 ] Catch Pokemon" in
@@ -285,21 +285,22 @@ let rec select_buttons (select_y : int) () =
   let e = wait_next_event [ Key_pressed ] in
   match e.key with
   | 'w' ->
-      if select_y = 350 then select_buttons 350 ()
-      else select_buttons (select_y + 50) ()
+      if select_y = 350 then select_buttons state 350 ()
+      else select_buttons state (select_y + 50) ()
   | 's' ->
-      if select_y = 250 then select_buttons 250 ()
-      else select_buttons (select_y - 50) ()
+      if select_y = 250 then select_buttons state 250 ()
+      else select_buttons state (select_y - 50) ()
   | ';' -> (
       match select_y with
       | 350 -> display_catch_dialogue catch_dialogue state
       | 300 -> display_arena_dialogue battle_dialogue state
       | 250 -> display_battle_dialogue arena_dialogue state
       | _ ->
-          if e.key <> 'q' then select_buttons select_y ()
+          if e.key <> 'q' then select_buttons state select_y ()
           else Stdlib.exit 0)
   | _ ->
-      if e.key <> 'q' then select_buttons select_y () else Stdlib.exit 0
+      if e.key <> 'q' then select_buttons state select_y ()
+      else Stdlib.exit 0
 
 let rec display_new_game_dialogue dialogues state =
   let len = List.length dialogues in
@@ -307,7 +308,7 @@ let rec display_new_game_dialogue dialogues state =
     let text = List.nth dialogues i in
     paint_dialogue text state Prof ()
   done;
-  select_buttons 350 ()
+  select_buttons state 350 ()
 
 (* let rec select_menu () = let title = "Main Menu" in let title_x =
    item_x_d (fst (text_size title)) in let catch = "[ 1 ] Catch Pokemon"
@@ -338,12 +339,11 @@ let rec loading_menu () =
   Graphics.set_window_title "Camlmon";
   clear_window black;
   draw_img pokemon_logo (280, 360) ();
+  draw_img start_screen (0, 0) ();
   Graphics.set_font
     "-misc-fixed-medium-r-normal--20-200-75-75-c-100-iso10646-1";
   set_color yellow;
-  Graphics.moveto 570 250;
-  Graphics.draw_string "CAMLMON VERSION";
-  Graphics.moveto 500 200;
+  Graphics.moveto 500 150;
   Graphics.draw_string "Press [ s ] key to continue... ";
   Graphics.moveto 650 20;
   Graphics.set_color Graphics.white;

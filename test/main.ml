@@ -48,17 +48,17 @@ let pp_bool bool = if bool = true then "true" else "false"
    functions. See the handout for an explanation. *)
 
 (* Dummy pokemon states for testing *)
-let cut = init_move "cut" 5 5
-let cut1 = init_move "cut" 4 5
-let soar = init_move "soar" 5 5
-let strength = init_move "strength" 0 5
-let swim = init_move "swim" 1 5
-let move_set_0 = [ cut; soar; strength; swim ]
-let move_set_1 = [ cut1; soar; strength; swim ]
-let ps_0 = init_p_state 12 move_set_0
-let ps_1 = init_p_state 12 move_set_1
-let ps_damaged_0 = init_p_state 10 move_set_0
-let ps_damaged_1 = init_p_state 10 move_set_1
+let cut = init_move cut
+let cut1 = init_move Pokemon.cut |> use_move
+let fly = init_move fly
+let strength = init_move Pokemon.strength
+let swim = init_move surf |> use_move |> use_move |> use_move
+let move_set_0 = [ cut; fly; strength; swim ]
+let move_set_1 = [ cut1; fly; strength; swim ]
+let ps_0 = init_p_state random_pokemon
+let ps_1 = init_p_state random_pokemon
+let ps_damaged_0 = set_hp ps_0 8
+let ps_damaged_1 = set_hp ps_1 8
 
 let ps_valid_move_test (name : string) state move expected_output : test
     =
@@ -66,7 +66,7 @@ let ps_valid_move_test (name : string) state move expected_output : test
   assert_equal expected_output (valid_move state move) ~printer:pp_bool
 
 let ps_move_test (name : string) state move expected_output : test =
-  name >:: fun _ -> assert_equal expected_output (use_move state move)
+  name >:: fun _ -> assert_equal expected_output (use_moves state move)
 
 let ps_damaged_test (name : string) state damage expected_output : test
     =
@@ -75,12 +75,12 @@ let ps_damaged_test (name : string) state damage expected_output : test
 let p_state_tests =
   [
     ps_valid_move_test "valid move on test state (cut) " ps_0 "cut" true;
-    ps_valid_move_test "valid move on test state (soar) " ps_0 "soar"
-      true;
+    ps_valid_move_test "valid move on test state (thunder) " ps_0
+      "thunder" true;
     ps_valid_move_test "valid move on test state (shove) " ps_0 "shove"
       false;
-    ps_valid_move_test "valid move on test state (strength) " ps_0
-      "strength" false;
+    ps_valid_move_test "valid move on test state (shove) " ps_0 "shove"
+      false;
     ps_move_test "Using cut once" ps_0 "cut" ps_1;
     ps_damaged_test "Pokemon received 2 dmg (ps0) : " ps_0 2
       ps_damaged_0;

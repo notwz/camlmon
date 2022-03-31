@@ -4,8 +4,8 @@ type p_type =
   | Normal
   | Fire
   | Water
-  | Grass
   | Electric
+  | Grass
   | Ice
   | Fighting
   | Poison
@@ -26,9 +26,9 @@ val cut : p_move
 val strength : p_move
 val flamethrower : p_move
 val surf : p_move
-val leaf_blade : p_move
 val thunderbolt : p_move
 val thunder : p_move
+val leaf_blade : p_move
 val ice_beam : p_move
 val blizzard : p_move
 val close_combat : p_move
@@ -58,6 +58,15 @@ val get_move_set : t -> p_move list
 
 val get_move_name : p_move -> string
 (** [get_move_name m] returns the name of move [m]. *)
+
+val get_move_type : p_move -> p_type
+(** [get_move_type m] returns the type of move [m]. *)
+
+val get_move_dmg : p_move -> int
+(** [get_move_dmg m] returns the damage of move [m]. *)
+
+val get_move_acc : p_move -> int
+(** [get_move_acc m] returns the accuracy of move [m]. *)
 
 val get_max_pp : p_move -> int
 (** [get_max_pp m] returns the maximum amount of power points of move

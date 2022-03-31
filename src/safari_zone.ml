@@ -7,6 +7,7 @@ open Printf
 open Explore
 open Lib
 open Trainer
+open Encounter
 
 let game_x = 340
 let game_y = 0
@@ -158,6 +159,16 @@ let tile_info coord map () =
     draw_string ("Current tile is " ^ tile_type)
   with Not_found -> ()
 
+let get_tile_type coord map =
+  let b = List.assoc coord map in
+  let tile_type =
+    match b with
+    | Bush -> "Bush"
+    | Path -> "Path"
+    | Water -> "Water"
+  in
+  tile_type
+
 let trainer_info (state : Trainer.t) () =
   let name = get_trainer_name state in
   set_color cyan;
@@ -215,6 +226,7 @@ let rec safari state x y () =
     draw_trainer trainer_still (x, y) ();
     tile_info (x, y) new_map ();
     trainer_info state ();
+    if get_tile_type (x, y) new_map = "Bush" then encounter_gui ();
     let e = wait_next_event [ Key_pressed ] in
     let user_command =
       match e.key with

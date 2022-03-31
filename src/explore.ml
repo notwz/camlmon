@@ -1,4 +1,4 @@
-open Lib
+(* open Lib
 open Map
 open T_state
 open Trainer
@@ -99,4 +99,4 @@ let explore_main trainer =
     " \n\
     \ Type 'up', 'down', 'left', 'right' to move around in the map. \
      ('q' to quit.) \n";
-  take_turn map true
+  take_turn map true *)

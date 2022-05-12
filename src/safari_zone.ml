@@ -36,8 +36,6 @@ type tile_info = {
   tile : tile_type;
 }
 
-let key_map = [ ((340, 0), Path) ]
-
 let append l1 l2 =
   let rec loop acc l1 l2 =
     match (l1, l2) with
@@ -52,7 +50,6 @@ let append l1 l2 =
 let rec make_map tile_size x y tile_count (tile_type : tile_type) =
   let new_count = tile_count - 1 in
   let new_x = x + tile_size in
-  let new_y = y + tile_size in
   let new_tile = ((new_x, y), tile_type) in
   match tile_count with
   | 0 -> []
@@ -74,7 +71,7 @@ let rec smart_make_map lst y =
   match y with
   | 720 -> final_map
   | _ ->
-      let new_row = make_row 45 295 y 13 tile_type in
+      let new_row = make_row 45 295 y 14 tile_type in
       let new_y = y + 45 in
       let final_map = append final_map new_row in
       smart_make_map final_map new_y
@@ -169,6 +166,12 @@ let get_tile_type coord map =
   in
   tile_type
 
+
+let paint_black x y () = 
+  moveto 0 0; 
+  set_color black; 
+  fill_rect 0 0 340 400
+
 let trainer_info (state : Trainer.t) () =
   let name = get_trainer_name state in
   set_color cyan;
@@ -183,42 +186,14 @@ let parse_command key x y =
   | Left -> if x = 340 then Invalid else Valid
   | Down -> if y = 0 || y < 15 then Invalid else Valid
 
+
+
 let rec safari state x y () =
   try
-    clear_graph ();
-    clear_window black;
+    
+    clear_graph ();  
+    clear_window black;    
     moveto 500 500;
-    let row1 = make_map 45 295 0 14 Path in
-    let row2 = make_map 45 295 45 14 Bush in
-    let row3 = make_map 45 295 90 14 Bush in
-    let row4 = make_map 45 295 135 14 Bush in
-    let row5 = make_map 45 295 180 14 Bush in
-    let row6 = make_map 45 295 225 14 Bush in
-    let row7 = make_map 45 295 270 14 Path in
-    let row8 = make_map 45 295 315 14 Water in
-    let row9 = make_map 45 295 360 14 Water in
-    let row10 = make_map 45 295 405 14 Path in
-    let row12 = make_map 45 295 450 14 Bush in
-    let row13 = make_map 45 295 495 14 Bush in
-    let row14 = make_map 45 295 540 14 Bush in
-    let row15 = make_map 45 295 585 14 Bush in
-    let row16 = make_map 45 295 630 14 Bush in
-    let row17 = make_map 45 295 675 14 Path in
-    let new_map = append row1 row2 in
-    let new_map = append new_map row3 in
-    let new_map = append new_map row4 in
-    let new_map = append new_map row5 in
-    let new_map = append new_map row6 in
-    let new_map = append new_map row7 in
-    let new_map = append new_map row8 in
-    let new_map = append new_map row9 in
-    let new_map = append new_map row10 in
-    let new_map = append new_map row12 in
-    let new_map = append new_map row13 in
-    let new_map = append new_map row14 in
-    let new_map = append new_map row15 in
-    let new_map = append new_map row16 in
-    let new_map = append new_map row17 in
     let new_map = smart_make_map [] 0 in
     paint_map new_map ();
     moveto 420 420;
@@ -226,7 +201,8 @@ let rec safari state x y () =
     draw_trainer trainer_still (x, y) ();
     tile_info (x, y) new_map ();
     trainer_info state ();
-    if get_tile_type (x, y) new_map = "Bush" then encounter_gui ();
+    synchronize ();
+
     let e = wait_next_event [ Key_pressed ] in
     let user_command =
       match e.key with

@@ -176,6 +176,7 @@ let rec paint_name state () =
     draw_string "Press [ , ] to backspace";
     moveto (main_x + 50) (main_y + 50);
     draw_string "Press [ ; ] to confirm";
+    synchronize ();
     let e = wait_next_event [ Key_pressed ] in
     if e.key = ';' then (
       Graphics.moveto 360 100;
@@ -224,6 +225,7 @@ let rec paint_dialogue text state d_type () =
   if text = "All right. What's your name?" then paint_name state ();
   Graphics.moveto 360 50;
   Graphics.draw_string "[ Press ; key to continue ... ]";
+  synchronize ();
   let e = wait_next_event [ Key_pressed ] in
   if e.key = ';' then ()
   else if e.key = 'q' then Stdlib.exit 0
@@ -282,6 +284,7 @@ let rec select_buttons state (select_y : int) () =
   Graphics.draw_string directions;
   moveto 400 select_y;
   draw_string " > ";
+  synchronize ();
   let e = wait_next_event [ Key_pressed ] in
   match e.key with
   | 'w' ->
@@ -307,6 +310,7 @@ let rec display_new_game_dialogue dialogues state =
   for i = 0 to len - 1 do
     let text = List.nth dialogues i in
     paint_dialogue text state Prof ()
+    
   done;
   select_buttons state 350 ()
 
@@ -349,11 +353,22 @@ let rec loading_menu () =
   Graphics.set_color Graphics.white;
   Graphics.draw_string
     "Developed by [Maxwell Pang, Sunci Sun, and Will Zhang] inc.";
+  synchronize ();
+      
+
   let e = wait_next_event [ Key_pressed ] in
-  if e.key = 's' then display_new_game_dialogue new_game_dialogue state
-  else loading_menu ()
+  if e.key = 's' then  display_new_game_dialogue new_game_dialogue state 
+  else if e.key = 'p' then (
+    safari state 340 0  ();
+    
+        )
+  else loading_menu ();
+  synchronize ()
 
 let main_menu () =
   Graphics.open_graph " 1280x720";
+  auto_synchronize false;
   loading_menu ();
+  synchronize ();
   close_graph ()
+  

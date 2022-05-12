@@ -1,6 +1,19 @@
 open Lib
 open Trainer
 open Catch_state
+open Graphics
+open Gui_library
+
+let paint_battle () =
+  let title = "Main Menu" in
+  let title_x = item_x_d (fst (text_size title)) in
+  clear_graph ();
+  clear_window black;
+  Graphics.moveto title_x 400;
+  set_color black;
+  fill_rect dialogue_x dialogue_y dialogue_width y_res;
+  set_color bg_1;
+  draw_img charmander (340, (y_res / 2) - 150) ()
 
 let print_endline str =
   ANSITerminal.print_string [ ANSITerminal.cyan ] (str ^ "\n")
@@ -38,3 +51,12 @@ let encounter_main trainer terrain =
       ^ " has entered an encounter with magikarp!")
   in
   take_turn Catch_state.init_state
+
+let encounter_gui () =
+  paint_battle ();
+  let e = wait_next_event [ Key_pressed ] in
+  moveto 350 30;
+  let pp = String.make 1 e.key in
+  draw_string ("You pressed button" ^ pp);
+  Unix.sleep 2;
+  ()

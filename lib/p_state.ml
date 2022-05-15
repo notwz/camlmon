@@ -21,6 +21,8 @@ let init_move (m : Pokemon.p_move) : move =
     max_count = get_max_pp m;
   }
 
+let move_name m = m.move_name
+
 let init_move_set (pokemon : Pokemon.t) : move list =
   List.map (fun x -> init_move x) (get_move_set pokemon)
 
@@ -55,6 +57,9 @@ let rec update_moves_list (m_list : move list) (name : string) :
 let use_moves (state : t) (name : string) : t =
   let new_moves_set = update_moves_list state.move_set name in
   { state with move_set = new_moves_set }
+
+let calculate_damage (state : t) (move : move) =
+  calculate_damage state.pokemon move.move_data
 
 let damaged (state : t) (damage : int) : t =
   { state with hp = state.hp - damage }

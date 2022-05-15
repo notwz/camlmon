@@ -22,6 +22,7 @@ type p_type =
 
 type p_move
 
+val tackle : p_move
 val cut : p_move
 val strength : p_move
 val flamethrower : p_move
@@ -44,6 +45,25 @@ val crunch : p_move
 val dragon_claw : p_move
 val flash_cannon : p_move
 val moonblast : p_move
+val normal_test : t
+val fire_test : t
+val water_test : t
+val electric_test : t
+val grass_test : t
+val ice_test : t
+val fighting_test : t
+val poison_test : t
+val flying_test : t
+val ground_test : t
+val psychic_test : t
+val bug_test : t
+val rock_test : t
+val ghost_test : t
+val dragon_test : t
+val dark_test : t
+val steel_test : t
+val fairy_test : t
+val pikachu : t
 
 val random_pokemon : t
 (** [random_pokemon] returns one of the random pokemon stored in our
@@ -71,3 +91,7 @@ val get_move_acc : p_move -> int
 val get_max_pp : p_move -> int
 (** [get_max_pp m] returns the maximum amount of power points of move
     [m]. *)
+
+val calculate_damage : t -> p_move -> int
+(** [calculate_damage p m] returns the damage that move m does to
+    pokemon p including both accuracy and how effective the move is. *)

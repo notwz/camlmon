@@ -72,20 +72,43 @@ let ps_damaged_test (name : string) state damage expected_output : test
     =
   name >:: fun _ -> assert_equal expected_output (damaged state damage)
 
+let ps_damage_test
+    (name : string)
+    (pokemon : Pokemon.t)
+    (move : Pokemon.p_move)
+    (expected_output : int) : test =
+  name >:: fun _ ->
+  assert_equal expected_output (calculate_damage pokemon move)
+    ~printer:(fun x -> string_of_int x)
+
 let p_state_tests =
   [
-    ps_valid_move_test "valid move on test state (cut) " ps_0 "cut" true;
-    ps_valid_move_test "valid move on test state (thunder) " ps_0
-      "thunder" true;
-    ps_valid_move_test "valid move on test state (shove) " ps_0 "shove"
-      false;
-    ps_valid_move_test "valid move on test state (shove) " ps_0 "shove"
-      false;
-    ps_move_test "Using cut once" ps_0 "cut" ps_1;
-    ps_damaged_test "Pokemon received 2 dmg (ps0) : " ps_0 2
-      ps_damaged_0;
-    ps_damaged_test "Pokemon received 2 dmg (ps1) : " ps_1 2
-      ps_damaged_1;
+    ps_damage_test "Normal received 90 dmg from ice beam" normal_test
+      ice_beam 90;
+    ps_damage_test "Normal received 0 dmg from shadow ball" normal_test
+      shadow_ball 0;
+    ps_damage_test "Normal received 200 dmg from close combat"
+      normal_test close_combat 200;
+    ps_damage_test "Electric received 200 dmg from earthquake"
+      electric_test earthquake 200;
+    ps_damage_test "Electric received 90 damage from flamethrower"
+      electric_test flamethrower 90;
+    ps_damage_test "Flying received 180 dmg from ice beam" flying_test
+      ice_beam 180;
+    ps_damage_test "Flying received 0 dmg from earthquake" flying_test
+      earthquake 0;
+    ps_damage_test "Ghost received 0 dmg from tackle" ghost_test tackle
+      0;
+    ps_damage_test "Ghost received 180 dmg from shadow ball" ghost_test
+      shadow_ball 180;
+    ps_damage_test "Ground received 180 dmg from surf" ground_test surf
+      180;
+    ps_damage_test "Ground received 0 dmg from thunderbolt" ground_test
+      thunderbolt 0;
+    ps_damage_test "Dark received 180 dmg from moonblast" dark_test
+      moonblast 180;
+    ps_damage_test "Dark received 0 dmg from psychic" dark_test psychic
+      0;
   ]
 
 let map_pp_test

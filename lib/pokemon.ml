@@ -49,8 +49,8 @@ let type_to_id = function
   | Bug -> 11
   | Rock -> 12
   | Ghost -> 13
-  | Dark -> 14
-  | Dragon -> 15
+  | Dragon -> 14
+  | Dark -> 15
   | Steel -> 16
   | Fairy -> 17
 
@@ -70,6 +70,7 @@ let type_efficacy =
       1.;
       1.;
       0.5;
+      0.;
       1.;
       1.;
       0.5;
@@ -424,12 +425,20 @@ let get_move_type p_move = p_move.move_type
 let get_move_dmg p_move = p_move.damage
 let get_move_acc p_move = p_move.accuracy
 let get_max_pp p_move = p_move.max_pp
-let calculate_damage p p_move = ()
+
+let calculate_damage p p_move =
+  let () = Random.self_init () in
+  if Random.int 100 < get_move_acc p_move then
+    let move_index = p_move |> get_move_type |> type_to_id in
+    let p_index = type_to_id p.p_type in
+    let scale = List.nth (List.nth type_efficacy move_index) p_index in
+    int_of_float ((p_move |> get_move_dmg |> float_of_int) *. scale)
+  else 0
 
 let cut =
   {
     move_name = "cut";
-    damage = 5;
+    damage = 50;
     move_type = Normal;
     accuracy = 100;
     max_pp = 20;
@@ -438,7 +447,7 @@ let cut =
 let strength =
   {
     move_name = "strength";
-    damage = 7;
+    damage = 70;
     move_type = Normal;
     accuracy = 100;
     max_pp = 10;
@@ -447,7 +456,7 @@ let strength =
 let tackle =
   {
     move_name = "tackle";
-    damage = 3;
+    damage = 30;
     move_type = Normal;
     accuracy = 100;
     max_pp = 40;
@@ -456,7 +465,7 @@ let tackle =
 let flamethrower =
   {
     move_name = "flamethrower";
-    damage = 9;
+    damage = 90;
     move_type = Fire;
     accuracy = 100;
     max_pp = 15;
@@ -465,7 +474,7 @@ let flamethrower =
 let surf =
   {
     move_name = "surf";
-    damage = 9;
+    damage = 90;
     move_type = Water;
     accuracy = 100;
     max_pp = 15;
@@ -474,7 +483,7 @@ let surf =
 let thunderbolt =
   {
     move_name = "thunderbolt";
-    damage = 9;
+    damage = 90;
     move_type = Electric;
     accuracy = 100;
     max_pp = 15;
@@ -483,7 +492,7 @@ let thunderbolt =
 let thunder =
   {
     move_name = "thunder";
-    damage = 11;
+    damage = 110;
     move_type = Electric;
     accuracy = 70;
     max_pp = 5;
@@ -492,7 +501,7 @@ let thunder =
 let leaf_blade =
   {
     move_name = "leaf blade";
-    damage = 9;
+    damage = 90;
     move_type = Grass;
     accuracy = 100;
     max_pp = 15;
@@ -501,7 +510,7 @@ let leaf_blade =
 let ice_beam =
   {
     move_name = "ice beam";
-    damage = 9;
+    damage = 90;
     move_type = Ice;
     accuracy = 100;
     max_pp = 15;
@@ -510,7 +519,7 @@ let ice_beam =
 let blizzard =
   {
     move_name = "blizzard";
-    damage = 11;
+    damage = 110;
     move_type = Ice;
     accuracy = 70;
     max_pp = 5;
@@ -519,16 +528,16 @@ let blizzard =
 let close_combat =
   {
     move_name = "close combat";
-    damage = 10;
+    damage = 100;
     move_type = Fighting;
-    accuracy = 90;
+    accuracy = 100;
     max_pp = 10;
   }
 
 let sludge_bomb =
   {
     move_name = "sludge bomb";
-    damage = 9;
+    damage = 90;
     move_type = Poison;
     accuracy = 90;
     max_pp = 15;
@@ -537,7 +546,7 @@ let sludge_bomb =
 let earthquake =
   {
     move_name = "earthquake";
-    damage = 10;
+    damage = 100;
     move_type = Ground;
     accuracy = 100;
     max_pp = 15;
@@ -546,7 +555,7 @@ let earthquake =
 let fly =
   {
     move_name = "fly";
-    damage = 7;
+    damage = 70;
     move_type = Flying;
     accuracy = 90;
     max_pp = 15;
@@ -555,7 +564,7 @@ let fly =
 let brave_bird =
   {
     move_name = "brave bird";
-    damage = 10;
+    damage = 100;
     move_type = Flying;
     accuracy = 90;
     max_pp = 10;
@@ -564,7 +573,7 @@ let brave_bird =
 let psychic =
   {
     move_name = "psychic";
-    damage = 9;
+    damage = 90;
     move_type = Psychic;
     accuracy = 100;
     max_pp = 20;
@@ -573,7 +582,7 @@ let psychic =
 let bug_buzz =
   {
     move_name = "bug buzz";
-    damage = 9;
+    damage = 90;
     move_type = Bug;
     accuracy = 100;
     max_pp = 15;
@@ -582,7 +591,7 @@ let bug_buzz =
 let stone_edge =
   {
     move_name = "stone edge";
-    damage = 10;
+    damage = 100;
     move_type = Rock;
     accuracy = 90;
     max_pp = 10;
@@ -591,7 +600,7 @@ let stone_edge =
 let shadow_ball =
   {
     move_name = "shadow ball";
-    damage = 9;
+    damage = 90;
     move_type = Ghost;
     accuracy = 100;
     max_pp = 15;
@@ -600,7 +609,7 @@ let shadow_ball =
 let crunch =
   {
     move_name = "crunch";
-    damage = 9;
+    damage = 90;
     move_type = Dark;
     accuracy = 100;
     max_pp = 15;
@@ -609,7 +618,7 @@ let crunch =
 let dragon_claw =
   {
     move_name = "dragon claw";
-    damage = 9;
+    damage = 90;
     move_type = Dragon;
     accuracy = 100;
     max_pp = 15;
@@ -618,7 +627,7 @@ let dragon_claw =
 let flash_cannon =
   {
     move_name = "flash cannon";
-    damage = 9;
+    damage = 90;
     move_type = Steel;
     accuracy = 100;
     max_pp = 15;
@@ -627,10 +636,172 @@ let flash_cannon =
 let moonblast =
   {
     move_name = "moonblast";
-    damage = 9;
+    damage = 90;
     move_type = Fairy;
     accuracy = 100;
     max_pp = 15;
+  }
+
+let normal_test =
+  {
+    id = 0;
+    name = "normal";
+    p_type = Normal;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let fire_test =
+  {
+    id = 0;
+    name = "fire";
+    p_type = Fire;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let water_test =
+  {
+    id = 0;
+    name = "water";
+    p_type = Water;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let electric_test =
+  {
+    id = 0;
+    name = "electric";
+    p_type = Electric;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let grass_test =
+  {
+    id = 0;
+    name = "grass";
+    p_type = Grass;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let ice_test =
+  {
+    id = 0;
+    name = "ice";
+    p_type = Ice;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let fighting_test =
+  {
+    id = 0;
+    name = "fighting";
+    p_type = Fighting;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let poison_test =
+  {
+    id = 0;
+    name = "poison";
+    p_type = Poison;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let flying_test =
+  {
+    id = 0;
+    name = "flying";
+    p_type = Flying;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let ground_test =
+  {
+    id = 0;
+    name = "ground";
+    p_type = Ground;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let psychic_test =
+  {
+    id = 0;
+    name = "psychic";
+    p_type = Psychic;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let bug_test =
+  {
+    id = 0;
+    name = "bug";
+    p_type = Bug;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let rock_test =
+  {
+    id = 0;
+    name = "rock";
+    p_type = Rock;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let ghost_test =
+  {
+    id = 0;
+    name = "ghost";
+    p_type = Ghost;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let dragon_test =
+  {
+    id = 0;
+    name = "dragon";
+    p_type = Dragon;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let dark_test =
+  {
+    id = 0;
+    name = "dark";
+    p_type = Dark;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let steel_test =
+  {
+    id = 0;
+    name = "steel";
+    p_type = Steel;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
+  }
+
+let fairy_test =
+  {
+    id = 0;
+    name = "fairy";
+    p_type = Fairy;
+    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
+    max_hp = 200;
   }
 
 let pikachu =
@@ -639,7 +810,7 @@ let pikachu =
     name = "pikachu";
     p_type = Electric;
     p_moves = [ tackle; thunderbolt; thunder ];
-    max_hp = 10;
+    max_hp = 100;
   }
 
 let random_pokemon = pikachu

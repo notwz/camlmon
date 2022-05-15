@@ -10,6 +10,9 @@ exception InvalidMove
 val init_move : Pokemon.p_move -> move
 (** [init_move m] initializes a pokemon's move with the data from [m]. *)
 
+val move_name : move -> string
+(** [move_name m] returns the name of move [m]. *)
+
 val init_move_set : Pokemon.t -> move list
 (** [init_move_set] initializes a pokemon's move set with the given move
     sets. *)
@@ -29,6 +32,10 @@ val use_moves : t -> string -> t
 (** [use_move st n] returns the state [st] after it uses a move with
     name [n]. It should decrement the current count of moves left for
     the move it just used. *)
+
+val calculate_damage : t -> move -> int
+(** [calculate_damage p m] returns the damage that move m does to
+    pokemon p including both accuracy and how effective the move is. *)
 
 val damaged : t -> int -> t
 (** [damaged] returns a new pokemon state after it has been targeted by

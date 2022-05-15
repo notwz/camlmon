@@ -8,6 +8,7 @@ open Explore
 open Lib
 open Trainer
 open Safari_zone
+open Battle
 
 let printDes (des : string) =
   ANSITerminal.print_string [ ANSITerminal.cyan ] (" Des " ^ des ^ "!")
@@ -164,9 +165,21 @@ let paint_battle () =
   set_color bg_1;
   draw_img charmander (340, (y_res / 2) - 150) ()
 
-let rec paint_name state () =
+
+let state_ref = ref (init_trainer "" 0)
+
+
+(** 
+    ==============================
+
+    Paint Name 
+    
+    appears in intro dialouge and mutates the name field in the trainer state 
+    
+    ==============================*)
+let rec paint_name (state:Trainer.t ref) () =
   try
-    let name = Trainer.get_trainer_name state in
+    let name = Trainer.get_trainer_name !state in
     set_color white;
     fill_rect main_x main_y main_width main_height;
     moveto (main_x + 50) (main_y + 100);
@@ -183,20 +196,24 @@ let rec paint_name state () =
       set_color black;
       Graphics.draw_string ("Ah, " ^ name ^ " has a nice ring to it.");
       Unix.sleep 1;
-      ())
+      state_ref := (set_trainer_name name !state_ref))
     else if e.key = ',' then
+      begin
       let len = String.length name in
       let backspaced_name = String.sub name 0 (len - 1) in
-      let new_state = Trainer.set_trainer_name backspaced_name state in
-      paint_name new_state ()
+      let new_state = ref (Trainer.set_trainer_name backspaced_name !state) in
+      paint_name new_state ();
+      end
     else
+      begin
       let new_char = String.make 1 e.key in
       let new_name = name ^ new_char in
-      let new_state = Trainer.set_trainer_name new_name state in
-      paint_name new_state ()
+      let new_state = ref (Trainer.set_trainer_name new_name !state) in
+      paint_name new_state ();
+      end
   with Invalid_argument _ -> paint_name state ()
 
-let rec paint_dialogue text state d_type () =
+let rec paint_dialogue text (state: Trainer.t ref) d_type () =
   clear_graph ();
   clear_window grey;
   let paint_main =
@@ -231,7 +248,7 @@ let rec paint_dialogue text state d_type () =
   else if e.key = 'q' then Stdlib.exit 0
   else paint_dialogue text state d_type ()
 
-let rec display_catch_dialogue dialogues state =
+let rec display_catch_dialogue dialogues (state: Trainer.t ref) =
   let len = List.length dialogues in
   for i = 0 to len - 1 do
     let text = List.nth dialogues i in
@@ -245,7 +262,7 @@ let rec display_arena_dialogue dialogues state =
     let text = List.nth dialogues i in
     paint_dialogue text state Arena ()
   done;
-  ()
+  battle_main 0 0 ()
 
 let rec display_battle_dialogue dialogues state =
   let len = List.length dialogues in
@@ -253,9 +270,17 @@ let rec display_battle_dialogue dialogues state =
     let text = List.nth dialogues i in
     paint_dialogue text state Battle ()
   done;
-  ()
+  battle_main 0 0 ()
 
-let rec select_buttons state (select_y : int) () =
+(** 
+    ==============================
+
+    Select Buttons 
+
+    appear after intro dialogue 
+    
+    ==============================*)
+let rec select_buttons (state: Trainer.t ref) (select_y : int) () =
   let title = "Main Menu" in
   let title_x = item_x_d (fst (text_size title)) in
   let catch = "[ 1 ] Catch Pokemon" in
@@ -268,7 +293,7 @@ let rec select_buttons state (select_y : int) () =
     " Change options with [w] and [s]. Press [;] to select."
   in
   let directions_x = item_x_d (fst (text_size directions)) in
-  let state = Trainer.init_trainer "" 0 in
+  let state = ref (Trainer.init_trainer "" 0) in
   clear_graph ();
   clear_window black;
   Graphics.moveto title_x 400;
@@ -305,41 +330,16 @@ let rec select_buttons state (select_y : int) () =
       if e.key <> 'q' then select_buttons state select_y ()
       else Stdlib.exit 0
 
-let rec display_new_game_dialogue dialogues state =
+let rec display_new_game_dialogue dialogues (state : Trainer.t ref) =
   let len = List.length dialogues in
   for i = 0 to len - 1 do
     let text = List.nth dialogues i in
     paint_dialogue text state Prof ()
-    
   done;
   select_buttons state 350 ()
 
-(* let rec select_menu () = let title = "Main Menu" in let title_x =
-   item_x_d (fst (text_size title)) in let catch = "[ 1 ] Catch Pokemon"
-   in let catch_x = item_x_d (fst (text_size catch)) in let battle = "[
-   2 ] Battle Pokemon" in let battle_x = item_x_d (fst (text_size
-   battle)) in let duel = "[ 3 ] Battle Trainers" in let duel_x =
-   item_x_d (fst (text_size duel)) in let directions = "Press [1] [2] or
-   [3] to choose option to play" in let directions_x = item_x_d (fst
-   (text_size directions)) in let state = Trainer.init_trainer "" 0 in
-   clear_graph (); clear_window black; Graphics.set_font
-   "-misc-fixed-medium-r-normal--18-120-100-100-c-90-iso10646-1";
-   Graphics.moveto title_x 400; Graphics.set_color white;
-   Graphics.draw_string title; Graphics.moveto catch_x 350;
-   Graphics.draw_string catch; Graphics.moveto battle_x 300;
-   Graphics.draw_string battle; Graphics.moveto duel_x 250;
-   Graphics.draw_string duel; Graphics.moveto directions_x 150;
-   Graphics.draw_string directions; let e = wait_next_event [
-   Key_pressed ] in let key_description = if e.keypressed then sprintf
-   "key %c was pressed" e.key else "No key pressed. " in set_color
-   white; moveto 0 0; draw_string key_description; match e.key with |
-   '1' -> display_dialogue new_game_dialogue state | '2' -> test () |
-   '3' -> display_dialogue dialogue state | 'd' -> display_dialogue
-   dialogue state | _ -> if e.key <> 'q' then select_menu () else
-   Stdlib.exit 0 *)
-
 let rec loading_menu () =
-  let state = Trainer.init_trainer "" 0 in
+  let state = state_ref in
   Graphics.set_window_title "Camlmon";
   clear_window black;
   draw_img pokemon_logo (280, 360) ();
@@ -354,14 +354,10 @@ let rec loading_menu () =
   Graphics.draw_string
     "Developed by [Maxwell Pang, Sunci Sun, and Will Zhang] inc.";
   synchronize ();
-      
-
   let e = wait_next_event [ Key_pressed ] in
   if e.key = 's' then  display_new_game_dialogue new_game_dialogue state 
-  else if e.key = 'p' then (
-    safari state 340 0  ();
-    
-        )
+  else if e.key = 'p' then safari state 340 0  ()
+  else if e.key = 'b' then battle_main 0 0 ()
   else loading_menu ();
   synchronize ()
 
@@ -371,4 +367,3 @@ let main_menu () =
   loading_menu ();
   synchronize ();
   close_graph ()
-  

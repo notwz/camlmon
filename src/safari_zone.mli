@@ -6,4 +6,4 @@ type command =
   | Right
   | Down
 
-val safari : Trainer.t -> int -> int -> unit -> unit
+val safari : Trainer.t ref -> int -> int -> unit -> unit

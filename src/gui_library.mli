@@ -25,3 +25,4 @@ val item_x_d : int -> int
 val item_y_d : int -> int
 val clear_window : color -> unit
 val draw_img : string -> int * int -> unit -> unit
+val draw_img_rgb : string -> int * int -> unit -> unit

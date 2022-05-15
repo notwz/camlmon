@@ -105,6 +105,7 @@ let grass_tile = "public/map_images/grass_tile.png"
 
 let water_tile = "public/map_images/water_tile.png"
 let path_tile = "public/map_images/path_tile.png"
+let pikachu = "public/menu_images/pikachu.png"
 
 let draw_img name (coor : int * int) () =
   let img = Png.load_as_rgb24 name [] in
@@ -184,6 +185,42 @@ let parse_command key x y =
   | Left -> if x = 340 then Invalid else Valid
   | Down -> if y = 0 || y < 15 then Invalid else Valid
 
+let draw_catching () =
+  set_color white;
+  fill_rect 500 200 308 400;
+  draw_img pikachu (600, 440) ();
+  moveto 500 370;
+  set_color blue;
+  draw_string "You have encountered a pokemon! ";
+  moveto 510 320;
+  draw_string "Will you throw a";
+  moveto 510 300;
+  draw_string "ball, bait, or a rock?";
+  set_color yellow;
+  fill_rect 540 260 60 25;
+  fill_rect 620 260 60 25;
+  fill_rect 700 260 60 25;
+  moveto 548 263;
+  set_color red;
+  draw_string "Ball";
+  moveto 628 263;
+  draw_string "Bait";
+  moveto 708 263;
+  draw_string "Rock"
+
+let active = ref false
+
+let encounter x y () =
+  let () = Random.self_init () in
+  let enc = Random.int 5 in
+  if enc = 0 then (
+    draw_catching ();
+    active := true)
+(* let ev = wait_next_event [ Key_pressed ] in match ev.key with | ';'
+   -> failwith "a" | _ -> ()) *)
+
+let trigger = ref false
+
 let rec safari state x y () =
   try
     clear_graph ();
@@ -196,28 +233,40 @@ let rec safari state x y () =
     draw_img trainer_still (x, y) ();
     tile_info (x, y) new_map ();
     trainer_info state ();
+    if !trigger = false then trigger := true else encounter x y ();
     synchronize ();
-
-    let e = wait_next_event [ Key_pressed ] in
-    let user_command =
-      match e.key with
-      | 'w' -> Up
-      | 'a' -> Left
-      | 'd' -> Right
-      | 's' -> Down
-      | 'q' -> Stdlib.exit 0
-      | _ -> raise NoMovement
-    in
-    let valid_move_check = parse_command user_command x y in
-    if valid_move_check = Valid then (
-      let new_render =
-        match user_command with
-        | Up -> safari state x (y + 45) ()
-        | Left -> safari state (x - 45) y ()
-        | Right -> safari state (x + 45) y ()
-        | Down -> safari state x (y - 45) ()
+    if !active = false then
+      let e = wait_next_event [ Key_pressed ] in
+      let user_command =
+        match e.key with
+        | 'w' -> Up
+        | 'a' -> Left
+        | 'd' -> Right
+        | 's' -> Down
+        | 'q' -> Stdlib.exit 0
+        | _ -> raise NoMovement
       in
-      new_render;
-      ())
-    else raise NoMovement
-  with NoMovement -> safari state x y ()
+      let valid_move_check = parse_command user_command x y in
+      if valid_move_check = Valid then (
+        let new_render =
+          match user_command with
+          | Up -> safari state x (y + 45) ()
+          | Left -> safari state (x - 45) y ()
+          | Right -> safari state (x + 45) y ()
+          | Down -> safari state x (y - 45) ()
+        in
+        new_render;
+        ())
+      else raise NoMovement
+    else
+      let continue = ref true in
+      while !continue do
+        let e = wait_next_event [ Key_pressed ] in
+        match e.key with
+        | ';' -> raise NoMovement
+        | _ -> ()
+      done
+  with NoMovement ->
+    trigger := false;
+    active := false;
+    safari state x y ()

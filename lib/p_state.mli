@@ -7,6 +7,8 @@ type t
 exception InvalidMove
 (** Raised when move is found in list *)
 
+val pokemon_name : t -> string
+
 val init_move : Pokemon.p_move -> move
 (** [init_move m] initializes a pokemon's move with the data from [m]. *)
 

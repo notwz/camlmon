@@ -34,6 +34,8 @@ type t = {
   max_hp : int;
 }
 
+let get_pokemon_name t = t.name 
+
 let type_to_id = function
   | Normal -> 0
   | Fire -> 1
@@ -498,6 +500,15 @@ let thunder =
     max_pp = 5;
   }
 
+let electroball = 
+  { 
+    move_name = "Electroball"; 
+    damage = 100; 
+    move_type = Electric; 
+    accuracy = 90; 
+    max_pp = 10; 
+  }
+
 let leaf_blade =
   {
     move_name = "leaf blade";
@@ -640,6 +651,14 @@ let moonblast =
     move_type = Fairy;
     accuracy = 100;
     max_pp = 15;
+  }
+
+let splash = 
+  { move_name = "splash"; 
+    damage=0; 
+    move_type=Normal; 
+    accuracy=100; 
+    max_pp=40; 
   }
 
 let normal_test =
@@ -807,10 +826,43 @@ let fairy_test =
 let pikachu =
   {
     id = 0;
-    name = "pikachu";
+    name = "Pikachu";
     p_type = Electric;
-    p_moves = [ tackle; thunderbolt; thunder ];
+    p_moves = [ tackle; thunderbolt; thunder; electroball ];
     max_hp = 100;
   }
 
-let random_pokemon = pikachu
+let charizard =
+  {
+    id = 0;
+    name = "Charizard";
+    p_type = Fire;
+    p_moves = [ strength; flamethrower; fly; earthquake ];
+    max_hp = 100;
+  }
+
+let weezing =
+  {
+    id = 0;
+    name = "Weezing";
+    p_type = Ghost;
+    p_moves = [ psychic; shadow_ball; crunch; moonblast ];
+    max_hp = 100;
+  }
+
+let magikarp = 
+  { id=0; 
+  name="magikarp"; 
+  p_type=Water; 
+  p_moves = [surf; splash; splash; splash]; 
+  max_hp = 200
+  }
+
+let pokemons = [|pikachu;charizard; weezing; magikarp|]
+let randomelement arr = 
+  Random.self_init ();
+  let n = Random.int (Array.length arr) in 
+  Array.get arr n 
+
+let random_pokemon = randomelement pokemons
+let random_pokemon_2 = randomelement pokemons

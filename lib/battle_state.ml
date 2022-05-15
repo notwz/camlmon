@@ -31,6 +31,6 @@ let move m t =
 let is_done t = P_state.get_hp t.p1 <= 0 || P_state.get_hp t.p2 <= 0
 
 let winner t =
-  if P_state.get_hp t.p1 <= 0 then t.p2
-  else if P_state.get_hp t.p2 <= 0 then t.p1
+  if P_state.get_hp t.p1 <= 0 then "e"
+  else if P_state.get_hp t.p2 <= 0 then "t"
   else raise NoWinnerFound

@@ -29,6 +29,7 @@ val flamethrower : p_move
 val surf : p_move
 val thunderbolt : p_move
 val thunder : p_move
+val electroball : p_move
 val leaf_blade : p_move
 val ice_beam : p_move
 val blizzard : p_move
@@ -68,6 +69,12 @@ val pikachu : t
 val random_pokemon : t
 (** [random_pokemon] returns one of the random pokemon stored in our
     data. *)
+val random_pokemon_2 : t
+(** [random_pokemon_2] returns one of the random pokemon stored in our
+    data. *)
+
+val get_pokemon_name : t -> string
+(** [get_pokemon_name] returns the name of the pokemon. *)
 
 val get_max_hp : t -> int
 (** [get_max_hp t] returns the max hp of pokemon [t]. *)

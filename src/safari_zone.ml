@@ -107,14 +107,13 @@ let water_tile = "public/map_images/water_tile.png"
 let path_tile = "public/map_images/path_tile.png"
 
 let draw_img name (coor : int * int) () =
-  let img = Png.load name [] in
-  let g = Graphic_image.of_image img in
-  Graphics.draw_image g (fst coor * 1) (snd coor * 1)
-
-let draw_trainer name (coor : int * int) () =
   let img = Png.load_as_rgb24 name [] in
   let g = Graphic_image.of_image img in
-  Graphics.draw_image g (fst coor * 1) (snd coor * 1)
+  Graphics.draw_image g (fst coor) (snd coor)
+
+(* let draw_trainer name (coor : int * int) () = let img =
+   Png.load_as_rgb24 name [] in let g = Graphic_image.of_image img in
+   Graphics.draw_image g (fst coor * 1) (snd coor * 1) *)
 
 let paint_row tile count x y () =
   for i = 0 to count do
@@ -146,13 +145,13 @@ let tile_info coord map () =
       | Water -> "Water"
     in
     set_color cyan;
-    moveto 100 360;
+    moveto 55 360;
     draw_string
       ("Current location is "
       ^ string_of_int (fst coord)
       ^ ", "
       ^ string_of_int (snd coord));
-    moveto 100 330;
+    moveto 55 330;
     draw_string ("Current tile is " ^ tile_type)
   with Not_found -> ()
 
@@ -166,39 +165,35 @@ let get_tile_type coord map =
   in
   tile_type
 
-
-let paint_black x y () = 
-  moveto 0 0; 
-  set_color black; 
+let paint_black x y () =
+  moveto 0 0;
+  set_color black;
   fill_rect 0 0 340 400
 
 let trainer_info (state : Trainer.t) () =
   let name = get_trainer_name state in
   set_color cyan;
-  moveto 100 420;
+  moveto 55 420;
   draw_string "Trainer Info: ";
-  moveto 100 390
+  moveto 55 390
 
 let parse_command key x y =
   match key with
-  | Up -> if y > 704 then Invalid else Valid
+  | Up -> if y > 674 then Invalid else Valid
   | Right -> if x > 920 then Invalid else Valid
   | Left -> if x = 340 then Invalid else Valid
   | Down -> if y = 0 || y < 15 then Invalid else Valid
 
-
-
 let rec safari state x y () =
   try
-    
-    clear_graph ();  
-    clear_window black;    
+    clear_graph ();
+    clear_window black;
     moveto 500 500;
     let new_map = smart_make_map [] 0 in
     paint_map new_map ();
     moveto 420 420;
     set_color black;
-    draw_trainer trainer_still (x, y) ();
+    draw_img trainer_still (x, y) ();
     tile_info (x, y) new_map ();
     trainer_info state ();
     synchronize ();

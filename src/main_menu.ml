@@ -23,33 +23,27 @@ type dialogue_type =
 
 let new_game_dialogue =
   [
-    "Hi! Sorry to keep you waiting!";
-    "Welcome to the world of POKeMON!";
-    "My name is FOSTER. ";
-    "But everyone call me the PROFOSTER.";
-    "This is what we call a 'POKeMON.' ";
-    "This world is widely inhabited by creatures known as POKeMON.";
-    "We humans live alongside POKeMON, at times as friendly playmates, \
-     and";
-    " at times as cooperative workmates.";
-    "And sometimes, we band together and battle others like us. ";
-    "But despite our closeness, we don't know everything about POKeMON.";
-    "In fact, there are many, many secrets surrounding POKeMON.";
-    "To unravel POKeMON mysteries, I've been undertaking research.";
-    "That's what I do. But, enough about me.";
-    "All right. What's your name?";
-    "All right are you ready?";
-    "Your very own adventure is about to unfold.";
-    "Take courage, and leap into the world of POKeMON where dreams, ";
-    "adventure, and friendships await!";
+    (* "Hi! Sorry to keep you waiting!"; "Welcome to the world of
+       POKeMON!"; "My name is FOSTER. "; "But everyone call me the
+       PROFOSTER."; "This is what we call a 'POKeMON.' "; "This world is
+       widely inhabited by creatures known as POKeMON."; "We humans live
+       alongside POKeMON, at times as friendly playmates, \ and"; " at
+       times as cooperative workmates."; "And sometimes, we band
+       together and battle others like us. "; "But despite our
+       closeness, we don't know everything about POKeMON."; "In fact,
+       there are many, many secrets surrounding POKeMON."; "To unravel
+       POKeMON mysteries, I've been undertaking research."; "That's what
+       I do. But, enough about me."; "All right. What's your name?";
+       "All right are you ready?"; "Your very own adventure is about to
+       unfold."; "Take courage, and leap into the world of POKeMON where
+       dreams, "; "adventure, and friendships await!"; *)
     "Well, I'll be expecting you later. Come see me in my POKeMON LAB.";
   ]
 
 let catch_dialogue =
   [
-    "Welcome to the safari zone! ";
-    "Here you have the ability to catch POKeMON.";
-    "Move around with the [w] [a] [s] [d] keys!";
+    (* "Welcome to the safari zone! "; "Here you have the ability to
+       catch POKeMON."; "Move around with the [w] [a] [s] [d] keys!"; *)
     "Try it out!";
   ]
 
@@ -352,7 +346,7 @@ let rec loading_menu () =
   Graphics.moveto 650 20;
   Graphics.set_color Graphics.white;
   Graphics.draw_string
-    "Developed by [Maxwell Pang, Sunci Sun, and Will Zhang] inc.";
+    "Developed by [Maxwell Pang, Yunci Sun, and Will Zhang] inc.";
   synchronize ();
   let e = wait_next_event [ Key_pressed ] in
   if e.key = 's' then  display_new_game_dialogue new_game_dialogue state 

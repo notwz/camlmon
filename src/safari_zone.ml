@@ -105,16 +105,16 @@ let grass_tile = "public/map_images/grass_tile.png"
 
 let water_tile = "public/map_images/water_tile.png"
 let path_tile = "public/map_images/path_tile.png"
+let pikachu = "public/menu_images/pikachu.png"
 
 let draw_img name (coor : int * int) () =
-  let img = Png.load name [] in
-  let g = Graphic_image.of_image img in
-  Graphics.draw_image g (fst coor * 1) (snd coor * 1)
-
-let draw_trainer name (coor : int * int) () =
   let img = Png.load_as_rgb24 name [] in
   let g = Graphic_image.of_image img in
-  Graphics.draw_image g (fst coor * 1) (snd coor * 1)
+  Graphics.draw_image g (fst coor) (snd coor)
+
+(* let draw_trainer name (coor : int * int) () = let img =
+   Png.load_as_rgb24 name [] in let g = Graphic_image.of_image img in
+   Graphics.draw_image g (fst coor * 1) (snd coor * 1) *)
 
 let paint_row tile count x y () =
   for i = 0 to count do
@@ -146,13 +146,13 @@ let tile_info coord map () =
       | Water -> "Water"
     in
     set_color cyan;
-    moveto 100 360;
+    moveto 55 360;
     draw_string
       ("Current location is "
       ^ string_of_int (fst coord)
       ^ ", "
       ^ string_of_int (snd coord));
-    moveto 100 330;
+    moveto 55 330;
     draw_string ("Current tile is " ^ tile_type)
   with Not_found -> ()
 
@@ -166,6 +166,7 @@ let get_tile_type coord map =
   in
   tile_type
 
+
 let paint_black x y () = 
   moveto 0 0; 
   set_color black; 
@@ -174,22 +175,73 @@ let paint_black x y () =
 let trainer_info (state : Trainer.t) () =
   let name = get_trainer_name state in
   set_color cyan;
-  moveto 100 420;
+  moveto 55 420;
   draw_string "Trainer Info: ";
-  moveto 100 390;
+  moveto 55 390;
   draw_string name
 
 let parse_command key x y =
   match key with
-  | Up -> if y > 704 then Invalid else Valid
+  | Up -> if y > 674 then Invalid else Valid
   | Right -> if x > 920 then Invalid else Valid
   | Left -> if x = 340 then Invalid else Valid
   | Down -> if y = 0 || y < 15 then Invalid else Valid
 
+let active = ref false
+(* let press_button () = let continue = ref true in let command = ref
+   "na" in while !continue do let ev = wait_next_event [ Button_down ]
+   in let catch cmd = moveto 520 250; match Encounter.take_turn_2
+   Catch_state.init_state with | true -> set_color green; draw_string
+   "You have caught the pokemon!" | false -> set_color red; draw_string
+   "The pokemon has ran away!" in if ev.mouse_x >= 540 && ev.mouse_x <=
+   600 && ev.mouse_y >= 290 && ev.mouse_y <= 315 then ( command :=
+   "ball"; continue := false) else if ev.mouse_x >= 620 && ev.mouse_x <=
+   680 && ev.mouse_y >= 209 && ev.mouse_y <= 315 then ( command :=
+   "bait"; let () = print_endline "11" in continue := false) else if
+   ev.mouse_x >= 700 && ev.mouse_x <= 760 && ev.mouse_y >= 290 &&
+   ev.mouse_y <= 315 then ( command := "rock"; continue := false); catch
+   !command done *)
 
+let draw_catching () =
+  set_color white;
+  fill_rect 500 200 308 400;
+  draw_img pikachu (600, 460) ();
+  moveto 500 400;
+  set_color blue;
+  draw_string "You have encountered a pokemon! ";
+  moveto 510 350;
+  draw_string "Will you throw a";
+  moveto 510 330;
+  draw_string "ball, bait, or a rock?";
+  set_color yellow;
+  fill_rect 540 290 60 25;
+  fill_rect 620 290 60 25;
+  fill_rect 700 290 60 25;
+  moveto 548 293;
+  set_color red;
+  draw_string "Ball";
+  moveto 628 293;
+  draw_string "Bait";
+  moveto 708 293;
+  draw_string "Rock";
+  moveto 548 203;
+  set_color black;
+  draw_string "press ';' to return to map after catching";
+  synchronize ();
+  Encounter.take_turn_2 Catch_state.init_state ()
+
+let encounter x y () =
+  let () = Random.self_init () in
+  let enc = Random.int 4 in
+  if enc = 0 then (
+    active := true;
+    draw_catching ())
+
+let trigger = ref false
 
 let rec safari (state: Trainer.t ref) x y () =
   try
+
     clear_graph ();  
     clear_window black;    
     moveto 500 500;
@@ -197,30 +249,43 @@ let rec safari (state: Trainer.t ref) x y () =
     paint_map new_map ();
     moveto 420 420;
     set_color black;
-    draw_trainer trainer_still (x, y) ();
+    draw_img trainer_still (x, y) ();
     tile_info (x, y) new_map ();
-    trainer_info !state ();
+    trainer_info state ();
+    if !trigger = false then trigger := true else encounter x y ();
     synchronize ();
-    let e = wait_next_event [ Key_pressed ] in
-    let user_command =
-      match e.key with
-      | 'w' -> Up
-      | 'a' -> Left
-      | 'd' -> Right
-      | 's' -> Down
-      | 'q' -> Stdlib.exit 0
-      | _ -> raise NoMovement
-    in
-    let valid_move_check = parse_command user_command x y in
-    if valid_move_check = Valid then (
-      let new_render =
-        match user_command with
-        | Up -> safari state x (y + 45) ()
-        | Left -> safari state (x - 45) y ()
-        | Right -> safari state (x + 45) y ()
-        | Down -> safari state x (y - 45) ()
+    if !active = false then
+      let e = wait_next_event [ Key_pressed ] in
+      let user_command =
+        match e.key with
+        | 'w' -> Up
+        | 'a' -> Left
+        | 'd' -> Right
+        | 's' -> Down
+        | 'q' -> Stdlib.exit 0
+        | _ -> raise NoMovement
       in
-      new_render;
-      ())
-    else raise NoMovement
-  with NoMovement -> safari state x y ()
+      let valid_move_check = parse_command user_command x y in
+      if valid_move_check = Valid then (
+        let new_render =
+          match user_command with
+          | Up -> safari state x (y + 45) ()
+          | Left -> safari state (x - 45) y ()
+          | Right -> safari state (x + 45) y ()
+          | Down -> safari state x (y - 45) ()
+        in
+        new_render;
+        ())
+      else raise NoMovement
+    else
+      let continue = ref true in
+      while !continue do
+        let e = wait_next_event [ Key_pressed ] in
+        match e.key with
+        | ';' -> raise NoMovement
+        | _ -> ()
+      done
+  with NoMovement ->
+    trigger := false;
+    active := false;
+    safari state x y ()

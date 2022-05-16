@@ -9,6 +9,8 @@ open Lib
 open Trainer
 open Safari_zone
 open Battle
+open Battle_encounter
+open Pokemon 
 
 let printDes (des : string) =
   ANSITerminal.print_string [ ANSITerminal.cyan ] (" Des " ^ des ^ "!")
@@ -354,10 +356,12 @@ let rec loading_menu () =
   Graphics.draw_string
     "Developed by [Maxwell Pang, Sunci Sun, and Will Zhang] inc.";
   synchronize ();
+  let pokemon = random_pokemon in 
   let e = wait_next_event [ Key_pressed ] in
   if e.key = 's' then  display_new_game_dialogue new_game_dialogue state 
   else if e.key = 'p' then safari state 340 0  ()
   else if e.key = 'b' then battle_main 0 0 ()
+  else if e.key = 'c' then battle_encounter_main pokemon 0 0 ()
   else loading_menu ();
   synchronize ()
 

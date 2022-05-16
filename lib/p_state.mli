@@ -8,6 +8,7 @@ exception InvalidMove
 (** Raised when move is found in list *)
 
 val pokemon_name : t -> string
+val move_pp : move -> int * int
 
 val init_move : Pokemon.p_move -> move
 (** [init_move m] initializes a pokemon's move with the data from [m]. *)
@@ -30,7 +31,12 @@ val valid_move : t -> string -> bool
 val use_move : move -> move
 (** [use_move m] returns the move [m] after it was used once. *)
 
-val use_moves : t -> string -> t
+val use_moves : t -> move -> t
+(** [use_move st n] returns the state [st] after it uses a move with
+    name [n]. It should decrement the current count of moves left for
+    the move it just used. *)
+
+val use_moves_str : t -> string -> t
 (** [use_move st n] returns the state [st] after it uses a move with
     name [n]. It should decrement the current count of moves left for
     the move it just used. *)

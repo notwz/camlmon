@@ -36,7 +36,37 @@ type t = {
   back_img : string;
 }
 
+
+let type_to_str = function
+  | Normal -> "Normal"
+  | Fire -> "Fire"
+  | Water -> "Water"
+  | Electric -> "Electric"
+  | Grass -> "Grass"
+  | Ice -> "Ice"
+  | Fighting -> "Fighting"
+  | Poison -> "Poison"
+  | Ground -> "Ground"
+  | Flying -> "Flying"
+  | Psychic -> "Psychic"
+  | Bug -> "Bug"
+  | Rock -> "Rock"
+  | Ghost -> "Ghost"
+  | Dragon -> "Dragon"
+  | Dark -> "Dark"
+  | Steel -> "Steel"
+  | Fairy -> "Fair"
+
 let get_pokemon_name t = t.name
+let get_move_type_str t goal = 
+  let rec find_move moves goal = 
+    match moves with 
+    | h::t -> if h.move_name = goal then 
+      h.move_type else find_move t goal
+    | _ -> failwith "ERR: pokemon.ml get_move_type -> Move not found."
+in let move_type = find_move t.p_moves goal in 
+  move_type |> type_to_str
+
 
 let type_to_id = function
   | Normal -> 0
@@ -57,6 +87,9 @@ let type_to_id = function
   | Dark -> 15
   | Steel -> 16
   | Fairy -> 17
+
+
+
 
 let type_efficacy =
   [
@@ -765,7 +798,7 @@ let pikachu =
     name = "Pikachu";
     p_type = Electric;
     p_moves = [ tackle; thunderbolt; thunder; electroball ];
-    max_hp = 100;
+    max_hp = 500;
     front_img = "public/pokemon_images/pikachu_f.png";
     back_img = "public/pokemon_images/pikachu_b.png";
   }
@@ -776,7 +809,7 @@ let charizard =
     name = "Charizard";
     p_type = Fire;
     p_moves = [ strength; flamethrower; fly; earthquake ];
-    max_hp = 100;
+    max_hp = 500;
     front_img = "public/pokemon_images/charizard_f.png";
     back_img = "public/pokemon_images/charizard_b.png";
   }
@@ -787,7 +820,7 @@ let weezing =
     name = "Weezing";
     p_type = Ghost;
     p_moves = [ psychic; shadow_ball; crunch; moonblast ];
-    max_hp = 100;
+    max_hp = 500;
     front_img = "public/pokemon_images/weezing_f.png";
     back_img = "public/pokemon_images/weezing_b.png";
   }
@@ -798,7 +831,7 @@ let magikarp =
     name = "Magikarp";
     p_type = Water;
     p_moves = [ surf; splash; splash; splash ];
-    max_hp = 200;
+    max_hp = 500;
     front_img = "public/pokemon_images/magikarp_f.png";
     back_img = "public/pokemon_images/magikarp_b.png";
   }
@@ -809,7 +842,7 @@ let rapidash =
     name = "Rapidash";
     p_type = Fire;
     p_moves = [ flamethrower; flareblitz; fireblast; firespin ];
-    max_hp = 200;
+    max_hp = 500;
     front_img = "public/pokemon_images/rapidash_f.png";
     back_img = "public/pokemon_images/rapidash_b.png";
   }
@@ -820,7 +853,7 @@ let dodrio =
     name = "Dodrio";
     p_type = Flying;
     p_moves = [ thrash; drillpeck; pluck; wingattack ];
-    max_hp = 200;
+    max_hp = 500;
     front_img = "public/pokemon_images/dodrio_f.png";
     back_img = "public/pokemon_images/dodrio_b.png";
   }
@@ -831,7 +864,7 @@ let medicham =
     name = "Medicham";
     p_type = Fighting;
     p_moves = [ thrash; reversal; forcepalm; highjumpkick ];
-    max_hp = 200;
+    max_hp = 500;
     front_img = "public/pokemon_images/medicham_f.png";
     back_img = "public/pokemon_images/medicham_b.png";
   }
@@ -842,7 +875,7 @@ let onix =
     name = "Onix";
     p_type = Rock;
     p_moves = [ rockthrow; stone_edge; earthquake; rockslide ];
-    max_hp = 200;
+    max_hp = 500;
     front_img = "public/pokemon_images/onix_f.png";
     back_img = "public/pokemon_images/onix_b.png";
   }
@@ -853,7 +886,7 @@ let raikou =
     name = "Raikou";
     p_type = Rock;
     p_moves = [ thunderbolt; zapcannon; thundershock; thunderfang ];
-    max_hp = 200;
+    max_hp = 800;
     front_img = "public/pokemon_images/raikou_f.png";
     back_img = "public/pokemon_images/raikou_b.png";
   }
@@ -878,5 +911,7 @@ let randomelement arr =
 
 let random_pokemon = randomelement pokemons
 let random_pokemon_2 = randomelement pokemons
+let saf_ran_pokemon n = Array.get pokemons n
+let pokemons_len = Array.length pokemons
 let get_front_sprite t = t.front_img
 let get_back_sprite t = t.back_img

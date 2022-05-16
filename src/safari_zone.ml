@@ -166,9 +166,10 @@ let get_tile_type coord map =
   in
   tile_type
 
-let paint_black x y () =
-  moveto 0 0;
-  set_color black;
+
+let paint_black x y () = 
+  moveto 0 0; 
+  set_color black; 
   fill_rect 0 0 340 400
 
 let trainer_info (state : Trainer.t) () =
@@ -176,7 +177,8 @@ let trainer_info (state : Trainer.t) () =
   set_color cyan;
   moveto 55 420;
   draw_string "Trainer Info: ";
-  moveto 55 390
+  moveto 55 390;
+  draw_string name
 
 let parse_command key x y =
   match key with
@@ -237,10 +239,11 @@ let encounter x y () =
 
 let trigger = ref false
 
-let rec safari state x y () =
+let rec safari (state: Trainer.t ref) x y () =
   try
-    clear_graph ();
-    clear_window black;
+
+    clear_graph ();  
+    clear_window black;    
     moveto 500 500;
     let new_map = smart_make_map [] 0 in
     paint_map new_map ();

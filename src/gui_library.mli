@@ -9,6 +9,7 @@ val bg_3 : color
 val bg_4 : color
 val bg_5 : color
 val bg_6 : color
+val grey : color
 val charmander : string
 val x_res : int
 val y_res : int
@@ -25,3 +26,4 @@ val item_x_d : int -> int
 val item_y_d : int -> int
 val clear_window : color -> unit
 val draw_img : string -> int * int -> unit -> unit
+val draw_img_rgb : string -> int * int -> unit -> unit

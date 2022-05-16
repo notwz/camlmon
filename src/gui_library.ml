@@ -38,10 +38,15 @@ let item_x_d (width : int) = (x_res - width) / 2
 let item_y_d (width : int) = (y_res - width) / 2
 
 let draw_img name (coor : int * int) () =
-  let img = Png.load_as_rgb24 name [] in
+  let img = Png.load name [] in
   let g = Graphic_image.of_image img in
   Graphics.draw_image g (fst coor * 1) (snd coor * 1)
 
+
+let draw_img_rgb name (coor :int * int) () = 
+  let img = Png.load_as_rgb24 name [] in
+  let g = Graphic_image.of_image img in
+  Graphics.draw_image g (fst coor * 1) (snd coor * 1)
 let clear_window color =
   let fg = foreground in
   set_color color;

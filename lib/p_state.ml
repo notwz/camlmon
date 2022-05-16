@@ -21,6 +21,7 @@ let init_move (m : Pokemon.p_move) : move =
     max_count = get_max_pp m;
   }
 
+let pokemon_name (pokemon : t) = get_pokemon_name pokemon.pokemon
 let move_name m = m.move_name
 
 let init_move_set (pokemon : Pokemon.t) : move list =

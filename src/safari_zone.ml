@@ -185,39 +185,55 @@ let parse_command key x y =
   | Left -> if x = 340 then Invalid else Valid
   | Down -> if y = 0 || y < 15 then Invalid else Valid
 
+let active = ref false
+(* let press_button () = let continue = ref true in let command = ref
+   "na" in while !continue do let ev = wait_next_event [ Button_down ]
+   in let catch cmd = moveto 520 250; match Encounter.take_turn_2
+   Catch_state.init_state with | true -> set_color green; draw_string
+   "You have caught the pokemon!" | false -> set_color red; draw_string
+   "The pokemon has ran away!" in if ev.mouse_x >= 540 && ev.mouse_x <=
+   600 && ev.mouse_y >= 290 && ev.mouse_y <= 315 then ( command :=
+   "ball"; continue := false) else if ev.mouse_x >= 620 && ev.mouse_x <=
+   680 && ev.mouse_y >= 209 && ev.mouse_y <= 315 then ( command :=
+   "bait"; let () = print_endline "11" in continue := false) else if
+   ev.mouse_x >= 700 && ev.mouse_x <= 760 && ev.mouse_y >= 290 &&
+   ev.mouse_y <= 315 then ( command := "rock"; continue := false); catch
+   !command done *)
+
 let draw_catching () =
   set_color white;
   fill_rect 500 200 308 400;
-  draw_img pikachu (600, 440) ();
-  moveto 500 370;
+  draw_img pikachu (600, 460) ();
+  moveto 500 400;
   set_color blue;
   draw_string "You have encountered a pokemon! ";
-  moveto 510 320;
+  moveto 510 350;
   draw_string "Will you throw a";
-  moveto 510 300;
+  moveto 510 330;
   draw_string "ball, bait, or a rock?";
   set_color yellow;
-  fill_rect 540 260 60 25;
-  fill_rect 620 260 60 25;
-  fill_rect 700 260 60 25;
-  moveto 548 263;
+  fill_rect 540 290 60 25;
+  fill_rect 620 290 60 25;
+  fill_rect 700 290 60 25;
+  moveto 548 293;
   set_color red;
   draw_string "Ball";
-  moveto 628 263;
+  moveto 628 293;
   draw_string "Bait";
-  moveto 708 263;
-  draw_string "Rock"
-
-let active = ref false
+  moveto 708 293;
+  draw_string "Rock";
+  moveto 548 203;
+  set_color black;
+  draw_string "press ';' to return to map after catching";
+  synchronize ();
+  Encounter.take_turn_2 Catch_state.init_state ()
 
 let encounter x y () =
   let () = Random.self_init () in
-  let enc = Random.int 5 in
+  let enc = Random.int 4 in
   if enc = 0 then (
-    draw_catching ();
-    active := true)
-(* let ev = wait_next_event [ Key_pressed ] in match ev.key with | ';'
-   -> failwith "a" | _ -> ()) *)
+    active := true;
+    draw_catching ())
 
 let trigger = ref false
 

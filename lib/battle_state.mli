@@ -8,7 +8,7 @@ exception NoWinnerFound
 
 val init_state : P_state.t -> P_state.t -> t
 (** [init_state p1 p2] creates the initial battle state between p1 and
-    p2 with p1 going first. *)
+    p2 with p1 going first. p1 is the trainer. p2 is the enemy. *)
 
 val move : P_state.move -> t -> t
 (** [move m t] is the state of the battle state after the pokemon whose
@@ -17,6 +17,9 @@ val move : P_state.move -> t -> t
 val is_done : t -> bool
 (** [is_done t] returns whether or not the battle state t is over. *)
 
-val winner : t -> P_state.t
+val winner : t -> string
 (** [winner t] returns the winner of battle state t. @raises [NoWinnerFound] 
-    if the game is not finished. *)
+    if the game is not finished. Returns "e" if enemy wins. ie. you, the trainer
+        faint first. 
+    Returns "t" if you, the trainer wins. ie. the enemy faints first. 
+        *)

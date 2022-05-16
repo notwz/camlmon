@@ -32,7 +32,11 @@ type t = {
   p_type : p_type;
   p_moves : p_move list;
   max_hp : int;
+  front_img : string;
+  back_img : string;
 }
+
+let get_pokemon_name t = t.name
 
 let type_to_id = function
   | Normal -> 0
@@ -56,85 +60,15 @@ let type_to_id = function
 
 let type_efficacy =
   [
+    [ 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 0.5; 0.; 1.; 1.; 0.5; 1. ];
     [
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      0.5;
-      0.;
-      1.;
-      1.;
-      0.5;
-      1.;
+      1.; 0.5; 0.5; 1.; 2.; 2.; 1.; 1.; 1.; 1.; 1.; 2.; 0.5; 1.; 0.5; 1.; 2.; 1.;
     ];
     [
-      1.;
-      0.5;
-      0.5;
-      1.;
-      2.;
-      2.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      0.5;
-      1.;
-      0.5;
-      1.;
-      2.;
-      1.;
+      1.; 2.; 0.5; 1.; 0.5; 1.; 1.; 1.; 2.; 1.; 1.; 1.; 2.; 1.; 0.5; 1.; 1.; 1.;
     ];
     [
-      1.;
-      2.;
-      0.5;
-      1.;
-      0.5;
-      1.;
-      1.;
-      1.;
-      2.;
-      1.;
-      1.;
-      1.;
-      2.;
-      1.;
-      0.5;
-      1.;
-      1.;
-      1.;
-    ];
-    [
-      1.;
-      1.;
-      2.;
-      0.5;
-      0.5;
-      1.;
-      1.;
-      1.;
-      0.;
-      2.;
-      1.;
-      1.;
-      1.;
-      1.;
-      0.5;
-      1.;
-      1.;
-      1.;
+      1.; 1.; 2.; 0.5; 0.5; 1.; 1.; 1.; 0.; 2.; 1.; 1.; 1.; 1.; 0.5; 1.; 1.; 1.;
     ];
     [
       1.;
@@ -157,24 +91,7 @@ let type_efficacy =
       1.;
     ];
     [
-      1.;
-      0.5;
-      0.5;
-      1.;
-      2.;
-      0.5;
-      1.;
-      1.;
-      2.;
-      2.;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      1.;
-      0.5;
-      1.;
+      1.; 0.5; 0.5; 1.; 2.; 0.5; 1.; 1.; 2.; 2.; 1.; 1.; 1.; 1.; 2.; 1.; 0.5; 1.;
     ];
     [
       2.;
@@ -197,85 +114,13 @@ let type_efficacy =
       0.5;
     ];
     [
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      1.;
-      1.;
-      0.5;
-      0.5;
-      1.;
-      1.;
-      1.;
-      0.5;
-      0.5;
-      1.;
-      1.;
-      0.;
-      2.;
+      1.; 1.; 1.; 1.; 2.; 1.; 1.; 0.5; 0.5; 1.; 1.; 1.; 0.5; 0.5; 1.; 1.; 0.; 2.;
     ];
+    [ 1.; 2.; 1.; 2.; 0.5; 1.; 1.; 2.; 1.; 0.; 1.; 0.5; 2.; 0.; 0.; 0.; 2.; 0. ];
     [
-      1.;
-      2.;
-      1.;
-      2.;
-      0.5;
-      1.;
-      1.;
-      2.;
-      1.;
-      0.;
-      1.;
-      0.5;
-      2.;
-      0.;
-      0.;
-      0.;
-      2.;
-      0.;
+      1.; 1.; 1.; 0.5; 2.; 1.; 2.; 1.; 1.; 1.; 1.; 2.; 0.5; 1.; 1.; 1.; 0.5; 1.;
     ];
-    [
-      1.;
-      1.;
-      1.;
-      0.5;
-      2.;
-      1.;
-      2.;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      0.5;
-      1.;
-      1.;
-      1.;
-      0.5;
-      1.;
-    ];
-    [
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      2.;
-      1.;
-      1.;
-      0.5;
-      1.;
-      1.;
-      1.;
-      1.;
-      0.;
-      0.5;
-      1.;
-    ];
+    [ 1.; 1.; 1.; 1.; 1.; 1.; 2.; 2.; 1.; 1.; 0.5; 1.; 1.; 1.; 1.; 0.; 0.5; 1. ];
     [
       1.;
       0.5;
@@ -297,124 +142,18 @@ let type_efficacy =
       0.5;
     ];
     [
-      1.;
-      2.;
-      1.;
-      1.;
-      1.;
-      2.;
-      0.5;
-      1.;
-      0.5;
-      2.;
-      1.;
-      2.;
-      1.;
-      1.;
-      1.;
-      1.;
-      0.5;
-      1.;
+      1.; 2.; 1.; 1.; 1.; 2.; 0.5; 1.; 0.5; 2.; 1.; 2.; 1.; 1.; 1.; 1.; 0.5; 1.;
+    ];
+    [ 0.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 2.; 1.; 1.; 2.; 1.; 0.5; 1.; 1. ];
+    [ 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 2.; 1.; 0.5; 0. ];
+    [
+      1.; 1.; 1.; 1.; 1.; 1.; 0.5; 1.; 1.; 1.; 2.; 1.; 1.; 2.; 1.; 0.5; 1.; 0.5;
     ];
     [
-      0.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      1.;
-      1.;
-      2.;
-      1.;
-      0.5;
-      1.;
-      1.;
+      1.; 0.5; 0.5; 0.5; 1.; 2.; 1.; 1.; 1.; 1.; 1.; 1.; 2.; 1.; 1.; 1.; 0.5; 2.;
     ];
     [
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      1.;
-      0.5;
-      0.;
-    ];
-    [
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      0.5;
-      1.;
-      1.;
-      1.;
-      2.;
-      1.;
-      1.;
-      2.;
-      1.;
-      0.5;
-      1.;
-      0.5;
-    ];
-    [
-      1.;
-      0.5;
-      0.5;
-      0.5;
-      1.;
-      2.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      1.;
-      1.;
-      1.;
-      0.5;
-      2.;
-    ];
-    [
-      1.;
-      0.5;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      0.5;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      1.;
-      2.;
-      2.;
-      0.5;
-      1.;
+      1.; 0.5; 1.; 1.; 1.; 1.; 2.; 0.5; 1.; 1.; 1.; 1.; 1.; 1.; 2.; 2.; 0.5; 1.;
     ];
   ]
 
@@ -464,7 +203,169 @@ let tackle =
 
 let flamethrower =
   {
-    move_name = "flamethrower";
+    move_name = "Flamethrower";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let ember =
+  {
+    move_name = "Ember";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let flareblitz =
+  {
+    move_name = "Flare Blitz";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let fireblast =
+  {
+    move_name = "Fire Blast";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let firespin =
+  {
+    move_name = "Fire Spin";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let thundershock =
+  {
+    move_name = "Thunder Shock";
+    damage = 90;
+    move_type = Electric;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let thunderfang =
+  {
+    move_name = "Thunder Fang";
+    damage = 90;
+    move_type = Electric;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let zapcannon =
+  {
+    move_name = "Zap Cannon";
+    damage = 90;
+    move_type = Electric;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let reversal =
+  {
+    move_name = "Reversal";
+    damage = 90;
+    move_type = Fighting;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let highjumpkick =
+  {
+    move_name = "High Jump Kick";
+    damage = 90;
+    move_type = Fighting;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let forcepalm =
+  {
+    move_name = "Force Palm";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let belch =
+  {
+    move_name = "Belch";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let sludge =
+  {
+    move_name = "Sludge";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let rockthrow =
+  {
+    move_name = "Rock Throw";
+    damage = 90;
+    move_type = Rock;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let rockslide =
+  {
+    move_name = "Rock Slide";
+    damage = 90;
+    move_type = Rock;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let thrash =
+  {
+    move_name = "Thrash";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let drillpeck =
+  {
+    move_name = "Drill Peck";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let pluck =
+  {
+    move_name = "Pluck";
+    damage = 90;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 15;
+  }
+
+let wingattack =
+  {
+    move_name = "Wing Attack";
     damage = 90;
     move_type = Fire;
     accuracy = 100;
@@ -496,6 +397,15 @@ let thunder =
     move_type = Electric;
     accuracy = 70;
     max_pp = 5;
+  }
+
+let electroball =
+  {
+    move_name = "Electroball";
+    damage = 100;
+    move_type = Electric;
+    accuracy = 90;
+    max_pp = 10;
   }
 
 let leaf_blade =
@@ -642,6 +552,15 @@ let moonblast =
     max_pp = 15;
   }
 
+let splash =
+  {
+    move_name = "splash";
+    damage = 0;
+    move_type = Normal;
+    accuracy = 100;
+    max_pp = 40;
+  }
+
 let normal_test =
   {
     id = 0;
@@ -649,6 +568,8 @@ let normal_test =
     p_type = Normal;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let fire_test =
@@ -658,6 +579,8 @@ let fire_test =
     p_type = Fire;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let water_test =
@@ -667,6 +590,8 @@ let water_test =
     p_type = Water;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let electric_test =
@@ -676,6 +601,8 @@ let electric_test =
     p_type = Electric;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let grass_test =
@@ -685,6 +612,8 @@ let grass_test =
     p_type = Grass;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let ice_test =
@@ -694,6 +623,8 @@ let ice_test =
     p_type = Ice;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let fighting_test =
@@ -703,6 +634,8 @@ let fighting_test =
     p_type = Fighting;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let poison_test =
@@ -712,6 +645,8 @@ let poison_test =
     p_type = Poison;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let flying_test =
@@ -721,6 +656,8 @@ let flying_test =
     p_type = Flying;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let ground_test =
@@ -730,6 +667,8 @@ let ground_test =
     p_type = Ground;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let psychic_test =
@@ -739,6 +678,8 @@ let psychic_test =
     p_type = Psychic;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let bug_test =
@@ -748,6 +689,8 @@ let bug_test =
     p_type = Bug;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let rock_test =
@@ -757,6 +700,8 @@ let rock_test =
     p_type = Rock;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let ghost_test =
@@ -766,6 +711,8 @@ let ghost_test =
     p_type = Ghost;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let dragon_test =
@@ -775,6 +722,8 @@ let dragon_test =
     p_type = Dragon;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let dark_test =
@@ -784,6 +733,8 @@ let dark_test =
     p_type = Dark;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let steel_test =
@@ -793,6 +744,8 @@ let steel_test =
     p_type = Steel;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let fairy_test =
@@ -802,15 +755,128 @@ let fairy_test =
     p_type = Fairy;
     p_moves = [ tackle; flamethrower; surf; thunderbolt ];
     max_hp = 200;
+    front_img = "";
+    back_img = "";
   }
 
 let pikachu =
   {
     id = 0;
-    name = "pikachu";
+    name = "Pikachu";
     p_type = Electric;
-    p_moves = [ tackle; thunderbolt; thunder ];
+    p_moves = [ tackle; thunderbolt; thunder; electroball ];
     max_hp = 100;
+    front_img = "public/pokemon_images/pikachu_f.png";
+    back_img = "public/pokemon_images/pikachu_b.png";
   }
 
-let random_pokemon = pikachu
+let charizard =
+  {
+    id = 0;
+    name = "Charizard";
+    p_type = Fire;
+    p_moves = [ strength; flamethrower; fly; earthquake ];
+    max_hp = 100;
+    front_img = "public/pokemon_images/charizard_f.png";
+    back_img = "public/pokemon_images/charizard_b.png";
+  }
+
+let weezing =
+  {
+    id = 0;
+    name = "Weezing";
+    p_type = Ghost;
+    p_moves = [ psychic; shadow_ball; crunch; moonblast ];
+    max_hp = 100;
+    front_img = "public/pokemon_images/weezing_f.png";
+    back_img = "public/pokemon_images/weezing_b.png";
+  }
+
+let magikarp =
+  {
+    id = 0;
+    name = "Magikarp";
+    p_type = Water;
+    p_moves = [ surf; splash; splash; splash ];
+    max_hp = 200;
+    front_img = "public/pokemon_images/magikarp_f.png";
+    back_img = "public/pokemon_images/magikarp_b.png";
+  }
+
+let rapidash =
+  {
+    id = 0;
+    name = "Rapidash";
+    p_type = Fire;
+    p_moves = [ flamethrower; flareblitz; fireblast; firespin ];
+    max_hp = 200;
+    front_img = "public/pokemon_images/rapidash_f.png";
+    back_img = "public/pokemon_images/rapidash_b.png";
+  }
+
+let dodrio =
+  {
+    id = 0;
+    name = "Dodrio";
+    p_type = Flying;
+    p_moves = [ thrash; drillpeck; pluck; wingattack ];
+    max_hp = 200;
+    front_img = "public/pokemon_images/dodrio_f.png";
+    back_img = "public/pokemon_images/dodrio_b.png";
+  }
+
+let medicham =
+  {
+    id = 0;
+    name = "Medicham";
+    p_type = Fighting;
+    p_moves = [ thrash; reversal; forcepalm; highjumpkick ];
+    max_hp = 200;
+    front_img = "public/pokemon_images/medicham_f.png";
+    back_img = "public/pokemon_images/medicham_b.png";
+  }
+
+let onix =
+  {
+    id = 0;
+    name = "Onix";
+    p_type = Rock;
+    p_moves = [ rockthrow; stone_edge; earthquake; rockslide ];
+    max_hp = 200;
+    front_img = "public/pokemon_images/onix_f.png";
+    back_img = "public/pokemon_images/onix_b.png";
+  }
+
+let raikou =
+  {
+    id = 0;
+    name = "Raikou";
+    p_type = Rock;
+    p_moves = [ thunderbolt; zapcannon; thundershock; thunderfang ];
+    max_hp = 200;
+    front_img = "public/pokemon_images/raikou_f.png";
+    back_img = "public/pokemon_images/raikou_b.png";
+  }
+
+let pokemons =
+  [|
+    pikachu;
+    charizard;
+    weezing;
+    magikarp;
+    rapidash;
+    dodrio;
+    medicham;
+    onix;
+    raikou;
+  |]
+
+let randomelement arr =
+  Random.self_init ();
+  let n = Random.int (Array.length arr) in
+  Array.get arr n
+
+let random_pokemon = randomelement pokemons
+let random_pokemon_2 = randomelement pokemons
+let get_front_sprite t = t.front_img
+let get_back_sprite t = t.back_img

@@ -101,7 +101,31 @@ let draw_enemy pokemon () =
   draw_string name;
   moveto 520 570; 
   draw_string (string_of_int (max hp 0) ^ "/" ^  string_of_int e_max_hp);
-  draw_img_rgb pokemon_front (700, 500) ();
+  draw_img_rgb (pokemon_front) (700, 500) ();
+  synchronize ();
+  () 
+
+let draw_enemy_enc pokemon p () =
+  let name = pokemon_name pokemon in 
+  let hp = get_hp pokemon in 
+  set_color white; 
+  fill_rect 300 550 300 100; 
+  set_color panel_border_1; 
+  set_line_width 5; 
+  draw_rect 300 550 300 100;
+  set_color panel_border_2;
+  set_line_width 10;
+  draw_rect 305 555 290 88;
+  let hp_ratio = max(ceil(150. *. ((hp |> float_of_int )/. (e_max_hp|> float_of_int ))) |> int_of_float) 0 in 
+  let set_hp_color hp () = 
+    match hp with 
+    | a -> if a > 30 then set_color green else set_color red; 
+  in set_hp_color hp_ratio ();
+  fill_rect 320 590 hp_ratio 10;
+  set_color black;
+  moveto 320 610; 
+  draw_string name;
+  draw_img_rgb (get_front_sprite p) (700, 500) ();
   synchronize ();
   () 
 
@@ -117,9 +141,11 @@ let draw_text_box x y () =
   moveto 360 150;
   draw_string "What will you do?";
   moveto 380 50;
-  draw_string "Attack [a]";
+  draw_string "[a] Attack ";
+  moveto 380 100;
+  draw_string "[t] Throw Pokeball ";
   moveto 500 50; 
-  draw_string "Quit [q]";
+  draw_string "[q] Quit";
   synchronize ();
   ()
 
@@ -138,7 +164,7 @@ let draw_move_info x y n t_s () =
   set_color black;
   () 
 
-let rec draw_moves x y t_s e_s selected () = 
+let rec draw_moves x y t_s e_s selected p () = 
   try 
    (** text box *)
   set_color white; 
@@ -214,24 +240,24 @@ let rec draw_moves x y t_s e_s selected () =
   set_color blue;
   draw_string "[                    ]";
   draw_t_pokemon t_s ();
-  draw_enemy e_s ();
+  draw_enemy_enc e_s p ();
   synchronize ();
   let b_s = init_state t_s e_s in
-  if is_done b_s then draw_victory_screen "name" () else
+  if is_done b_s then draw_victory_screen "name" p () else
   let e = wait_next_event [ Key_pressed ] in
       let user_command =
       match e.key with
-      | '1' -> draw_moves 380 140 t_s e_s 0 ()
-      | '2' -> draw_moves 380 50 t_s e_s 1 ()
-      | '3' -> draw_moves 680 140 t_s e_s 2 ()
-      | '4' -> draw_moves 680 50 t_s e_s  3 ()
-      | 'a' -> take_move x y t_s e_s (); draw_moves x y t_s e_s 0 ()
+      | '1' -> draw_moves 380 140 t_s e_s 0 p ()
+      | '2' -> draw_moves 380 50 t_s e_s 1 p ()
+      | '3' -> draw_moves 680 140 t_s e_s 2 p ()
+      | '4' -> draw_moves 680 50 t_s e_s  3 p ()
+      | 'a' -> take_move x y t_s e_s p (); draw_moves x y t_s e_s 0 p ()
       | 'q' -> Stdlib.exit 0
       | _ -> raise NoCommand
       in user_command 
-  with NoCommand -> draw_moves x y t_s e_s 0 ()
+  with NoCommand -> draw_moves x y t_s e_s 0 p ()
 
-and take_move x y t_s e_s () = 
+and take_move x y t_s e_s p () = 
   let (move_name, move) = 
     match (x,y) with 
     | (380, 140) -> ((List.nth t_moves 0 |> move_name ), List.nth t_moves 0)
@@ -256,22 +282,22 @@ and take_move x y t_s e_s () =
   let new_e_s = damaged e_s dmg in 
   let new_t_s = use_moves_str t_s move_name in 
   Unix.sleep 1;
-  draw_enemy new_e_s ();
+  draw_enemy_enc new_e_s p ();
   let b_s = init_state new_t_s new_e_s in
   let game_over = is_done b_s in 
   if game_over then 
   let next_screen = match winner b_s with 
-    | "t" -> draw_victory_screen e_name () 
-    | "e" -> draw_victory_screen t_name () 
+    | "t" -> draw_victory_screen e_name p () 
+    | "e" -> draw_victory_screen t_name p () 
     | _ -> raise NoCommand
   in 
   next_screen 
   else 
-  enemy_move x y new_t_s new_e_s ();
-  draw_moves 380 140 new_t_s new_e_s 0 ()
+  enemy_move x y new_t_s new_e_s p ();
+  draw_moves 380 140 new_t_s new_e_s 0 p ()
 
 
-and enemy_move x y t_s e_s () = 
+and enemy_move x y t_s e_s p () = 
   let e_moves = get_move_set e_s in 
   let len = List.length e_moves in 
   Random.self_init (); 
@@ -287,7 +313,7 @@ and enemy_move x y t_s e_s () =
   draw_rect 346 6 588 188;
   moveto 380 120;
   set_color black;
-  draw_string (e_name ^ " used " ^ (move |> move_name ) ^ "!");
+  draw_string ((get_pokemon_name p) ^ " used " ^ (move |> move_name ) ^ "!");
   synchronize ();
   let dmg = calculate_damage e_s move in 
   let new_t_s = damaged t_s dmg in 
@@ -297,16 +323,16 @@ and enemy_move x y t_s e_s () =
   let game_over = is_done b_s in 
   if game_over then 
   let next_screen = match winner b_s with 
-    | "t" -> draw_victory_screen e_name () 
-    | "e" -> draw_victory_screen t_name () 
+    | "t" -> draw_victory_screen e_name p () 
+    | "e" -> draw_victory_screen t_name p () 
     | _ -> raise NoCommand
   in 
   next_screen 
   else 
-  draw_moves 380 140 new_t_s e_s 0 ();
+  draw_moves 380 140 new_t_s e_s 0 p ();
   ()
 
-and draw_victory_screen (name: string) () = 
+and draw_victory_screen (name: string) p () = 
   try 
   set_color white; 
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height; 
@@ -330,13 +356,13 @@ and draw_victory_screen (name: string) () =
         let t_pokemon = random_pokemon in 
         let e_pokemon = random_pokemon_2 in 
         let t_p_state = init_p_state t_pokemon in 
-        let e_p_state = init_p_state e_pokemon in draw_moves 380 140 t_p_state e_p_state 0 () )
+        let e_p_state = init_p_state e_pokemon in draw_moves 380 140 t_p_state e_p_state 0 p () )
       | 'q' -> Stdlib.exit 0
       | _ -> raise NoCommand
       in user_command 
-  with NoCommand -> draw_victory_screen "ERROR:" ()
+  with NoCommand -> draw_victory_screen "ERROR:" p ()
 
-let battle_intro_dialogue () = 
+let battle_intro_dialogue e_s p () = 
   set_color white; 
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height; 
   set_color panel_border_1; 
@@ -345,31 +371,49 @@ let battle_intro_dialogue () =
   set_color panel_border_2;
   set_line_width 10;
   draw_rect 346 6 588 188;
-  draw_enemy e_p_state ();
+  draw_enemy_enc e_s p ();
   moveto 360 150;
   draw_string ("A wild Pokemon appeared!");
-  moveto 500 100;
-  draw_string " [1] -> [4] : select your move";
-  moveto 500 80; 
-  draw_string " [a] key : to use the move";
   synchronize(); 
   () 
 
-let rec battle_main x y () = 
+let caught_success pokemon e_s () = 
+  set_color white; 
+  fill_rect dialogue_x dialogue_y dialogue_width dialogue_height; 
+  set_color panel_border_1; 
+  set_line_width 5; 
+  draw_rect dialogue_x dialogue_y dialogue_width dialogue_height;
+  set_color panel_border_2;
+  set_line_width 10;
+  draw_rect 346 6 588 188;
+  draw_enemy_enc e_s pokemon ();
+  let p_name = get_pokemon_name pokemon in 
+  moveto 360 150;
+  draw_string ("Successfully caught " ^ p_name);
+  moveto 360 100;
+  draw_string "Press to continue... ";
+  synchronize(); 
+  Unix.sleep 1;
+  () 
+
+
+let rec battle_encounter_main pokemon x y () = 
   try 
+  let e_s = init_p_state pokemon in 
     clear_graph(); 
     clear_window white; 
     set_color panel_color; 
-    battle_intro_dialogue (); 
-    Unix.sleep 3;
+    battle_intro_dialogue e_s pokemon (); 
+    Unix.sleep 1;
     draw_text_box x y();
     synchronize();
     let e = wait_next_event [ Key_pressed ] in
       let user_command =
       match e.key with
-      | 'a' -> draw_moves 380 140 t_p_state e_p_state 0 ()
-      | 'q' -> Stdlib.exit 0
+      | 'a' -> draw_moves 380 140 t_p_state e_s 0 pokemon ()
+      | 'q' -> ()
+      | 't' -> caught_success pokemon e_s ()
       | _ -> raise NoCommand
       in user_command 
-  with NoCommand -> battle_main x y ()
+  with NoCommand -> battle_encounter_main pokemon x y ()
  

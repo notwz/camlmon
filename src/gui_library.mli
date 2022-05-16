@@ -9,6 +9,7 @@ val bg_3 : color
 val bg_4 : color
 val bg_5 : color
 val bg_6 : color
+val grey : color
 val charmander : string
 val x_res : int
 val y_res : int

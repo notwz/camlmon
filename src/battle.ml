@@ -31,8 +31,10 @@ let e_max_hp = get_max_hp e_pokemon
 let t_moves = get_move_set t_p_state
 let e_moves = get_move_set e_p_state
 
-let pokemon_back = "public/pokemon_images/charizard_b.png" 
-let pokemon_front = "public/pokemon_images/weezing_sprite.png"
+
+(** pokemon images are 120 x 120 *)
+let pokemon_back = get_back_sprite t_pokemon
+let pokemon_front = get_front_sprite e_pokemon
 (* 
 type move = { name:string; damage:int}
 let moves = [ 
@@ -122,6 +124,7 @@ let draw_text_box x y () =
 
 let rec draw_moves x y t_s e_s () = 
   try 
+   (** text box *)
   set_color white; 
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height; 
   set_color panel_border_1; 
@@ -130,6 +133,35 @@ let rec draw_moves x y t_s e_s () =
   set_color panel_border_2;
   set_line_width 10;
   draw_rect 346 6 588 188;
+  (** move set *)
+  (** borders for moves*)
+  set_line_width 8;
+  set_color black;
+  draw_rect 370 120 240 50;
+  set_line_width 6;
+  set_color grey;
+  draw_rect 371 121 238 48;
+  set_color black;
+  set_line_width 8;
+  set_color black;
+  draw_rect 370 35 240 50;
+  set_line_width 6;
+  set_color grey;
+  draw_rect 371 36 238 48;
+  set_color black;
+  set_line_width 8;
+  set_color black;
+  draw_rect 670 120 240 50;
+  set_line_width 6;
+  set_color grey;
+  draw_rect 671 121 238 48;
+  set_color black;
+  set_line_width 8;
+  set_color black;
+  draw_rect 670 35 240 50;
+  set_line_width 6;
+  set_color grey;
+  draw_rect 671 36 238 48;
   set_color black;
   moveto 400 140;
   draw_string ((List.nth t_moves 0 |> move_name ) ^ " [1]");
@@ -141,7 +173,7 @@ let rec draw_moves x y t_s e_s () =
   draw_string ((List.nth t_moves 3 |> move_name ) ^ " [4]");
   moveto x y; 
   set_color blue;
-  draw_string ">[                 ]";
+  draw_string "a[                 ]";
   draw_t_pokemon t_s ();
   draw_enemy e_s ();
   synchronize ();

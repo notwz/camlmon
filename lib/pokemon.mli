@@ -76,6 +76,13 @@ val random_pokemon_2 : t
 val get_pokemon_name : t -> string
 (** [get_pokemon_name] returns the name of the pokemon. *)
 
+val get_front_sprite : t -> string 
+(** [get_front_sprite] returns the string of img location of the front 
+    sprite image of pokemon t. *)
+val get_back_sprite : t -> string 
+(** [get_back_sprite] returns the string of img location of the back 
+    sprite image of pokemon t. *)
+
 val get_max_hp : t -> int
 (** [get_max_hp t] returns the max hp of pokemon [t]. *)
 

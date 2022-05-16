@@ -19,7 +19,6 @@ let ran_away st = st.ran_away
 let catch st =
   let () = Random.self_init () in
   let seed = Random.int 100 in
-  let _ = print_endline (string_of_int seed) in
   if seed < st.catch_prob then { st with caught = true }
   else if seed < st.catch_prob + st.run_away_prob then
     { st with ran_away = true }
@@ -33,13 +32,8 @@ let catch st =
 let bait st =
   let () = Random.self_init () in
   let seed = Random.int 100 in
-  let _ = print_endline (string_of_int seed) in
   if seed < st.run_away_prob then { st with ran_away = true }
   else
-    let () =
-      ANSITerminal.print_string [ ANSITerminal.cyan ]
-        "It was unsuccessful!\n"
-    in
     {
       st with
       catch_prob = st.catch_prob / 2;
@@ -49,13 +43,8 @@ let bait st =
 let rock st =
   let () = Random.self_init () in
   let seed = Random.int 100 in
-  let _ = print_endline (string_of_int seed) in
   if seed < st.run_away_prob then { st with ran_away = true }
   else
-    let () =
-      ANSITerminal.print_string [ ANSITerminal.cyan ]
-        "It was unsuccessful!\n"
-    in
     {
       st with
       catch_prob = max 40 st.catch_prob / 2;

@@ -37,6 +37,8 @@ let rec find_move move_set (name : string) =
   | h :: t -> if h.move_name = name then h else find_move t name
   | [] -> raise InvalidMove
 
+let move_pp move = (move.current_count, move.max_count)
+  
 let valid_move (state : t) (name : string) : bool =
   try
     let move_info = find_move state.move_set name in
@@ -46,17 +48,31 @@ let valid_move (state : t) (name : string) : bool =
 
 let use_move (m : move) = { m with current_count = m.current_count - 1 }
 
-let rec update_moves_list (m_list : move list) (name : string) :
+let rec update_moves_list (m_list : move list) (move : move) :
     move list =
   match m_list with
   | [] -> []
   | h :: t ->
-      if h.move_name = name then
-        { h with current_count = h.current_count - 1 } :: t
-      else update_moves_list t name
+      if h = move then
+        { move with current_count = h.current_count - 1 } :: t
+      else h::update_moves_list t move
 
-let use_moves (state : t) (name : string) : t =
-  let new_moves_set = update_moves_list state.move_set name in
+let rec update_moves_list_str (m_list : move list) (move : string) :
+    move list =
+  match m_list with
+  | [] -> []
+  | h :: t ->
+      if h.move_name = move then
+        { h with current_count = h.current_count - 1 } :: t
+      else h::update_moves_list_str t move
+
+let use_moves (state : t) (move : move) : t =
+  let new_moves_set = update_moves_list state.move_set move in
+  { state with move_set = new_moves_set }
+
+
+let use_moves_str (state : t) (move : string) : t =
+  let new_moves_set = update_moves_list_str state.move_set move in
   { state with move_set = new_moves_set }
 
 let calculate_damage (state : t) (move : move) =

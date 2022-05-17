@@ -90,10 +90,12 @@ val random_pokemon : t
 val random_pokemon_2 : t
 (** [random_pokemon_2] returns one of the random pokemon stored in our
     data. *)
+val saf_ran_pokemon : int -> t 
+val pokemons_len : int 
 
 val get_pokemon_name : t -> string
 (** [get_pokemon_name] returns the name of the pokemon. *)
-
+val get_move_type_str : t -> string -> string
 val get_front_sprite : t -> string 
 (** [get_front_sprite] returns the string of img location of the front 
     sprite image of pokemon t. *)

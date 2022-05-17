@@ -8,6 +8,9 @@ open Explore
 open Lib
 open Trainer
 open Encounter
+open Battle_encounter
+open Pokemon 
+open P_state
 
 let game_x = 340
 let game_y = 0
@@ -201,6 +204,8 @@ let rec safari (state: Trainer.t ref) x y () =
     tile_info (x, y) new_map ();
     trainer_info !state ();
     synchronize ();
+    let b = List.assoc (x,y) new_map in
+    if b = Bush then enc state x y (); 
     let e = wait_next_event [ Key_pressed ] in
     let user_command =
       match e.key with
@@ -222,5 +227,14 @@ let rec safari (state: Trainer.t ref) x y () =
       in
       new_render;
       ())
-    else raise NoMovement
+    else raise NoMovement 
   with NoMovement -> safari state x y ()
+
+and enc state x y () = 
+  Random.self_init (); 
+  let enc = Random.int 10 in 
+  let pokemon = 
+      Random.self_init ();
+      let n = Random.int pokemons_len in
+      saf_ran_pokemon n in 
+  if enc = 1 then battle_encounter_main pokemon 0 0 ()

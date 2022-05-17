@@ -28,6 +28,30 @@ let pp_string s = "\"" ^ s ^ "\""
 
 let pp_bool bool = if bool = true then "true" else "false"
 
+let rec range (n : int) : int list =
+  if n = 0 then [ 0 ] else n :: range (n - 1)
+
+let id_to_type = function
+  | 0 -> "normal"
+  | 1 -> "fire"
+  | 2 -> "water"
+  | 3 -> "electric"
+  | 4 -> "grass"
+  | 5 -> "ice"
+  | 6 -> "fighting"
+  | 7 -> "poison"
+  | 8 -> "ground"
+  | 9 -> "flying"
+  | 10 -> "psychic"
+  | 11 -> "bug"
+  | 12 -> "rock"
+  | 13 -> "ghost"
+  | 14 -> "dragon"
+  | 15 -> "dark"
+  | 16 -> "steel"
+  | 17 -> "fairy"
+  | _ -> "null"
+
 (** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt] to
     pretty-print each element of [lst]. *)
 (* let pp_list pp_elt lst = let pp_elts lst = let rec loop n acc =
@@ -48,17 +72,272 @@ let pp_bool bool = if bool = true then "true" else "false"
    functions. See the handout for an explanation. *)
 
 (* Dummy pokemon states for testing *)
-let cut = init_move cut
-let cut1 = init_move Pokemon.cut |> use_move
-let fly = init_move fly
-let strength = init_move Pokemon.strength
-let swim = init_move surf |> use_move |> use_move |> use_move
-let move_set_0 = [ cut; fly; strength; swim ]
-let move_set_1 = [ cut1; fly; strength; swim ]
-let ps_0 = init_p_state random_pokemon
-let ps_1 = init_p_state random_pokemon
-let ps_damaged_0 = set_hp ps_0 8
-let ps_damaged_1 = set_hp ps_1 8
+let pokemons =
+  [
+    normal_test;
+    fire_test;
+    water_test;
+    electric_test;
+    grass_test;
+    ice_test;
+    fighting_test;
+    poison_test;
+    ground_test;
+    flying_test;
+    psychic_test;
+    bug_test;
+    rock_test;
+    ghost_test;
+    dragon_test;
+    dark_test;
+    steel_test;
+    fairy_test;
+  ]
+
+(* Dummy pokemon moves for testing *)
+let moves : p_move list =
+  [
+    normal_move;
+    fire_move;
+    water_move;
+    electric_move;
+    grass_move;
+    ice_move;
+    fighting_move;
+    poison_move;
+    ground_move;
+    flying_move;
+    psychic_move;
+    bug_move;
+    rock_move;
+    ghost_move;
+    dragon_move;
+    dark_move;
+    steel_move;
+    fairy_move;
+  ]
+
+let (expected_damages : int list list) =
+  [
+    [
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      5;
+      0;
+      10;
+      10;
+      5;
+      10;
+    ];
+    [
+      10; 5; 5; 10; 20; 20; 10; 10; 10; 10; 10; 20; 5; 10; 5; 10; 20; 10;
+    ];
+    [
+      10;
+      20;
+      5;
+      10;
+      5;
+      10;
+      10;
+      10;
+      20;
+      10;
+      10;
+      10;
+      20;
+      10;
+      5;
+      10;
+      10;
+      10;
+    ];
+    [
+      10; 10; 20; 5; 5; 10; 10; 10; 0; 20; 10; 10; 10; 10; 5; 10; 10; 10;
+    ];
+    [ 10; 5; 20; 10; 5; 10; 10; 5; 20; 5; 10; 5; 20; 10; 5; 10; 5; 10 ];
+    [
+      10; 5; 5; 10; 20; 5; 10; 10; 20; 20; 10; 10; 10; 10; 20; 10; 5; 10;
+    ];
+    [ 20; 10; 10; 10; 10; 20; 10; 5; 10; 5; 5; 5; 20; 0; 10; 20; 20; 5 ];
+    [
+      10; 10; 10; 10; 20; 10; 10; 5; 5; 10; 10; 10; 5; 5; 10; 10; 0; 20;
+    ];
+    [
+      10;
+      20;
+      10;
+      20;
+      5;
+      10;
+      10;
+      20;
+      10;
+      0;
+      10;
+      5;
+      20;
+      10;
+      10;
+      10;
+      20;
+      10;
+    ];
+    [
+      10;
+      10;
+      10;
+      5;
+      20;
+      10;
+      20;
+      10;
+      10;
+      10;
+      10;
+      20;
+      5;
+      10;
+      10;
+      10;
+      5;
+      10;
+    ];
+    [
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      20;
+      20;
+      10;
+      10;
+      5;
+      10;
+      10;
+      10;
+      10;
+      0;
+      5;
+      10;
+    ];
+    [ 10; 5; 10; 10; 20; 10; 5; 5; 10; 5; 20; 10; 10; 5; 10; 20; 5; 5 ];
+    [
+      10;
+      20;
+      10;
+      10;
+      10;
+      20;
+      5;
+      10;
+      5;
+      20;
+      10;
+      20;
+      10;
+      10;
+      10;
+      10;
+      5;
+      10;
+    ];
+    [
+      0;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      20;
+      10;
+      10;
+      20;
+      10;
+      5;
+      10;
+      10;
+    ];
+    [
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      20;
+      10;
+      5;
+      0;
+    ];
+    [
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      5;
+      10;
+      10;
+      10;
+      20;
+      10;
+      10;
+      20;
+      10;
+      5;
+      10;
+      5;
+    ];
+    [
+      10; 5; 5; 5; 10; 20; 10; 10; 10; 10; 10; 10; 20; 10; 10; 10; 5; 20;
+    ];
+    [
+      10;
+      5;
+      10;
+      10;
+      10;
+      10;
+      20;
+      5;
+      10;
+      10;
+      10;
+      10;
+      10;
+      10;
+      20;
+      20;
+      5;
+      10;
+    ];
+  ]
 
 let ps_valid_move_test (name : string) state move expected_output : test
     =
@@ -80,6 +359,14 @@ let ps_damage_test
   name >:: fun _ ->
   assert_equal expected_output (calculate_damage pokemon move)
     ~printer:(fun x -> string_of_int x)
+
+let f x =
+  let i = x / 18 in
+  let j = x mod 18 in
+  ps_damage_test
+    ("test move " ^ id_to_type i ^ " on pokemon " ^ id_to_type j)
+    (List.nth pokemons j) (List.nth moves i)
+    (List.nth (List.nth expected_damages i) j)
 
 let p_state_tests =
   [
@@ -110,6 +397,7 @@ let p_state_tests =
     ps_damage_test "Dark received 0 dmg from psychic" dark_test psychic
       0;
   ]
+  @ List.map f (range 323)
 
 let map_pp_test
     (name : string)

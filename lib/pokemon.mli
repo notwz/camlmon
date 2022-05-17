@@ -22,6 +22,24 @@ type p_type =
 
 type p_move
 
+val normal_move : p_move
+val fire_move : p_move
+val water_move : p_move
+val electric_move : p_move
+val grass_move : p_move
+val ice_move : p_move
+val fighting_move : p_move
+val poison_move : p_move
+val ground_move : p_move
+val flying_move : p_move
+val psychic_move : p_move
+val bug_move : p_move
+val rock_move : p_move
+val ghost_move : p_move
+val dragon_move : p_move
+val dark_move : p_move
+val steel_move : p_move
+val fairy_move : p_move
 val tackle : p_move
 val cut : p_move
 val strength : p_move

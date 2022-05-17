@@ -60,15 +60,85 @@ let type_to_id = function
 
 let type_efficacy =
   [
-    [ 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 0.5; 0.; 1.; 1.; 0.5; 1. ];
     [
-      1.; 0.5; 0.5; 1.; 2.; 2.; 1.; 1.; 1.; 1.; 1.; 2.; 0.5; 1.; 0.5; 1.; 2.; 1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      0.5;
+      0.;
+      1.;
+      1.;
+      0.5;
+      1.;
     ];
     [
-      1.; 2.; 0.5; 1.; 0.5; 1.; 1.; 1.; 2.; 1.; 1.; 1.; 2.; 1.; 0.5; 1.; 1.; 1.;
+      1.;
+      0.5;
+      0.5;
+      1.;
+      2.;
+      2.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      0.5;
+      1.;
+      0.5;
+      1.;
+      2.;
+      1.;
     ];
     [
-      1.; 1.; 2.; 0.5; 0.5; 1.; 1.; 1.; 0.; 2.; 1.; 1.; 1.; 1.; 0.5; 1.; 1.; 1.;
+      1.;
+      2.;
+      0.5;
+      1.;
+      0.5;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
+      0.5;
+      1.;
+      1.;
+      1.;
+    ];
+    [
+      1.;
+      1.;
+      2.;
+      0.5;
+      0.5;
+      1.;
+      1.;
+      1.;
+      0.;
+      2.;
+      1.;
+      1.;
+      1.;
+      1.;
+      0.5;
+      1.;
+      1.;
+      1.;
     ];
     [
       1.;
@@ -91,7 +161,24 @@ let type_efficacy =
       1.;
     ];
     [
-      1.; 0.5; 0.5; 1.; 2.; 0.5; 1.; 1.; 2.; 2.; 1.; 1.; 1.; 1.; 2.; 1.; 0.5; 1.;
+      1.;
+      0.5;
+      0.5;
+      1.;
+      2.;
+      0.5;
+      1.;
+      1.;
+      2.;
+      2.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
+      0.5;
+      1.;
     ];
     [
       2.;
@@ -114,13 +201,85 @@ let type_efficacy =
       0.5;
     ];
     [
-      1.; 1.; 1.; 1.; 2.; 1.; 1.; 0.5; 0.5; 1.; 1.; 1.; 0.5; 0.5; 1.; 1.; 0.; 2.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
+      1.;
+      0.5;
+      0.5;
+      1.;
+      1.;
+      1.;
+      0.5;
+      0.5;
+      1.;
+      1.;
+      0.;
+      2.;
     ];
-    [ 1.; 2.; 1.; 2.; 0.5; 1.; 1.; 2.; 1.; 0.; 1.; 0.5; 2.; 0.; 0.; 0.; 2.; 0. ];
     [
-      1.; 1.; 1.; 0.5; 2.; 1.; 2.; 1.; 1.; 1.; 1.; 2.; 0.5; 1.; 1.; 1.; 0.5; 1.;
+      1.;
+      2.;
+      1.;
+      2.;
+      0.5;
+      1.;
+      1.;
+      2.;
+      1.;
+      0.;
+      1.;
+      0.5;
+      2.;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
     ];
-    [ 1.; 1.; 1.; 1.; 1.; 1.; 2.; 2.; 1.; 1.; 0.5; 1.; 1.; 1.; 1.; 0.; 0.5; 1. ];
+    [
+      1.;
+      1.;
+      1.;
+      0.5;
+      2.;
+      1.;
+      2.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      0.5;
+      1.;
+      1.;
+      1.;
+      0.5;
+      1.;
+    ];
+    [
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      2.;
+      1.;
+      1.;
+      0.5;
+      1.;
+      1.;
+      1.;
+      1.;
+      0.;
+      0.5;
+      1.;
+    ];
     [
       1.;
       0.5;
@@ -142,18 +301,124 @@ let type_efficacy =
       0.5;
     ];
     [
-      1.; 2.; 1.; 1.; 1.; 2.; 0.5; 1.; 0.5; 2.; 1.; 2.; 1.; 1.; 1.; 1.; 0.5; 1.;
+      1.;
+      2.;
+      1.;
+      1.;
+      1.;
+      2.;
+      0.5;
+      1.;
+      0.5;
+      2.;
+      1.;
+      2.;
+      1.;
+      1.;
+      1.;
+      1.;
+      0.5;
+      1.;
     ];
-    [ 0.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 2.; 1.; 1.; 2.; 1.; 0.5; 1.; 1. ];
-    [ 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 1.; 2.; 1.; 0.5; 0. ];
     [
-      1.; 1.; 1.; 1.; 1.; 1.; 0.5; 1.; 1.; 1.; 2.; 1.; 1.; 2.; 1.; 0.5; 1.; 0.5;
+      0.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
+      1.;
+      2.;
+      1.;
+      0.5;
+      1.;
+      1.;
     ];
     [
-      1.; 0.5; 0.5; 0.5; 1.; 2.; 1.; 1.; 1.; 1.; 1.; 1.; 2.; 1.; 1.; 1.; 0.5; 2.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
+      0.5;
+      0.;
     ];
     [
-      1.; 0.5; 1.; 1.; 1.; 1.; 2.; 0.5; 1.; 1.; 1.; 1.; 1.; 1.; 2.; 2.; 0.5; 1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      0.5;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
+      1.;
+      2.;
+      1.;
+      0.5;
+      1.;
+      0.5;
+    ];
+    [
+      1.;
+      0.5;
+      0.5;
+      0.5;
+      1.;
+      2.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      1.;
+      1.;
+      1.;
+      0.5;
+      2.;
+    ];
+    [
+      1.;
+      0.5;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      0.5;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      1.;
+      2.;
+      2.;
+      0.5;
+      1.;
     ];
   ]
 
@@ -173,6 +438,168 @@ let calculate_damage p p_move =
     let scale = List.nth (List.nth type_efficacy move_index) p_index in
     int_of_float ((p_move |> get_move_dmg |> float_of_int) *. scale)
   else 0
+
+let normal_move =
+  {
+    move_name = "normal move";
+    damage = 10;
+    move_type = Normal;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let fire_move =
+  {
+    move_name = "fire move";
+    damage = 10;
+    move_type = Fire;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let water_move =
+  {
+    move_name = "water move";
+    damage = 10;
+    move_type = Water;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let electric_move =
+  {
+    move_name = "electric move";
+    damage = 10;
+    move_type = Electric;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let grass_move =
+  {
+    move_name = "grass move";
+    damage = 10;
+    move_type = Grass;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let ice_move =
+  {
+    move_name = "ice move";
+    damage = 10;
+    move_type = Ice;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let fighting_move =
+  {
+    move_name = "fighting move";
+    damage = 10;
+    move_type = Fighting;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let poison_move =
+  {
+    move_name = "poison move";
+    damage = 10;
+    move_type = Poison;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let ground_move =
+  {
+    move_name = "ground move";
+    damage = 10;
+    move_type = Ground;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let flying_move =
+  {
+    move_name = "flying move";
+    damage = 10;
+    move_type = Flying;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let psychic_move =
+  {
+    move_name = "psychic move";
+    damage = 10;
+    move_type = Psychic;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let bug_move =
+  {
+    move_name = "bug move";
+    damage = 10;
+    move_type = Bug;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let rock_move =
+  {
+    move_name = "rock move";
+    damage = 10;
+    move_type = Rock;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let ghost_move =
+  {
+    move_name = "ghost move";
+    damage = 10;
+    move_type = Ghost;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let dragon_move =
+  {
+    move_name = "dragon move";
+    damage = 10;
+    move_type = Dragon;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let dark_move =
+  {
+    move_name = "dark move";
+    damage = 10;
+    move_type = Dark;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let steel_move =
+  {
+    move_name = "steel move";
+    damage = 10;
+    move_type = Steel;
+    accuracy = 100;
+    max_pp = 20;
+  }
+
+let fairy_move =
+  {
+    move_name = "Fairy move";
+    damage = 10;
+    move_type = Fairy;
+    accuracy = 100;
+    max_pp = 20;
+  }
 
 let cut =
   {

@@ -49,6 +49,11 @@ let draw_img name (coor : int * int) () =
   let g = Graphic_image.of_image img in
   Graphics.draw_image g (fst coor) (snd coor)
 
+let draw_img_rgb name (coor : int * int) () =
+  let img = Png.load_as_rgb24 name [] in
+  let g = Graphic_image.of_image img in
+  Graphics.draw_image g (fst coor) (snd coor)
+
 let clear_window color =
   let fg = foreground in
   set_color color;

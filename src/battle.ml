@@ -162,7 +162,7 @@ let rec draw_moves x y t_s e_s selected () =
   set_color panel_border_2;
   set_line_width 10;
   draw_rect 346 6 588 188;
-  draw_img_rgb battle_bg (670, 424) ();
+  draw_img battle_bg (670, 424) ();
   set_color white; 
   fill_rect 380 205 150 150;
   (** move info *)
@@ -366,7 +366,7 @@ let battle_intro_dialogue () =
   set_line_width 10;
   draw_rect 346 6 588 188;
   draw_enemy e_p_state ();
-  draw_img_rgb trainer_b_img (380, 205) ();
+  draw_img trainer_b_img (380, 205) ();
   moveto 360 150;
   draw_string "A wild Pokemon appeared!";
   moveto 500 100;

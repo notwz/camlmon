@@ -7,6 +7,26 @@ open Pokemon
 open T_state
 open Trainer
 
+(** 
+    ================================================================
+    Testing Plan: 
+
+    As the majority of our game is tested visually, our testing was primarily 
+    done by play testing. 
+    We have shortcuts to each GUI for catching, battling, safari zone 
+    exploration and intro dialouge. These test the gui functions and displays 
+    in [battle_encounter.mli], [battle.mli], [safari_zone.mli], and 
+    [main_menu.mli] respectfully. We use a combination of black-box and
+    glass-box testing to verify our code. We also use unit tests to test our 
+    game engine. 
+
+    Our testing demonstrates the correctness of the system because it has a 
+    quantitative measurement for the code tested with unit cases, and the 
+    visual GUI aspects are clearly correctly rendered or incorrectly rendered 
+    when we launch the game and run sequences of inputs.
+    
+    ================================================================*)
+
 (********************************************************************
    Here are some helper functions for your testing of set-like lists.
  ********************************************************************)

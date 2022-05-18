@@ -396,7 +396,6 @@ let caught_success pokemon e_s () =
   Unix.sleep 1;
   () 
 
-
 let rec battle_encounter_main pokemon x y () = 
   try 
   let e_s = init_p_state pokemon in 
@@ -404,6 +403,7 @@ let rec battle_encounter_main pokemon x y () =
     clear_window white; 
     set_color panel_color; 
     battle_intro_dialogue e_s pokemon (); 
+    synchronize ();
     Unix.sleep 1;
     draw_text_box x y();
     synchronize();

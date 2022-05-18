@@ -35,8 +35,8 @@ let new_game_dialogue =
     "playmates, and at times as cooperative workmates.";
     "Sometimes, we band together and battle others like us.";
     "Despite our closeness, we don't know everything";
-    "In fact, there are many, many secrets surrounding POKeMON.";
-    "To unravel POKeMON mysteries, I've been undertaking research.";
+    "In fact, there are many secrets surrounding POKeMON.";
+    "I've been researching to unravel POKeMON mysteries.";
     "That's what I do. But, enough about me.";
     "All right. What's your name?";
     "All right are you ready?";

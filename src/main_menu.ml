@@ -31,21 +31,20 @@ let new_game_dialogue =
     "My name is FOSTER. ";
     "But everyone call me the PROFOSTER.";
     "This is what we call a 'POKeMON.' ";
-    "This world is widely inhabited by creatures known as POKeMON.";
-    "We humans live alongside POKeMON, at times as friendly playmates, \
-     and";
-    " at times as cooperative workmates.";
-    "And sometimes, we band together and battle others like us. ";
-    "But despite our closeness, we don't know everything about POKeMON.";
+    "This world is inhabited by creatures known as POKeMON.";
+    "We humans live alongside POKeMON, at times as friendly ";
+    "playmates, and at times as cooperative workmates.";
+    "Sometimes, we band together and battle others like us.";
+    "Despite our closeness, we don't know everything";
     "In fact, there are many, many secrets surrounding POKeMON.";
     "To unravel POKeMON mysteries, I've been undertaking research.";
     "That's what I do. But, enough about me.";
     "All right. What's your name?";
     "All right are you ready?";
     "Your very own adventure is about to unfold.";
-    "Take courage, and leap into the world of POKeMON where dreams, ";
-    "adventure, and friendships await!";
-    "Well, I'll be expecting you later. Come see me in my POKeMON LAB.";
+    "Take courage, and leap into the world of POKeMON ";
+    "where dreams, adventure, and friendships await!";
+    "I'll be expecting you later. Come see me in my POKeMON LAB.";
   ]
 
 let catch_dialogue =
@@ -155,7 +154,7 @@ let paint_battle () =
   set_color black;
   fill_rect dialogue_x dialogue_y dialogue_width y_res;
   set_color bg_1;
-  draw_img charmander (340, (y_res / 2) - 150) ()
+  draw_img arena (340, (y_res / 2) - 150) ()
 
 let state_ref = ref (init_trainer "" 0)
 
@@ -213,7 +212,7 @@ let rec paint_dialogue text (state : Trainer.t ref) d_type () =
   in
   paint_main;
   if text = "This is what we call a 'POKeMON.' " then
-    draw_img pikachu (x_res / 2, (y_res / 2) + 200) ();
+    draw_img pikachu (x_res / 2 + 50, (y_res / 2)) ();
   Graphics.set_color Graphics.white;
   Graphics.fill_rect dialogue_x dialogue_y dialogue_width
     dialogue_height;

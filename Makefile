@@ -20,7 +20,7 @@ finalcheck:
 
 zip:
 	rm -f camlmon.zip
-	zip -r camlmon.zip . 
+	zip -r camlmon.zip . -x@exclude.lst
 
 clean:
 	dune clean

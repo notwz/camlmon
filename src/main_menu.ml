@@ -43,7 +43,7 @@ let new_game_dialogue =
     "Your very own adventure is about to unfold.";
     "Take courage, and leap into the world of POKeMON ";
     "where dreams, adventure, and friendships await!";
-    "I'll be expecting you later. Come see me in my POKeMON LAB.";
+    "I'll be expecting you to come see me in my POKeMON LAB!";
   ]
 
 let catch_dialogue =

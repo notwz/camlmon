@@ -36,6 +36,8 @@ let e_moves = get_move_set e_p_state
 let pokemon_back = get_back_sprite t_pokemon
 let pokemon_front = get_front_sprite e_pokemon
 let battle_bg = "public/menu_images/battle_bg.png"
+let trainer_b_img = "public/trainer_images/trainer_b.png"
+
 (* 
 type move = { name:string; damage:int}
 let moves = [ 
@@ -150,6 +152,8 @@ let rec draw_moves x y t_s e_s selected () =
   set_line_width 10;
   draw_rect 346 6 588 188;
   draw_img_rgb battle_bg (670, 424) ();
+  set_color white; 
+  fill_rect 380 205 150 150;
   (** move info *)
   (* set_color black;
   fill_rect 100 300 200 80; 
@@ -348,6 +352,7 @@ let battle_intro_dialogue () =
   set_line_width 10;
   draw_rect 346 6 588 188;
   draw_enemy e_p_state ();
+  draw_img_rgb trainer_b_img (380, 205) ();
   moveto 360 150;
   draw_string ("A wild Pokemon appeared!");
   moveto 500 100;
@@ -363,7 +368,7 @@ let rec battle_main x y () =
     clear_window white; 
     set_color panel_color; 
     battle_intro_dialogue (); 
-    Unix.sleep 3;
+    Unix.sleep 2;
     draw_text_box x y();
     synchronize();
     let e = wait_next_event [ Key_pressed ] in

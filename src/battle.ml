@@ -225,13 +225,13 @@ let rec draw_moves x y t_s e_s selected () =
       | '2' -> draw_moves 380 50 t_s e_s 1 ()
       | '3' -> draw_moves 680 140 t_s e_s 2 ()
       | '4' -> draw_moves 680 50 t_s e_s  3 ()
-      | 'a' -> take_move x y t_s e_s (); draw_moves x y t_s e_s 0 ()
+      | 'a' -> take_move x y b_s (); draw_moves x y t_s e_s 0 ()
       | 'q' -> Stdlib.exit 0
       | _ -> raise NoCommand
       in user_command 
   with NoCommand -> draw_moves x y t_s e_s 0 ()
 
-and take_move x y t_s e_s () = 
+and take_move x y b_s () = 
   let (move_name, move) = 
     match (x,y) with 
     | (380, 140) -> ((List.nth t_moves 0 |> move_name ), List.nth t_moves 0)
@@ -252,9 +252,11 @@ and take_move x y t_s e_s () =
   set_color black;
   draw_string (t_name ^ " used " ^ move_name ^ "!");
   synchronize ();
-  let dmg = calculate_damage t_s move in 
-  let new_e_s = damaged e_s dmg in 
-  let new_t_s = use_moves_str t_s move_name in 
+  let new_b_state = Battle_state.move move b_s in 
+  (* let dmg = calculate_damage t_s move in  *)
+  let new_e_s = b_p2_s new_b_state in 
+  let new_t_s = b_p1_s new_b_state in
+  (* let new_t_s = use_moves_str t_s move_name in  *)
   Unix.sleep 1;
   draw_enemy new_e_s ();
   let b_s = init_state new_t_s new_e_s in

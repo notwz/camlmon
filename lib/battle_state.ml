@@ -28,6 +28,9 @@ let move m t =
     { p1 = new_p1; p2 = new_p2; move_first = true }
   else raise P_state.InvalidMove
 
+let b_p1_s t = t.p1 
+let b_p2_s t = t.p2 
+
 let is_done t = P_state.get_hp t.p1 <= 0 || P_state.get_hp t.p2 <= 0
 
 let winner t =

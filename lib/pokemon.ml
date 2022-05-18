@@ -691,7 +691,6 @@ let pokemons =
     raikou;
   |]
 
-
 let randomelement arr =
   Random.self_init ();
   let n = Random.int (Array.length arr) in

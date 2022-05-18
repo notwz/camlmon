@@ -2,7 +2,6 @@ open Graphics
 open Graphic_image
 open Lib
 open Trainer
-open Encounter
 open Gui_library
 open Pokemon
 open P_state
@@ -42,6 +41,7 @@ let pokemon_front = get_front_sprite e_pokemon
 let battle_bg = "public/menu_images/battle_bg.png"
 let trainer_b_img = "public/trainer_images/trainer_b.png"
 
+(** [draw_t_pokemon p] draws the pokemon [p] *)
 let draw_t_pokemon (pokemon : P_state.t) () =
   let name = pokemon_name pokemon in
   let hp = get_hp pokemon in
@@ -76,6 +76,7 @@ let draw_t_pokemon (pokemon : P_state.t) () =
   synchronize ();
   ()
 
+(** [draw_enemy p] draws the pokemon [p] *)
 let draw_enemy pokemon () =
   let name = pokemon_name pokemon in
   let hp = get_hp pokemon in
@@ -109,6 +110,8 @@ let draw_enemy pokemon () =
   synchronize ();
   ()
 
+(* [draw_enemy_enc p_s p] draws the enemy pokemon [p] and information
+   about its corresponding state [p_s] *)
 let draw_enemy_enc p_s p () =
   let name = pokemon_name p_s in
   let hp = get_hp p_s in
@@ -143,6 +146,8 @@ let draw_enemy_enc p_s p () =
   synchronize ();
   ()
 
+(** [draw_text_box] draws the text box for the choices to "catch",
+    "attack" or "quit" when entered encounter with a pokemon *)
 let draw_text_box x y () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -163,6 +168,9 @@ let draw_text_box x y () =
   synchronize ();
   ()
 
+(** [draw_move_info x y n t_s] draws the movements the trainer [t_s] is
+    able to choose from listed and their number [n] given [x] and [y]
+    coordinates*)
 let draw_move_info x y n t_s () =
   let move_list = get_move_set t_s in
   let move_selected = List.nth move_list n in
@@ -182,6 +190,10 @@ let draw_move_info x y n t_s () =
   set_color black;
   ()
 
+(** [draw_moves x y t_s e_s selected] draws using coordinate [x] and [y]
+    the trainer [t_s] and enemy [e_s] as well as possible moves trainer
+    [t_s] can select from. User keyboard command is received to select
+    movement*)
 let rec draw_moves x y t_s e_s selected p () =
   try
     set_color white;
@@ -258,6 +270,9 @@ let rec draw_moves x y t_s e_s selected p () =
       user_command
   with NoCommand -> draw_moves x y t_s e_s 0 p ()
 
+(** [take_move x y t_s e_s p] displays the effect of the trainer [t_s]'s
+    move on enemy [e_s] and the trainer can either win or lose given how
+    much harm they caused on enemy*)
 and take_move x y t_s e_s p () =
   let move_name, move =
     match (x, y) with
@@ -297,6 +312,9 @@ and take_move x y t_s e_s p () =
   else enemy_move x y new_t_s new_e_s p ();
   draw_moves 380 140 new_t_s new_e_s 0 p ()
 
+(** [enemy_move x y t_s e_s] displays the effect of enemy [e_s]'s move
+    on trainer [t_s] and the trainer can either win or lose given how
+    much harm they received*)
 and enemy_move x y t_s e_s p () =
   let e_moves = get_move_set e_s in
   let len = List.length e_moves in
@@ -332,6 +350,8 @@ and enemy_move x y t_s e_s p () =
   else draw_moves 380 140 new_t_s e_s 0 p ();
   ()
 
+(** [draw_victory_screen n p] draws message to notify user that the side
+    with name [n] has lost in the battle*)
 and draw_victory_screen (name : string) p () =
   try
     set_color white;
@@ -364,6 +384,8 @@ and draw_victory_screen (name : string) p () =
     user_command
   with NoCommand -> draw_victory_screen "ERROR:" p ()
 
+(** [battle_intro_dialogue e p] dialogues with user to say that a
+    pokemon [p] has appeared, and draws the enemy pokemon [e] *)
 let battle_intro_dialogue e_s p () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -379,6 +401,8 @@ let battle_intro_dialogue e_s p () =
   synchronize ();
   ()
 
+(** [caught_success p e] draws a message to notify user of their success
+    in catching [p] while an enemy [e] being present*)
 let rec caught_success pokemon e_s () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -404,6 +428,9 @@ let rec caught_success pokemon e_s () =
   user_command;
   ()
 
+(** [battle_encounter_main p x y] draws the page that happens after an
+    encounter with pokemon [p] has been triggered and the user can chose
+    to attack or catch the pokemon, or quit game*)
 let rec battle_encounter_main pokemon x y () =
   try
     let e_s = init_p_state pokemon in
@@ -428,6 +455,8 @@ let rec battle_encounter_main pokemon x y () =
     user_command
   with NoCommand -> battle_encounter_main pokemon x y ()
 
+(** [catch_intro_dialogue c e p] draws the dialogue between pokemon [p]
+    and enemy pokemon [e] given catch state [c]*)
 and catch_intro_dialogue catch_s e_s p () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -443,6 +472,10 @@ and catch_intro_dialogue catch_s e_s p () =
   synchronize ();
   ()
 
+(** [take_turn s] processes the catch state [s] after asking for user
+    input to ball/bait/rock the pokemon and returns a new catch state,
+    the pokemon would be either caught, ran away or the action did not
+    take effect and the user can try to catch again*)
 and take_turn catch_s () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -477,6 +510,9 @@ and take_turn catch_s () =
   in
   user_command
 
+(** [draw_catch catch_s] draws the screen to display user with
+    information of whether the catch they attempted had an effect, if
+    yes then move on to caught stage, if not they can try again *)
 and draw_catch catch_s () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -511,6 +547,9 @@ and draw_catch catch_s () =
     take_turn new_s ()
   end
 
+(** [draw_bait catch_s] draws the screen to display user with
+    information of whether the bait they attempted had an effect, if yes
+    then move on to caught stage, if not they can try again *)
 and draw_bait catch_s () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -545,6 +584,9 @@ and draw_bait catch_s () =
     take_turn new_s ()
   end
 
+(** [draw_rock catch_s] draws the screen to display user with
+    information of whether the rock they threw had an effect, if yes
+    then move on to caught stage, if not they can try again *)
 and draw_rock catch_s () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -579,6 +621,8 @@ and draw_rock catch_s () =
     take_turn new_s ()
   end
 
+(** [draw_ran_away] draws the screen to display user with information of
+    whether the pokemon has already ran away or should continue *)
 and draw_ran_away () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
@@ -595,6 +639,8 @@ and draw_ran_away () =
   synchronize ();
   Unix.sleep 1
 
+(** [draw_caught] draws the screen to display user with information of
+    whether they caught the pokemon or should continue *)
 and draw_caught () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;

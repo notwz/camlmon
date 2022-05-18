@@ -6,7 +6,6 @@ open Png
 open Printf
 open Lib
 open Trainer
-open Encounter
 open Battle_encounter
 open Pokemon
 open P_state

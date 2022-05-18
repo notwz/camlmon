@@ -2,7 +2,6 @@ open Graphics
 open Graphic_image
 open Lib
 open Trainer
-open Encounter
 open Gui_library
 open Pokemon
 open P_state
@@ -39,7 +38,7 @@ let pokemon_front = get_front_sprite e_pokemon
 let battle_bg = "public/menu_images/battle_bg.png"
 let trainer_b_img = "public/trainer_images/trainer_b.png"
 
-(** [draw_t_pokemon p] draws pokemon *)
+(** [draw_t_pokemon p] draws pokemon [p] *)
 let draw_t_pokemon (pokemon : P_state.t) () =
   let name = pokemon_name pokemon in
   let hp = get_hp pokemon in
@@ -74,6 +73,7 @@ let draw_t_pokemon (pokemon : P_state.t) () =
   synchronize ();
   ()
 
+(** [draw_enemy p] draws an enemy pokemon [p] *)
 let draw_enemy pokemon () =
   let name = pokemon_name pokemon in
   let hp = get_hp pokemon in
@@ -127,9 +127,12 @@ let draw_text_box () =
   synchronize ();
   ()
 
-let draw_move_info x y n t_s () =
+(** [draw_move_info x y n t_s] draws the movements the trainer [t_s] is
+    able to choose from listed and their number [n] given [x] and [y]
+    coordinates*)
+let draw_move_info x y number t_s () =
   let move_list = get_move_set t_s in
-  let move_selected = List.nth move_list n in
+  let move_selected = List.nth move_list number in
   let move_pp_curr = fst (move_pp move_selected) in
   let move_pp_max = snd (move_pp move_selected) in
   let move_type =
@@ -146,9 +149,12 @@ let draw_move_info x y n t_s () =
   set_color black;
   ()
 
+(** [draw_moves x y t_s e_s selected] draws using coordinate [x] and [y]
+    the trainer [t_s] and enemy [e_s] as well as possible moves trainer
+    [t_s] can select from. User keyboard command is received to select
+    movement*)
 let rec draw_moves x y t_s e_s selected () =
   try
-    (* text box *)
     set_color white;
     fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;
     set_color panel_border_1;
@@ -160,19 +166,6 @@ let rec draw_moves x y t_s e_s selected () =
     draw_img battle_bg (670, 424) ();
     set_color white;
     fill_rect 380 205 150 150;
-    (* move info *)
-    (* set_color black; fill_rect 100 300 200 80; set_line_width 3;
-       set_color white; draw_rect 104 304 192 72; let move_list =
-       get_move_set t_s in let move_selected = List.nth move_list
-       selected in let move_pp_curr = fst (move_pp move_selected) in let
-       move_pp_max = snd (move_pp move_selected) in let move_type =
-       get_move_type_str t_pokemon (move_selected |> move_name) in
-       set_color white; moveto 120 350; draw_string (" > " ^
-       (move_selected |> move_name)); moveto 120 330; draw_string
-       ((move_pp_curr |> string_of_int) ^ "/" ^ (move_pp_max |>
-       string_of_int)); moveto 120 310; draw_string move_type; *)
-    (* move set *)
-    (* borders for moves*)
     set_line_width 8;
     set_color black;
     draw_rect 370 118 240 55;
@@ -238,6 +231,9 @@ let rec draw_moves x y t_s e_s selected () =
       user_command
   with NoCommand -> draw_moves x y t_s e_s 0 ()
 
+(** [take_move x y t_s e_s p] displays the effect of the trainer [t_s]'s
+    move on enemy [e_s] and the trainer can either win or lose given how
+    much harm they caused on enemy*)
 and take_move x y b_s () =
   let move_name, move =
     match (x, y) with
@@ -280,6 +276,9 @@ and take_move x y b_s () =
   else enemy_move x y new_t_s new_e_s ();
   draw_moves 380 140 new_t_s new_e_s 0 ()
 
+(** [enemy_move x y t_s e_s] displays the effect of enemy [e_s]'s move
+    on trainer [t_s] and the trainer can either win or lose given how
+    much harm they received*)
 and enemy_move x y t_s e_s () =
   let e_moves = get_move_set e_s in
   let len = List.length e_moves in
@@ -315,6 +314,8 @@ and enemy_move x y t_s e_s () =
   else draw_moves 380 140 new_t_s e_s 0 ();
   ()
 
+(** [draw_victory_screen name] displays the user [name] with options to
+    battle again or to quit the game and accepts user keyboard input *)
 and draw_victory_screen (name : string) () =
   try
     set_color white;
@@ -347,7 +348,8 @@ and draw_victory_screen (name : string) () =
     user_command
   with NoCommand -> draw_victory_screen "ERROR:" ()
 
-(** [battle_intro_dialogue] paints the *)
+(** [battle_intro_dialogue] paints the move options for user to choose
+    and use it*)
 let battle_intro_dialogue () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width dialogue_height;

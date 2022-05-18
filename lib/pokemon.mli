@@ -1,3 +1,5 @@
+(** Representation of a pokemon in game *)
+
 type t
 (** The abstract type that represents a pokemon *)
 

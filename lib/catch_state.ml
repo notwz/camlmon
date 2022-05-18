@@ -22,8 +22,7 @@ let catch st =
   if seed < st.catch_prob then { st with caught = true }
   else if seed < st.catch_prob + st.run_away_prob then
     { st with ran_away = true }
-  else
-    st
+  else st
 
 let bait st =
   let () = Random.self_init () in

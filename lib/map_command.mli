@@ -1,3 +1,5 @@
+(** Representation of user command *)
+
 type command =
   | Up
   | Down

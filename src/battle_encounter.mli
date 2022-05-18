@@ -1,3 +1,8 @@
+(** battle_encounter is where catching and battling occurs after
+    encountering a pokemon in safari zone, it contains information about
+    trainer's pokemon, the enemy pokemon, and their respective moves.
+    Also includes information about catching state *)
+
 open Lib
 
 val battle_encounter_main : Pokemon.t -> int -> int -> unit -> unit

@@ -1,3 +1,5 @@
+(** Representation of a catch state while in catching mode *)
+
 type t
 (** The abstract type of values representing catch states. *)
 

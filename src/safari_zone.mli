@@ -1,3 +1,6 @@
+(** safari_zone is where the trainer can encounter and catch/battle with
+    pokemon, contains information about trainer, tile and pokemon*)
+
 open Lib
 
 type command =

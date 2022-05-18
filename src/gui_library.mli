@@ -1,3 +1,6 @@
+(** The module Gui_library contains constants and functions that can be
+    used across files for gui*)
+
 open Graphics
 
 val panel_color : color

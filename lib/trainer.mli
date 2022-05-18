@@ -1,3 +1,5 @@
+(** Representation of a trainer *)
+
 type t
 (** The abstract type of values repesenting trainers. *)
 

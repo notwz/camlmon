@@ -1,27 +1,35 @@
 (** Representation of the pokemon state. This module represents the
     state of the pokemon within a battle. *)
 
-type move
 type t
+(** The abstract type representing a pokemon's state *)
+
+type move
+(** The abstract type representing a pokemon's move *)
 
 exception InvalidMove
-(** Raised when move is found in list *)
+(** Raised when move is not found in move list *)
 
 val pokemon_name : t -> string
-val move_pp : move -> int * int
-
-val init_move : Pokemon.p_move -> move
-(** [init_move m] initializes a pokemon's move with the data from [m]. *)
+(** [pokemon_name p] is the name of pokemon [p] *)
 
 val move_name : move -> string
 (** [move_name m] returns the name of move [m]. *)
+
+val move_pp : move -> int * int
+(** [move_pp move] represents the current count and max count of the
+    move *)
+
+val init_move : Pokemon.p_move -> move
+(** [init_move m] initializes a pokemon's move with the data from
+    pokemon move [m]. *)
 
 val init_move_set : Pokemon.t -> move list
 (** [init_move_set] initializes a pokemon's move set with the given move
     sets. *)
 
 val init_p_state : Pokemon.t -> t
-(** [init_p_state] creates a new pokemon state. *)
+(** [init_p_state] is a new pokemon state. *)
 
 val valid_move : t -> string -> bool
 (** [valid_move] returns true or false if the move is in the pokemon's

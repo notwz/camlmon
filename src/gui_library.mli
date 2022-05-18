@@ -26,4 +26,21 @@ val item_x_d : int -> int
 val item_y_d : int -> int
 val clear_window : color -> unit
 val draw_img : string -> int * int -> unit -> unit
-val draw_img_rgb : string -> int * int -> unit -> unit
+val grass_tile : string
+val path_tile : string
+val water_tile : string
+val trainer_still : string
+
+val game_x : color
+(** [game_x] is the x coordinate of bottom left corner of the game
+    screen *)
+
+val game_y : color
+(** [game_y] is the y coordinate of bottom left corner of the game
+    screen *)
+
+val game_w : color
+(** [game_w] is the width of the game screen *)
+
+val game_h : color
+(** [game_h] is the height of the game screen *)

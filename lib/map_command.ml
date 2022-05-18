@@ -8,7 +8,8 @@ type command =
 exception Empty
 exception Malformed
 
-(** removes the empty strings in a string list and returns the result *)
+(** [remove_empty lst] is the list that contains all elements in list
+    [lst] but with empty strings removed*)
 let remove_empty string_list =
   List.fold_right
     (fun x y -> if x = "" then y else x :: y)

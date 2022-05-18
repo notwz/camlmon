@@ -36,7 +36,6 @@ type t = {
   back_img : string;
 }
 
-
 let type_to_str = function
   | Normal -> "Normal"
   | Fire -> "Fire"
@@ -58,15 +57,16 @@ let type_to_str = function
   | Fairy -> "Fair"
 
 let get_pokemon_name t = t.name
-let get_move_type_str t goal = 
-  let rec find_move moves goal = 
-    match moves with 
-    | h::t -> if h.move_name = goal then 
-      h.move_type else find_move t goal
-    | _ -> failwith "ERR: pokemon.ml get_move_type -> Move not found."
-in let move_type = find_move t.p_moves goal in 
-  move_type |> type_to_str
 
+let get_move_type_str t goal =
+  let rec find_move moves goal =
+    match moves with
+    | h :: t ->
+        if h.move_name = goal then h.move_type else find_move t goal
+    | _ -> failwith "ERR: pokemon.ml get_move_type -> Move not found."
+  in
+  let move_type = find_move t.p_moves goal in
+  move_type |> type_to_str
 
 let type_to_id = function
   | Normal -> 0
@@ -87,9 +87,6 @@ let type_to_id = function
   | Dark -> 15
   | Steel -> 16
   | Fairy -> 17
-
-
-
 
 let type_efficacy =
   [
@@ -472,752 +469,115 @@ let calculate_damage p p_move =
     int_of_float ((p_move |> get_move_dmg |> float_of_int) *. scale)
   else 0
 
-let normal_move =
-  {
-    move_name = "normal move";
-    damage = 10;
-    move_type = Normal;
-    accuracy = 100;
-    max_pp = 20;
-  }
+(** [create_move n d t a max] is a pokemon move with name [n] damage [d]
+    t [t] accuracy [a] max_pp [max]*)
+let create_move
+    (name : string)
+    (damage : int)
+    (t : p_type)
+    (accuracy : int)
+    (max_pp : int) : p_move =
+  { move_name = name; damage; move_type = t; accuracy; max_pp }
 
-let fire_move =
-  {
-    move_name = "fire move";
-    damage = 10;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 20;
-  }
+let normal_move = create_move "normal move" 10 Normal 100 20
+let fire_move = create_move "fire move" 10 Fire 100 20
+let water_move = create_move "water move" 10 Water 100 20
+let electric_move = create_move "electric move" 10 Electric 100 20
+let grass_move = create_move "grass move" 10 Grass 100 20
+let ice_move = create_move "ice move" 10 Ice 100 20
+let fighting_move = create_move "fighting move" 10 Fighting 100 20
+let poison_move = create_move "poison move" 10 Poison 100 20
+let ground_move = create_move "ground move" 10 Ground 100 20
+let flying_move = create_move "flying move" 10 Flying 100 20
+let psychic_move = create_move "psychic move" 10 Psychic 100 20
+let bug_move = create_move "bug move" 10 Bug 100 20
+let rock_move = create_move "rock move" 10 Rock 100 20
+let ghost_move = create_move "ghost move" 10 Ghost 100 20
+let dragon_move = create_move "dragon move" 10 Dragon 100 20
+let dark_move = create_move "dark move" 10 Dark 100 20
+let steel_move = create_move "steel move" 10 Steel 100 20
+let fairy_move = create_move "Fairy move" 10 Fairy 100 20
+let cut = create_move "cut" 50 Normal 100 20
+let strength = create_move "strength" 70 Normal 100 10
+let tackle = create_move "tackle" 30 Normal 100 40
+let flamethrower = create_move "Flamethrower" 90 Fire 100 15
+let ember = create_move "Ember" 90 Fire 100 15
+let flareblitz = create_move "Flare Blitz" 90 Fire 100 15
+let fireblast = create_move "Fire Blast" 90 Fire 100 15
+let firespin = create_move "Fire Spin" 90 Fire 100 15
+let thundershock = create_move "Thunder Shock" 90 Electric 100 15
+let thunderfang = create_move "Thunder Fang" 90 Electric 100 15
+let zapcannon = create_move "Zap Cannon" 90 Electric 100 15
+let reversal = create_move "Reversal" 90 Fighting 100 15
+let highjumpkick = create_move "High Jump Kick" 90 Fighting 100 15
+let forcepalm = create_move "Force Palm" 90 Fire 100 15
+let belch = create_move "Belch" 90 Fire 100 15
+let sludge = create_move "Sludge" 90 Fire 100 15
+let rockthrow = create_move "Rock Throw" 90 Rock 100 15
+let rockslide = create_move "Rock Slide" 90 Rock 100 15
+let thrash = create_move "Thrash" 90 Fire 100 15
+let drillpeck = create_move "Drill Peck" 90 Fire 100 15
+let pluck = create_move "Pluck" 90 Fire 100 15
+let wingattack = create_move "Wing Attack" 90 Fire 100 15
+let surf = create_move "surf" 90 Water 100 15
+let thunderbolt = create_move "thunderbolt" 90 Electric 100 15
+let thunder = create_move "thunder" 110 Electric 70 5
+let electroball = create_move "Electroball" 100 Electric 90 10
+let leaf_blade = create_move "leaf blade" 90 Grass 100 15
+let ice_beam = create_move "ice beam" 90 Ice 100 15
+let blizzard = create_move "blizzard" 110 Ice 70 5
+let close_combat = create_move "close combat" 100 Fighting 100 10
+let sludge_bomb = create_move "sludge bomb" 90 Poison 90 15
+let earthquake = create_move "earthquake" 100 Ground 100 15
+let fly = create_move "fly" 70 Flying 90 15
+let brave_bird = create_move "brave bird" 100 Flying 90 10
+let psychic = create_move "psychic" 90 Psychic 100 20
+let bug_buzz = create_move "bug buzz" 90 Bug 100 15
+let stone_edge = create_move "stone edge" 100 Rock 90 10
+let shadow_ball = create_move "shadow ball" 90 Ghost 100 15
+let crunch = create_move "crunch" 90 Dark 100 15
+let dragon_claw = create_move "dragon claw" 90 Dragon 100 15
+let flash_cannon = create_move "flash cannon" 90 Steel 100 15
+let moonblast = create_move "moonblast" 90 Fairy 100 15
+let splash = create_move "splash" 0 Normal 100 40
 
-let water_move =
-  {
-    move_name = "water move";
-    damage = 10;
-    move_type = Water;
-    accuracy = 100;
-    max_pp = 20;
-  }
+(** [make_test i n t m hp f b] is a pokemon with id [i] name [n] p_type
+    [t] p_moves [m] max_hp [hp] front_img [f] and back_img [b]*)
+let make_test
+    (id : int)
+    (name : string)
+    (p_type : p_type)
+    (p_moves : p_move list)
+    (max_hp : int)
+    (front_img : string)
+    (back_img : string) =
+  { id; name = "name"; p_type; p_moves; max_hp; front_img; back_img }
 
-let electric_move =
-  {
-    move_name = "electric move";
-    damage = 10;
-    move_type = Electric;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let grass_move =
-  {
-    move_name = "grass move";
-    damage = 10;
-    move_type = Grass;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let ice_move =
-  {
-    move_name = "ice move";
-    damage = 10;
-    move_type = Ice;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let fighting_move =
-  {
-    move_name = "fighting move";
-    damage = 10;
-    move_type = Fighting;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let poison_move =
-  {
-    move_name = "poison move";
-    damage = 10;
-    move_type = Poison;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let ground_move =
-  {
-    move_name = "ground move";
-    damage = 10;
-    move_type = Ground;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let flying_move =
-  {
-    move_name = "flying move";
-    damage = 10;
-    move_type = Flying;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let psychic_move =
-  {
-    move_name = "psychic move";
-    damage = 10;
-    move_type = Psychic;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let bug_move =
-  {
-    move_name = "bug move";
-    damage = 10;
-    move_type = Bug;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let rock_move =
-  {
-    move_name = "rock move";
-    damage = 10;
-    move_type = Rock;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let ghost_move =
-  {
-    move_name = "ghost move";
-    damage = 10;
-    move_type = Ghost;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let dragon_move =
-  {
-    move_name = "dragon move";
-    damage = 10;
-    move_type = Dragon;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let dark_move =
-  {
-    move_name = "dark move";
-    damage = 10;
-    move_type = Dark;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let steel_move =
-  {
-    move_name = "steel move";
-    damage = 10;
-    move_type = Steel;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let fairy_move =
-  {
-    move_name = "Fairy move";
-    damage = 10;
-    move_type = Fairy;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let cut =
-  {
-    move_name = "cut";
-    damage = 50;
-    move_type = Normal;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let strength =
-  {
-    move_name = "strength";
-    damage = 70;
-    move_type = Normal;
-    accuracy = 100;
-    max_pp = 10;
-  }
-
-let tackle =
-  {
-    move_name = "tackle";
-    damage = 30;
-    move_type = Normal;
-    accuracy = 100;
-    max_pp = 40;
-  }
-
-let flamethrower =
-  {
-    move_name = "Flamethrower";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let ember =
-  {
-    move_name = "Ember";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let flareblitz =
-  {
-    move_name = "Flare Blitz";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let fireblast =
-  {
-    move_name = "Fire Blast";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let firespin =
-  {
-    move_name = "Fire Spin";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let thundershock =
-  {
-    move_name = "Thunder Shock";
-    damage = 90;
-    move_type = Electric;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let thunderfang =
-  {
-    move_name = "Thunder Fang";
-    damage = 90;
-    move_type = Electric;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let zapcannon =
-  {
-    move_name = "Zap Cannon";
-    damage = 90;
-    move_type = Electric;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let reversal =
-  {
-    move_name = "Reversal";
-    damage = 90;
-    move_type = Fighting;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let highjumpkick =
-  {
-    move_name = "High Jump Kick";
-    damage = 90;
-    move_type = Fighting;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let forcepalm =
-  {
-    move_name = "Force Palm";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let belch =
-  {
-    move_name = "Belch";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let sludge =
-  {
-    move_name = "Sludge";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let rockthrow =
-  {
-    move_name = "Rock Throw";
-    damage = 90;
-    move_type = Rock;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let rockslide =
-  {
-    move_name = "Rock Slide";
-    damage = 90;
-    move_type = Rock;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let thrash =
-  {
-    move_name = "Thrash";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let drillpeck =
-  {
-    move_name = "Drill Peck";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let pluck =
-  {
-    move_name = "Pluck";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let wingattack =
-  {
-    move_name = "Wing Attack";
-    damage = 90;
-    move_type = Fire;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let surf =
-  {
-    move_name = "surf";
-    damage = 90;
-    move_type = Water;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let thunderbolt =
-  {
-    move_name = "thunderbolt";
-    damage = 90;
-    move_type = Electric;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let thunder =
-  {
-    move_name = "thunder";
-    damage = 110;
-    move_type = Electric;
-    accuracy = 70;
-    max_pp = 5;
-  }
-
-let electroball =
-  {
-    move_name = "Electroball";
-    damage = 100;
-    move_type = Electric;
-    accuracy = 90;
-    max_pp = 10;
-  }
-
-let leaf_blade =
-  {
-    move_name = "leaf blade";
-    damage = 90;
-    move_type = Grass;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let ice_beam =
-  {
-    move_name = "ice beam";
-    damage = 90;
-    move_type = Ice;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let blizzard =
-  {
-    move_name = "blizzard";
-    damage = 110;
-    move_type = Ice;
-    accuracy = 70;
-    max_pp = 5;
-  }
-
-let close_combat =
-  {
-    move_name = "close combat";
-    damage = 100;
-    move_type = Fighting;
-    accuracy = 100;
-    max_pp = 10;
-  }
-
-let sludge_bomb =
-  {
-    move_name = "sludge bomb";
-    damage = 90;
-    move_type = Poison;
-    accuracy = 90;
-    max_pp = 15;
-  }
-
-let earthquake =
-  {
-    move_name = "earthquake";
-    damage = 100;
-    move_type = Ground;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let fly =
-  {
-    move_name = "fly";
-    damage = 70;
-    move_type = Flying;
-    accuracy = 90;
-    max_pp = 15;
-  }
-
-let brave_bird =
-  {
-    move_name = "brave bird";
-    damage = 100;
-    move_type = Flying;
-    accuracy = 90;
-    max_pp = 10;
-  }
-
-let psychic =
-  {
-    move_name = "psychic";
-    damage = 90;
-    move_type = Psychic;
-    accuracy = 100;
-    max_pp = 20;
-  }
-
-let bug_buzz =
-  {
-    move_name = "bug buzz";
-    damage = 90;
-    move_type = Bug;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let stone_edge =
-  {
-    move_name = "stone edge";
-    damage = 100;
-    move_type = Rock;
-    accuracy = 90;
-    max_pp = 10;
-  }
-
-let shadow_ball =
-  {
-    move_name = "shadow ball";
-    damage = 90;
-    move_type = Ghost;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let crunch =
-  {
-    move_name = "crunch";
-    damage = 90;
-    move_type = Dark;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let dragon_claw =
-  {
-    move_name = "dragon claw";
-    damage = 90;
-    move_type = Dragon;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let flash_cannon =
-  {
-    move_name = "flash cannon";
-    damage = 90;
-    move_type = Steel;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let moonblast =
-  {
-    move_name = "moonblast";
-    damage = 90;
-    move_type = Fairy;
-    accuracy = 100;
-    max_pp = 15;
-  }
-
-let splash =
-  {
-    move_name = "splash";
-    damage = 0;
-    move_type = Normal;
-    accuracy = 100;
-    max_pp = 40;
-  }
-
-let normal_test =
-  {
-    id = 0;
-    name = "normal";
-    p_type = Normal;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let fire_test =
-  {
-    id = 0;
-    name = "fire";
-    p_type = Fire;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let water_test =
-  {
-    id = 0;
-    name = "water";
-    p_type = Water;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
+let p_move_list = [ tackle; flamethrower; surf; thunderbolt ]
+let normal_test = make_test 0 "normal" Normal p_move_list 200 "" ""
+let fire_test = make_test 0 "fire" Fire p_move_list 200 "" ""
+let water_test = make_test 0 "water" Water p_move_list 200 "" ""
 
 let electric_test =
-  {
-    id = 0;
-    name = "electric";
-    p_type = Electric;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
+  make_test 0 "electric" Electric p_move_list 200 "" ""
 
-let grass_test =
-  {
-    id = 0;
-    name = "grass";
-    p_type = Grass;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let ice_test =
-  {
-    id = 0;
-    name = "ice";
-    p_type = Ice;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
+let grass_test = make_test 0 "grass" Grass p_move_list 200 "" ""
+let ice_test = make_test 0 "ice" Ice p_move_list 200 "" ""
 
 let fighting_test =
-  {
-    id = 0;
-    name = "fighting";
-    p_type = Fighting;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
+  make_test 0 "fighting" Fighting p_move_list 200 "" ""
 
-let poison_test =
-  {
-    id = 0;
-    name = "poison";
-    p_type = Poison;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let flying_test =
-  {
-    id = 0;
-    name = "flying";
-    p_type = Flying;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let ground_test =
-  {
-    id = 0;
-    name = "ground";
-    p_type = Ground;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let psychic_test =
-  {
-    id = 0;
-    name = "psychic";
-    p_type = Psychic;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let bug_test =
-  {
-    id = 0;
-    name = "bug";
-    p_type = Bug;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let rock_test =
-  {
-    id = 0;
-    name = "rock";
-    p_type = Rock;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let ghost_test =
-  {
-    id = 0;
-    name = "ghost";
-    p_type = Ghost;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let dragon_test =
-  {
-    id = 0;
-    name = "dragon";
-    p_type = Dragon;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let dark_test =
-  {
-    id = 0;
-    name = "dark";
-    p_type = Dark;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let steel_test =
-  {
-    id = 0;
-    name = "steel";
-    p_type = Steel;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
-
-let fairy_test =
-  {
-    id = 0;
-    name = "fairy";
-    p_type = Fairy;
-    p_moves = [ tackle; flamethrower; surf; thunderbolt ];
-    max_hp = 200;
-    front_img = "";
-    back_img = "";
-  }
+let poison_test = make_test 0 "poison" Poison p_move_list 200 "" ""
+let flying_test = make_test 0 "flying" Flying p_move_list 200 "" ""
+let ground_test = make_test 0 "ground" Ground p_move_list 200 "" ""
+let psychic_test = make_test 0 "psychic" Psychic p_move_list 200 "" ""
+let bug_test = make_test 0 "bug" Bug p_move_list 200 "" ""
+let rock_test = make_test 0 "rock" Rock p_move_list 200 "" ""
+let ghost_test = make_test 0 "ghost" Ghost p_move_list 200 "" ""
+let dragon_test = make_test 0 "dragon" Dragon p_move_list 200 "" ""
+let dark_test = make_test 0 "dark" Dark p_move_list 200 "" ""
+let steel_test = make_test 0 "steel" Steel p_move_list 200 "" ""
+let fairy_test = make_test 0 "fairy" Fairy p_move_list 200 "" ""
 
 let pikachu =
   {

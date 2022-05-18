@@ -10,10 +10,11 @@ open Trainer
 open Safari_zone
 open Battle
 open Battle_encounter
-open Pokemon 
+open Pokemon
+open Gui_library
 
-let printDes (des : string) =
-  ANSITerminal.print_string [ ANSITerminal.cyan ] (" Des " ^ des ^ "!")
+(* let printDes (des : string) = ANSITerminal.print_string [
+   ANSITerminal.cyan ] (" Des " ^ des ^ "!") *)
 
 let dialogue = [ "Dialogue 1"; "Dialogue 2"; "Dialogue 3" ]
 
@@ -106,17 +107,6 @@ let panel_outline = 3
 let item_x_d (width : int) = (x_res - width) / 2
 let item_y_d (width : int) = (y_res - width) / 2
 
-let draw_img name (coor : int * int) () =
-  let img = Png.load_as_rgb24 name [] in
-  let g = Graphic_image.of_image img in
-  Graphics.draw_image g (fst coor * 1) (snd coor * 1)
-
-let clear_window color =
-  let fg = foreground in
-  set_color color;
-  fill_rect 0 0 (size_x ()) (size_y ());
-  set_color fg
-
 let rec paint_prof () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width y_res;
@@ -167,19 +157,17 @@ let paint_battle () =
   set_color bg_1;
   draw_img charmander (340, (y_res / 2) - 150) ()
 
-
 let state_ref = ref (init_trainer "" 0)
 
+(** ==============================
 
-(** 
-    ==============================
+    Paint Name
 
-    Paint Name 
-    
-    appears in intro dialouge and mutates the name field in the trainer state 
-    
+    appears in intro dialouge and mutates the name field in the trainer
+    state
+
     ==============================*)
-let rec paint_name (state:Trainer.t ref) () =
+let rec paint_name (state : Trainer.t ref) () =
   try
     let name = Trainer.get_trainer_name !state in
     set_color white;
@@ -198,24 +186,22 @@ let rec paint_name (state:Trainer.t ref) () =
       set_color black;
       Graphics.draw_string ("Ah, " ^ name ^ " has a nice ring to it.");
       Unix.sleep 1;
-      state_ref := (set_trainer_name name !state_ref))
+      state_ref := set_trainer_name name !state_ref)
     else if e.key = ',' then
-      begin
       let len = String.length name in
       let backspaced_name = String.sub name 0 (len - 1) in
-      let new_state = ref (Trainer.set_trainer_name backspaced_name !state) in
-      paint_name new_state ();
-      end
+      let new_state =
+        ref (Trainer.set_trainer_name backspaced_name !state)
+      in
+      paint_name new_state ()
     else
-      begin
       let new_char = String.make 1 e.key in
       let new_name = name ^ new_char in
       let new_state = ref (Trainer.set_trainer_name new_name !state) in
-      paint_name new_state ();
-      end
+      paint_name new_state ()
   with Invalid_argument _ -> paint_name state ()
 
-let rec paint_dialogue text (state: Trainer.t ref) d_type () =
+let rec paint_dialogue text (state : Trainer.t ref) d_type () =
   clear_graph ();
   clear_window grey;
   let paint_main =
@@ -250,7 +236,7 @@ let rec paint_dialogue text (state: Trainer.t ref) d_type () =
   else if e.key = 'q' then Stdlib.exit 0
   else paint_dialogue text state d_type ()
 
-let rec display_catch_dialogue dialogues (state: Trainer.t ref) =
+let rec display_catch_dialogue dialogues (state : Trainer.t ref) =
   let len = List.length dialogues in
   for i = 0 to len - 1 do
     let text = List.nth dialogues i in
@@ -274,15 +260,14 @@ let rec display_battle_dialogue dialogues state =
   done;
   battle_main 0 0 ()
 
-(** 
-    ==============================
+(** ==============================
 
-    Select Buttons 
+    Select Buttons
 
-    appear after intro dialogue 
-    
+    appear after intro dialogue
+
     ==============================*)
-let rec select_buttons (state: Trainer.t ref) (select_y : int) () =
+let rec select_buttons (state : Trainer.t ref) (select_y : int) () =
   let title = "Main Menu" in
   let title_x = item_x_d (fst (text_size title)) in
   let catch = "[ 1 ] Catch Pokemon" in
@@ -354,12 +339,12 @@ let rec loading_menu () =
   Graphics.moveto 650 20;
   Graphics.set_color Graphics.white;
   Graphics.draw_string
-    "Developed by [Maxwell Pang, Sunci Sun, and Will Zhang] inc.";
+    "Developed by [Maxwell Pang, Yunci Sun, and Will Zhang] inc.";
   synchronize ();
-  let pokemon = random_pokemon in 
+  let pokemon = random_pokemon in
   let e = wait_next_event [ Key_pressed ] in
-  if e.key = 's' then  display_new_game_dialogue new_game_dialogue state 
-  else if e.key = 'p' then safari state 340 0  ()
+  if e.key = 's' then display_new_game_dialogue new_game_dialogue state
+  else if e.key = 'p' then safari state 340 0 ()
   else if e.key = 'b' then battle_main 0 0 ()
   else if e.key = 'c' then battle_encounter_main pokemon 0 0 ()
   else loading_menu ();

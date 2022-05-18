@@ -164,7 +164,7 @@ let draw_text_box x y () =
   moveto 380 100;
   draw_string "[t] Catch!";
   moveto 500 50;
-  draw_string "[q] Quit";
+  draw_string "[q r] Quit";
   synchronize ();
   ()
 
@@ -367,7 +367,7 @@ and draw_victory_screen (name : string) p () =
     moveto 380 50;
     draw_string "Again! [a]";
     moveto 500 50;
-    draw_string "Run! [q]";
+    draw_string "Run! [q r]";
     synchronize ();
     let e = wait_next_event [ Key_pressed ] in
     let user_command =
@@ -497,7 +497,7 @@ and take_turn catch_s () =
   moveto 700 80;
   draw_string "[r] Throw Rock";
   moveto 700 50;
-  draw_string "[q] Run";
+  draw_string "[q r] Run";
   synchronize ();
   let e = wait_next_event [ Key_pressed ] in
   let user_command =

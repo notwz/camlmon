@@ -20,6 +20,5 @@ val is_done : t -> bool
 val winner : t -> string
 (** [winner t] is the winner of battle state [t]. [winner t] is "e" if
     enemy wins. ie. you, the trainer faint first. [winner t] is "t" if
-    you, the trainer wins. ie. the enemy faints first.
-
-    @raise [NoWinnerFound] if the game is not finished. *)
+    you, the trainer wins. ie. the enemy faints first. Raises
+    [NoWinnerFound] if the game is not finished. *)

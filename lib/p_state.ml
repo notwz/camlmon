@@ -84,6 +84,7 @@ let get_hp (state : t) : int = state.hp
 let set_hp (state : t) health = { state with hp = health }
 let get_move_set (state : t) : move list = state.move_set
 
+(** [test_moves] is a list of moves *)
 let test_moves : move list =
   [
     {
@@ -112,6 +113,7 @@ let test_moves : move list =
     };
   ]
 
+(** [test_moves] is another list of moves *)
 let new_test_moves : move list =
   [
     {

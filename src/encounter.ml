@@ -4,6 +4,8 @@ open Catch_state
 open Graphics
 open Gui_library
 
+(** [paint_battle] draws the battling process when an encounter is
+    triggerd *)
 let paint_battle () =
   let title = "Main Menu" in
   let title_x = item_x_d (fst (text_size title)) in

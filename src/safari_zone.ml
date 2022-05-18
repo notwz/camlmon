@@ -133,13 +133,13 @@ let tile_info coord map () =
       | Water -> "Water"
     in
     set_color cyan;
-    moveto 60 360;
+    moveto 100 360;
     draw_string
       ("Current location is "
       ^ string_of_int (fst coord)
       ^ ", "
       ^ string_of_int (snd coord));
-    moveto 60 330;
+    moveto 100 330;
     draw_string ("Current tile is " ^ tile_type)
   with Not_found -> ()
 
@@ -158,10 +158,12 @@ let get_tile_type coord map =
 (** [trainer_info st] retrieves and paints the trainer [st] 's name on
     game screen *)
 let trainer_info (state : Trainer.t) () =
-  (* let name = get_trainer_name state in *)
+  let name = get_trainer_name state in
   set_color cyan;
   moveto 100 420;
-  draw_string "Trainer Info: "
+  draw_string "Trainer Info: ";
+  moveto 100 390;
+  draw_string name
 
 (** [parse_command key x y] is [Valid] iff the x and y are in the
     correct range*)

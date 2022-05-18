@@ -399,48 +399,22 @@ let p_state_tests =
   ]
   @ List.map f (range 323)
 
-let map_pp_test
-    (name : string)
-    (first_map : bool)
-    (expected_output : string) =
-  name >:: fun _ ->
-  let trainer = init_trainer "Bob" 0 in
-  let t_state = init_t_state trainer in
-  assert_equal expected_output
-    (pp_map
-       (if first_map then init_map_a t_state else init_map_b t_state))
-    ~printer:(fun x -> x)
+(* let map_pp_test (name : string) (first_map : bool) (expected_output :
+   string) = name >:: fun _ -> let trainer = init_trainer "Bob" 0 in let
+   t_state = init_t_state trainer in assert_equal expected_output
+   (pp_map (if first_map then init_map_a t_state else init_map_b
+   t_state)) ~printer:(fun x -> x) *)
 
-let map_tests =
-  [
-    map_pp_test "first map pretty printing" true
-      "🌊🌊🌊🌊🌊🟩🟩🟩🗿🗿🗿\n\
-       🌊🌊🌊🌊🟩🟩🟩🗿🗿🗿🗿\n\
-       🌊🌊🌊🟩🟩🟩🗿🗿🗿🗿🗿\n\
-       🌊🌊🟩🟩🟩🗿🗿🗿🗿🗿🟩\n\
-       🌊🟩🟩🟩🟩🟫🗿🗿🗿🟩🟩\n\
-       🟩🟩🟩🗿🟫🐪🟫🗿🟩🟩🟩\n\
-       🟩🟩🗿🗿🗿🟫🟩🟩🟩🟩🌊\n\
-       🟩🗿🗿🗿🗿🗿🟩🟩🟩🌊🌊\n\
-       🗿🗿🗿🗿🗿🟩🟩🟩🌊🌊🌊\n\
-       🗿🗿🗿🗿🟩🟩🟩🌊🌊🌊🌊\n\
-       🗿🗿🗿🟩🟩🟩🌊🌊🌊🌊🌊";
-    map_pp_test "second map pretty printing" false
-      "🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿\n\
-       🗿🗿🟩🟩🗿🗿🗿🗿🗿🗿🗿\n\
-       🟩🟩🟩🟩🟩🟩🟩🟩🗿🗿🟩\n\
-       🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩\n\
-       🌊🌊🌊🌊🌊🟫🌊🌊🌊🌊🌊\n\
-       🌊🌊🌊🌊🟫🐪🟫🌊🌊🌊🌊\n\
-       🌊🌊🌊🌊🌊🟫🌊🌊🌊🌊🌊\n\
-       🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩\n\
-       🟩🟩🗿🗿🗿🟩🟩🟩🗿🗿🟩\n\
-       🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿\n\
-       🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿";
-  ]
+(* let map_tests = [ map_pp_test "first map pretty printing" true
+   "🌊🌊🌊🌊🌊🟩🟩🟩🗿🗿🗿\n\ 🌊🌊🌊🌊🟩🟩🟩🗿🗿🗿🗿\n\ 🌊🌊🌊🟩🟩🟩🗿🗿🗿🗿🗿\n\ 🌊🌊🟩🟩🟩🗿🗿🗿🗿🗿🟩\n\
+   🌊🟩🟩🟩🟩🟫🗿🗿🗿🟩🟩\n\ 🟩🟩🟩🗿🟫🐪🟫🗿🟩🟩🟩\n\ 🟩🟩🗿🗿🗿🟫🟩🟩🟩🟩🌊\n\ 🟩🗿🗿🗿🗿🗿🟩🟩🟩🌊🌊\n\
+   🗿🗿🗿🗿🗿🟩🟩🟩🌊🌊🌊\n\ 🗿🗿🗿🗿🟩🟩🟩🌊🌊🌊🌊\n\ 🗿🗿🗿🟩🟩🟩🌊🌊🌊🌊🌊"; map_pp_test "second map
+   pretty printing" false "🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿\n\ 🗿🗿🟩🟩🗿🗿🗿🗿🗿🗿🗿\n\ 🟩🟩🟩🟩🟩🟩🟩🟩🗿🗿🟩\n\
+   🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩\n\ 🌊🌊🌊🌊🌊🟫🌊🌊🌊🌊🌊\n\ 🌊🌊🌊🌊🟫🐪🟫🌊🌊🌊🌊\n\ 🌊🌊🌊🌊🌊🟫🌊🌊🌊🌊🌊\n\
+   🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩\n\ 🟩🟩🗿🗿🗿🟩🟩🟩🗿🗿🟩\n\ 🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿\n\ 🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿🗿"; ] *)
 
 let suite =
   "🐪 Test suite for camlmon : 🐪"
-  >::: List.flatten [ p_state_tests; map_tests ]
+  >::: List.flatten [ p_state_tests (*map_tests*) ]
 
 let _ = run_test_tt_main suite

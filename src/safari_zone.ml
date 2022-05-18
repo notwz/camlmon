@@ -9,12 +9,21 @@ open Lib
 open Trainer
 open Encounter
 open Battle_encounter
-open Pokemon 
+open Pokemon
 open P_state
 
+(** [game_x] is the x coordinate of bottom left corner of the game
+    screen *)
 let game_x = 340
+
+(** [game_y] is the y coordinate of bottom left corner of the game
+    screen *)
 let game_y = 0
+
+(** [game_w] is the width of the game screen *)
 let game_w = 600
+
+(** [game_h] is the height of the game screen *)
 let game_h = 720
 
 type command =
@@ -23,22 +32,27 @@ type command =
   | Right
   | Down
 
+(** The abstract type representing the type of tile*)
 type tile_type =
   | Bush
   | Path
   | Water
 
+(** The abstract type representing whether an move is valid*)
 type move =
   | Valid
   | Invalid
 
 exception NoMovement
+(** Raised when no movement should occur*)
 
 type tile_info = {
   coord : int * int;
   tile : tile_type;
 }
+(** The abstract type representing a tile*)
 
+(** [append l1 l2] is the list with list [l2] appended to list [l1]*)
 let append l1 l2 =
   let rec loop acc l1 l2 =
     match (l1, l2) with
@@ -48,8 +62,8 @@ let append l1 l2 =
   in
   loop [] l1 l2
 
-(** [make_map px x y tile_count tile_type] makes a new map along a
-    diagonal. *)
+(** [make_map px x y tile_count tile_type] is a new map made up of tiles
+    with tile size [px], along a diagonal. *)
 let rec make_map tile_size x y tile_count (tile_type : tile_type) =
   let new_count = tile_count - 1 in
   let new_x = x + tile_size in
@@ -169,9 +183,9 @@ let get_tile_type coord map =
   in
   tile_type
 
-let paint_black x y () = 
-  moveto 0 0; 
-  set_color black; 
+let paint_black x y () =
+  moveto 0 0;
+  set_color black;
   fill_rect 0 0 340 400
 
 let trainer_info (state : Trainer.t) () =
@@ -189,12 +203,10 @@ let parse_command key x y =
   | Left -> if x = 340 then Invalid else Valid
   | Down -> if y = 0 || y < 15 then Invalid else Valid
 
-
-
-let rec safari (state: Trainer.t ref) x y () =
+let rec safari (state : Trainer.t ref) x y () =
   try
-    clear_graph ();  
-    clear_window black;    
+    clear_graph ();
+    clear_window black;
     moveto 500 500;
     let new_map = smart_make_map [] 0 in
     paint_map new_map ();
@@ -204,8 +216,8 @@ let rec safari (state: Trainer.t ref) x y () =
     tile_info (x, y) new_map ();
     trainer_info !state ();
     synchronize ();
-    let b = List.assoc (x,y) new_map in
-    if b = Bush then enc state x y (); 
+    let b = List.assoc (x, y) new_map in
+    if b = Bush then enc state x y ();
     let e = wait_next_event [ Key_pressed ] in
     let user_command =
       match e.key with
@@ -227,14 +239,15 @@ let rec safari (state: Trainer.t ref) x y () =
       in
       new_render;
       ())
-    else raise NoMovement 
+    else raise NoMovement
   with NoMovement -> safari state x y ()
 
-and enc state x y () = 
-  Random.self_init (); 
-  let enc = Random.int 10 in 
-  let pokemon = 
-      Random.self_init ();
-      let n = Random.int pokemons_len in
-      saf_ran_pokemon n in 
+and enc state x y () =
+  Random.self_init ();
+  let enc = Random.int 10 in
+  let pokemon =
+    Random.self_init ();
+    let n = Random.int pokemons_len in
+    saf_ran_pokemon n
+  in
   if enc = 1 then battle_encounter_main pokemon 0 0 ()

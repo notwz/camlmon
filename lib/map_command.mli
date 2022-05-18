@@ -4,6 +4,8 @@ type command =
   | Left
   | Right
   | Quit
+      (** The type [command] represents a player command that is
+          decomposed into a direction and a command to quit. *)
 
 exception Empty
 (** Raised when an empty command is parsed. *)

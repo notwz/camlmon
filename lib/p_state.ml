@@ -38,7 +38,7 @@ let rec find_move move_set (name : string) =
   | [] -> raise InvalidMove
 
 let move_pp move = (move.current_count, move.max_count)
-  
+
 let valid_move (state : t) (name : string) : bool =
   try
     let move_info = find_move state.move_set name in
@@ -48,14 +48,14 @@ let valid_move (state : t) (name : string) : bool =
 
 let use_move (m : move) = { m with current_count = m.current_count - 1 }
 
-let rec update_moves_list (m_list : move list) (move : move) :
-    move list =
+let rec update_moves_list (m_list : move list) (move : move) : move list
+    =
   match m_list with
   | [] -> []
   | h :: t ->
       if h = move then
         { move with current_count = h.current_count - 1 } :: t
-      else h::update_moves_list t move
+      else h :: update_moves_list t move
 
 let rec update_moves_list_str (m_list : move list) (move : string) :
     move list =
@@ -64,12 +64,11 @@ let rec update_moves_list_str (m_list : move list) (move : string) :
   | h :: t ->
       if h.move_name = move then
         { h with current_count = h.current_count - 1 } :: t
-      else h::update_moves_list_str t move
+      else h :: update_moves_list_str t move
 
 let use_moves (state : t) (move : move) : t =
   let new_moves_set = update_moves_list state.move_set move in
   { state with move_set = new_moves_set }
-
 
 let use_moves_str (state : t) (move : string) : t =
   let new_moves_set = update_moves_list_str state.move_set move in

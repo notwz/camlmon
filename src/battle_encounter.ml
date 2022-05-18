@@ -1,6 +1,5 @@
 open Graphics
 open Graphic_image
-open Explore
 open Lib
 open Trainer
 open Encounter

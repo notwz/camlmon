@@ -4,7 +4,6 @@ open Camlimages
 open Images
 open Png
 open Printf
-open Explore
 open Lib
 open Trainer
 open Safari_zone

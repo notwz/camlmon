@@ -72,13 +72,6 @@ let battle_dialogue =
 
 type coordiante = int * int
 
-let pokemon_logo = "public/menu_images/pokemon_logo.png"
-let charmander = "public/menu_images/charmander.png"
-let pikachu = "public/menu_images/pikachu.png"
-let professor = "public/menu_images/professor.png"
-let arena = "public/menu_images/arena.png"
-let loading_screen = "public/menu_images/loading_screen.png"
-let start_screen = "public/menu_images/start_screen.png"
 let panel_color = rgb 151 199 218
 let panel_border_1 = rgb 27 34 64
 let panel_border_2 = rgb 165 119 26
@@ -89,9 +82,6 @@ let bg_3 = rgb 255 183 77
 let bg_4 = rgb 255 152 0
 let bg_5 = rgb 255 140 0
 let bg_6 = rgb 239 108 0
-let x_res : int = 1280
-let y_res : int = 720
-let window_res : coordiante = (x_res, y_res)
 let dialogue_x = 340
 let dialogue_y = 0
 let dialogue_width = 600
@@ -102,9 +92,17 @@ let main_x = dialogue_x
 let main_y = dialogue_y + dialogue_height
 let img_size : int = 60
 let panel_outline = 3
-let item_x_d (width : int) = (x_res - width) / 2
-let item_y_d (width : int) = (y_res - width) / 2
+let pokemon_logo = "public/menu_images/pokemon_logo.png"
+let charmander = "public/menu_images/charmander.png"
+let pikachu = "public/menu_images/pikachu.png"
+let professor = "public/menu_images/professor.png"
+let arena = "public/menu_images/arena.png"
+let loading_screen = "public/menu_images/loading_screen.png"
+let start_screen = "public/menu_images/start_screen.png"
+let font = "-misc-fixed-medium-r-normal--20-200-75-75-c-100-iso10646-1"
 
+(** [paint_prof] paints the prof image in designated position when
+    introducing game to user*)
 let rec paint_prof () =
   set_color white;
   fill_rect dialogue_x dialogue_y dialogue_width y_res;
@@ -122,7 +120,9 @@ let rec paint_prof () =
   fill_rect dialogue_x (y_res - 120) dialogue_width 20;
   draw_img professor ((x_res / 2) - 140, (y_res / 2) - 150) ()
 
-let paint_arena () =
+(** [paint_transition n] paints the transition page between choosing
+    option page and the actual game*)
+let paint_transition name () =
   let title = "Main Menu" in
   let title_x = item_x_d (fst (text_size title)) in
   clear_graph ();
@@ -131,29 +131,7 @@ let paint_arena () =
   set_color black;
   fill_rect dialogue_x dialogue_y dialogue_width y_res;
   set_color bg_1;
-  draw_img arena (340, (y_res / 2) - 150) ()
-
-let paint_catch () =
-  let title = "Main Menu" in
-  let title_x = item_x_d (fst (text_size title)) in
-  clear_graph ();
-  clear_window black;
-  Graphics.moveto title_x 400;
-  set_color black;
-  fill_rect dialogue_x dialogue_y dialogue_width y_res;
-  set_color bg_1;
-  draw_img loading_screen (340, (y_res / 2) - 150) ()
-
-let paint_battle () =
-  let title = "Main Menu" in
-  let title_x = item_x_d (fst (text_size title)) in
-  clear_graph ();
-  clear_window black;
-  Graphics.moveto title_x 400;
-  set_color black;
-  fill_rect dialogue_x dialogue_y dialogue_width y_res;
-  set_color bg_1;
-  draw_img arena (340, (y_res / 2) - 150) ()
+  draw_img name (340, (y_res / 2) - 150) ()
 
 let state_ref = ref (init_trainer "" 0)
 
@@ -165,6 +143,9 @@ let state_ref = ref (init_trainer "" 0)
     state
 
     ==============================*)
+
+(** [paint_name st] allows user to type their preferred username using
+    ',' as backspace and paints the name in following conversations*)
 let rec paint_name (state : Trainer.t ref) () =
   try
     let name = Trainer.get_trainer_name !state in
@@ -199,19 +180,21 @@ let rec paint_name (state : Trainer.t ref) () =
       paint_name new_state ()
   with Invalid_argument _ -> paint_name state ()
 
+(** [paint_dialogue s d] draws all the texts in dialogue list [d] using
+    trainer information about trainer [s]*)
 let rec paint_dialogue text (state : Trainer.t ref) d_type () =
   clear_graph ();
   clear_window grey;
   let paint_main =
     match d_type with
     | Prof -> paint_prof ()
-    | Arena -> paint_arena ()
-    | Catch -> paint_catch ()
-    | Battle -> paint_battle ()
+    | Arena -> paint_transition arena ()
+    | Catch -> paint_transition loading_screen ()
+    | Battle -> paint_transition arena ()
   in
   paint_main;
   if text = "This is what we call a 'POKeMON.' " then
-    draw_img pikachu (x_res / 2 + 50, (y_res / 2)) ();
+    draw_img pikachu ((x_res / 2) + 50, y_res / 2) ();
   Graphics.set_color Graphics.white;
   Graphics.fill_rect dialogue_x dialogue_y dialogue_width
     dialogue_height;
@@ -234,6 +217,8 @@ let rec paint_dialogue text (state : Trainer.t ref) d_type () =
   else if e.key = 'q' then Stdlib.exit 0
   else paint_dialogue text state d_type ()
 
+(** [display_catch_dialogue d s] draws all the texts in dialogue list
+    [d] using trainer information about trainer [s]*)
 let rec display_catch_dialogue dialogues (state : Trainer.t ref) =
   let len = List.length dialogues in
   for i = 0 to len - 1 do
@@ -242,6 +227,8 @@ let rec display_catch_dialogue dialogues (state : Trainer.t ref) =
   done;
   safari state 340 0 ()
 
+(** [display_arena_dialogue d s] draws all the texts in dialogue list
+    [d] in turn using trainer information about trainer [s]*)
 let rec display_arena_dialogue dialogues state =
   let len = List.length dialogues in
   for i = 0 to len - 1 do
@@ -250,6 +237,8 @@ let rec display_arena_dialogue dialogues state =
   done;
   battle_main 0 0 ()
 
+(** [display_battle_dialogue d s] draws all the texts in dialogue list
+    [d] in turn using trainer information about trainer [s]*)
 let rec display_battle_dialogue dialogues state =
   let len = List.length dialogues in
   for i = 0 to len - 1 do
@@ -265,6 +254,9 @@ let rec display_battle_dialogue dialogues state =
     appear after intro dialogue
 
     ==============================*)
+
+(** [select_buttons state select] draws the buttons and waits for user
+    keyboard command to determine which state to move to next *)
 let rec select_buttons (state : Trainer.t ref) (select_y : int) () =
   let title = "Main Menu" in
   let title_x = item_x_d (fst (text_size title)) in
@@ -315,6 +307,8 @@ let rec select_buttons (state : Trainer.t ref) (select_y : int) () =
       if e.key <> 'q' then select_buttons state select_y ()
       else Stdlib.exit 0
 
+(** [display_new_game_dialogue d s] draws all the texts in dialogue list
+    [d] in turn using trainer information about trainer [s]*)
 let rec display_new_game_dialogue dialogues (state : Trainer.t ref) =
   let len = List.length dialogues in
   for i = 0 to len - 1 do
@@ -323,14 +317,14 @@ let rec display_new_game_dialogue dialogues (state : Trainer.t ref) =
   done;
   select_buttons state 350 ()
 
+(** [loading_menu] paints the initial loaidng menu, accepts user's 's'
+    key command to move on *)
 let rec loading_menu () =
-  let state = state_ref in
   Graphics.set_window_title "Camlmon";
   clear_window black;
   draw_img pokemon_logo (280, 360) ();
   draw_img start_screen (0, 0) ();
-  Graphics.set_font
-    "-misc-fixed-medium-r-normal--20-200-75-75-c-100-iso10646-1";
+  Graphics.set_font font;
   set_color yellow;
   Graphics.moveto 500 150;
   Graphics.draw_string "Press [ s ] key to continue... ";
@@ -339,12 +333,12 @@ let rec loading_menu () =
   Graphics.draw_string
     "Developed by [Maxwell Pang, Yunci Sun, and Will Zhang] inc.";
   synchronize ();
-  let pokemon = random_pokemon in
   let e = wait_next_event [ Key_pressed ] in
-  if e.key = 's' then display_new_game_dialogue new_game_dialogue state
-  else if e.key = 'p' then safari state 340 0 ()
+  if e.key = 's' then
+    display_new_game_dialogue new_game_dialogue state_ref
+  else if e.key = 'p' then safari state_ref 340 0 ()
   else if e.key = 'b' then battle_main 0 0 ()
-  else if e.key = 'c' then battle_encounter_main pokemon 0 0 ()
+  else if e.key = 'c' then battle_encounter_main random_pokemon 0 0 ()
   else loading_menu ();
   synchronize ()
 

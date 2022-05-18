@@ -36,6 +36,11 @@ type tile_info = {
 }
 (** The abstract type representing a tile*)
 
+let grass_tile = "public/map_images/grass_tile.png"
+let water_tile = "public/map_images/water_tile.png"
+let path_tile = "public/map_images/path_tile.png"
+let trainer_still = "public/trainer_images/trainer_still.png"
+
 (** [append l1 l2] is the list with list [l2] appended to list [l1]*)
 let append l1 l2 =
   let rec loop acc l1 l2 =
@@ -58,14 +63,8 @@ let rec make_map tile_size x y tile_count (tile_type : tile_type) =
   | 0 -> []
   | _ -> new_tile :: make_map tile_size new_x y new_count tile_type
 
-let rec make_row tile_size x y tile_count (tile_type : tile_type) =
-  let new_count = tile_count - 1 in
-  let new_x = x + tile_size in
-  let new_tile = ((new_x, y), tile_type) in
-  match tile_count with
-  | 0 -> []
-  | _ -> new_tile :: make_map tile_size new_x y new_count tile_type
-
+(** [smart_make_map lst y] makes a map from the tile list [lst] and tile
+    type of a row depend on the converted coordinate [y]*)
 let rec smart_make_map lst y =
   let final_map = lst in
   let tile_type =
@@ -74,7 +73,7 @@ let rec smart_make_map lst y =
   match y with
   | 720 -> final_map
   | _ ->
-      let new_row = make_row 45 295 y 14 tile_type in
+      let new_row = make_map 45 295 y 14 tile_type in
       let new_y = y + 45 in
       let final_map = append final_map new_row in
       smart_make_map final_map new_y
